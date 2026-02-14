@@ -1,0 +1,286 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: linear-gradient(#1499ba, #14ba88);
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
+}
+
+canvas {
+  display: block;
+}
+
+h3 {
+  background: #FFFFFF;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white;
+}
+
+a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.8)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
+  font-size: 18px;
+  transition: cursor 2s ease;
+}
+
+
+#name-handwritten {
+  margin-top: 45px; 
+  margin-bottom: -10px;
+  font-family: 'Caveat', sans-serif;
+  font-weight: 400;
+  font-size: 65px;
+}
+
+.overlay-container {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  width: 100%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-container {
+  display: none;
+  width: 25%;
+  height: 200px;
+  border-radius: 15px;
+  background: inherit;
+  backdrop-filter: blur(9px);
+  box-shadow: 0px 18.2px 22px rgba(0, 0, 0, .1), inset 0px 0.76px 30px rgba(255, 255, 255, 0.2), inset 0px 6.09px 60px rgba(255, 255, 255, 0.05);
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  -webkit-backdrop-filter: blur(9px);
+}
+
+.icon-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.blue-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(50deg, #88f44e, #3ca8ec);
+  opacity: 0;
+  transition: 'opacity 10s';
+  mix-blend-mode: color;
+  background-blend-mode: hue;
+  pointer-events: none;
+  -webkit-transition: 'opacity 10s';
+  -webkit-mix-blend-mode: color;
+  -webkit-background-blend-mode: hue;
+}
+
+.green-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(50deg, #b636f2, #ff6666, #fb3737);
+  opacity: 0;
+  transition: 'opacity 10s';
+  mix-blend-mode: color;
+  background-blend-mode: hue;
+  pointer-events: none;
+  -webkit-transition: 'opacity 10s';
+  -webkit-mix-blend-mode: color;
+  -webkit-background-blend-mode: hue;
+}
+
+#email-icon {
+  color: white;
+  font-size: 36px;
+}
+
+#linkedin-icon {
+  color: white;
+  font-size: 22px;
+}
+
+
+
+
+
+
+/* Tablet Styles */
+@media screen and (max-width: 900px) and (min-width: 769px) {
+  .content-container {
+    width: 70%;
+    height: 260px;
+    padding: 50px 40px;
+    border-radius: 25px;
+  }
+
+  #name-handwritten {
+    margin-top: 40px; 
+    font-size: 90px;
+  }
+
+  #email-icon {
+    font-size: 58px;
+  }
+
+  #linkedin-icon {
+    font-size: 36px;
+  }
+
+  .icon-container {
+    gap: 25px;
+    margin-top: 20px;
+    align-items: center;
+  }
+}
+
+/* Mobile Portrait Styles */
+@media screen and (max-width: 768px) {
+  .overlay-container {
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .content-container {
+    width: 85%;
+    height: auto;
+    padding: 60px 40px;
+    border-radius: 30px;
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    box-sizing: border-box;
+  }
+
+  #name-handwritten {
+    font-size: 95px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .icon-container {
+    gap: 40px;
+    margin-top: 15px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #email-icon {
+    font-size: 50px;
+  }
+
+  #linkedin-icon {
+    font-size: 32px;
+  }
+}
+
+/* Small Mobile Styles */
+@media screen and (max-width: 480px) {
+  .overlay-container {
+    padding: 8px;
+  }
+
+  .content-container {
+    width: 90%;
+    padding: 50px 35px;
+    border-radius: 25px;
+  }
+
+  #name-handwritten {
+    font-size: 85px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .icon-container {
+    gap: 35px;
+    align-items: center;
+  }
+
+  #email-icon {
+    font-size: 52px;
+  }
+
+  #linkedin-icon {
+    font-size: 32px;
+  }
+}
+
+/* Mobile Landscape Styles */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .overlay-container {
+    padding: 8px;
+  }
+
+  .content-container {
+    width: 50%;
+    height: auto;
+    padding: 25px 30px;
+    border-radius: 15px;
+  }
+
+  #name-handwritten {
+    font-size: 45px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+
+  .icon-container {
+    gap: 25px;
+    margin-top: 8px;
+    align-items: center;
+  }
+
+  #email-icon {
+    font-size: 35px;
+  }
+
+  #linkedin-icon {
+    font-size: 35px;
+  }
+}
+
+/* Very Short Landscape (like iPhone in landscape) */
+@media screen and (max-height: 400px) and (orientation: landscape) {
+  .content-container {
+    width: 45%;
+    padding: 20px 25px;
+  }
+
+  #name-handwritten {
+    font-size: 40px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  .icon-container {
+    gap: 20px;
+    align-items: center;
+  }
+
+  #email-icon {
+    font-size: 32px;
+  }
+
+  #linkedin-icon {
+    font-size: 32px;
+  }
+}
