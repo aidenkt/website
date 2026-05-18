@@ -56,22 +56,104 @@ a {
 
 .content-container {
   display: none;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   width: 25%;
   height: 200px;
-  border-radius: 15px;
-  background: inherit;
-  backdrop-filter: blur(9px);
-  box-shadow: 0px 18.2px 22px rgba(0, 0, 0, .1), inset 0px 0.76px 30px rgba(255, 255, 255, 0.2), inset 0px 6.09px 60px rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(255, 255, 255, 0.14) 45%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  backdrop-filter: blur(32px) saturate(155%);
+  -webkit-backdrop-filter: blur(32px) saturate(155%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.14),
+    0 8px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.38),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 40px rgba(255, 255, 255, 0.04);
   flex-direction: column;
   align-items: center;
   align-content: center;
-  -webkit-backdrop-filter: blur(9px);
+}
+
+.content-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.05) 28%,
+    transparent 52%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content-container::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: 10%;
+  width: 80%;
+  height: 55%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .content-container {
+    background: rgba(255, 255, 255, 0.24);
+  }
 }
 
 .icon-container {
+  --icon-size: 32px;
+  --icon-tap: 48px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   gap: 12px;
+}
+
+.icon-container a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-tap);
+  height: var(--icon-tap);
+  padding: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.icon-container iconify-icon {
+  color: white;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  font-size: var(--icon-size);
+  display: block;
+  flex-shrink: 0;
 }
 
 .blue-overlay {
@@ -108,16 +190,6 @@ a {
   -webkit-background-blend-mode: hue;
 }
 
-#email-icon {
-  color: white;
-  font-size: 36px;
-}
-
-#linkedin-icon {
-  color: white;
-  font-size: 22px;
-}
-
 
 
 
@@ -137,150 +209,122 @@ a {
     font-size: 90px;
   }
 
-  #email-icon {
-    font-size: 58px;
-  }
-
-  #linkedin-icon {
-    font-size: 36px;
-  }
-
   .icon-container {
+    --icon-size: 48px;
+    --icon-tap: 56px;
     gap: 25px;
     margin-top: 20px;
-    align-items: center;
   }
 }
 
 /* Mobile Portrait Styles */
 @media screen and (max-width: 768px) {
   .overlay-container {
-    padding: 10px;
+    padding: 16px;
     box-sizing: border-box;
   }
 
   .content-container {
-    width: 85%;
+    width: min(92%, 380px);
+    min-width: 280px;
     height: auto;
-    padding: 60px 40px;
-    border-radius: 30px;
-    backdrop-filter: blur(9px);
-    -webkit-backdrop-filter: blur(9px);
+    min-height: auto;
+    padding: 36px 32px 32px;
+    border-radius: 24px;
+    backdrop-filter: blur(28px) saturate(150%);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
     box-sizing: border-box;
+    gap: 4px;
   }
 
   #name-handwritten {
-    font-size: 95px;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    font-size: 56px;
+    margin-top: 0;
+    margin-bottom: 16px;
     text-align: center;
+    line-height: 1.1;
   }
 
   .icon-container {
-    gap: 40px;
-    margin-top: 15px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #email-icon {
-    font-size: 50px;
-  }
-
-  #linkedin-icon {
-    font-size: 32px;
+    --icon-size: 40px;
+    --icon-tap: 48px;
+    gap: 28px;
+    margin-top: 0;
   }
 }
 
 /* Small Mobile Styles */
 @media screen and (max-width: 480px) {
   .overlay-container {
-    padding: 8px;
+    padding: 12px;
   }
 
   .content-container {
-    width: 90%;
-    padding: 50px 35px;
-    border-radius: 25px;
+    width: min(94%, 340px);
+    min-width: 260px;
+    padding: 32px 28px 28px;
+    border-radius: 22px;
   }
 
   #name-handwritten {
-    font-size: 85px;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    font-size: 50px;
+    margin-bottom: 14px;
   }
 
   .icon-container {
-    gap: 35px;
-    align-items: center;
-  }
-
-  #email-icon {
-    font-size: 52px;
-  }
-
-  #linkedin-icon {
-    font-size: 32px;
+    --icon-size: 38px;
+    --icon-tap: 44px;
+    gap: 24px;
   }
 }
 
 /* Mobile Landscape Styles */
 @media screen and (max-height: 500px) and (orientation: landscape) {
   .overlay-container {
-    padding: 8px;
+    padding: 12px;
   }
 
   .content-container {
-    width: 50%;
+    width: min(85%, 480px);
+    min-width: 300px;
     height: auto;
-    padding: 25px 30px;
-    border-radius: 15px;
+    padding: 20px 28px 18px;
+    border-radius: 18px;
+    gap: 2px;
   }
 
   #name-handwritten {
-    font-size: 45px;
-    margin-top: 10px;
-    margin-bottom: 15px;
+    font-size: 42px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.1;
   }
 
   .icon-container {
-    gap: 25px;
-    margin-top: 8px;
-    align-items: center;
-  }
-
-  #email-icon {
-    font-size: 35px;
-  }
-
-  #linkedin-icon {
-    font-size: 35px;
+    --icon-size: 36px;
+    --icon-tap: 44px;
+    gap: 24px;
+    margin-top: 0;
   }
 }
 
 /* Very Short Landscape (like iPhone in landscape) */
 @media screen and (max-height: 400px) and (orientation: landscape) {
   .content-container {
-    width: 45%;
-    padding: 20px 25px;
+    width: min(80%, 440px);
+    min-width: 280px;
+    padding: 16px 24px 14px;
   }
 
   #name-handwritten {
-    font-size: 40px;
-    margin-top: 8px;
-    margin-bottom: 12px;
+    font-size: 38px;
+    margin-top: 0;
+    margin-bottom: 8px;
   }
 
   .icon-container {
+    --icon-size: 34px;
+    --icon-tap: 40px;
     gap: 20px;
-    align-items: center;
-  }
-
-  #email-icon {
-    font-size: 32px;
-  }
-
-  #linkedin-icon {
-    font-size: 32px;
   }
 }
