@@ -1,22 +1,25 @@
 <wizard-report>
 # PostHog post-wizard report
 
-The wizard has completed a deep integration of your project. PostHog's `posthog-node` SDK was added to `index.js` with a singleton client initialized from environment variables. An Express middleware captures a `page viewed` event for every main page request, with referrer, URL, and user-agent properties. An Express error handler calls `captureException` on any unhandled server errors. A `SIGTERM` handler ensures the PostHog queue is flushed cleanly on shutdown. Environment variables were written to `.env` and `.gitignore` coverage was confirmed.
+The wizard has completed a deep integration of your project. PostHog analytics have been added to both the Express server (`index.js`) and the client-side HTML (`resources/static/index.html`). The server-side SDK (`posthog-node`) was already installed and has been configured with `enableExceptionAutocapture: true` for automatic error tracking. A new `resume downloaded` event was added to track when visitors access the resume PDF. Client-side tracking was added via the posthog-js snippet for `email clicked` and `linkedin clicked` events, capturing engagement with the two main contact links. Graceful shutdown and error middleware capture are both in place.
 
 | Event | Description | File |
 |---|---|---|
-| `page viewed` | Fired when a visitor loads the main portfolio page (`/` or `/index.html`) | `index.js` |
+| `page viewed` | User visited the homepage (already implemented) | `index.js` |
+| `resume downloaded` | User accessed the resume PDF via `/resume.pdf` | `index.js` |
+| `email clicked` | User clicked the email contact link | `resources/static/index.html` |
+| `linkedin clicked` | User clicked the LinkedIn profile link | `resources/static/index.html` |
 
 ## Next steps
 
 We've built some insights and a dashboard for you to keep an eye on user behavior, based on the events we just instrumented:
 
-- [Analytics basics dashboard](/dashboard/1606935)
-- [Total page views (30 days)](/insights/ZHyTvbey) — bold number KPI for the last 30 days
-- [Page views over time](/insights/Nv6Zy6y8) — daily trend line for the last 30 days
-- [Unique visitors over time](/insights/ezfB1vd0) — daily unique visitors (DAU) for the last 30 days
-- [Page views by referrer](/insights/KCbrVCI9) — bar chart breaking down traffic sources
-- [Weekly page views trend](/insights/vk0hSAZz) — week-over-week comparison over the last 90 days
+- [Analytics basics dashboard](/dashboard/1607210)
+- [Page views over time](/insights/2U2N4n8f)
+- [Contact link clicks over time](/insights/zaUjzeMQ)
+- [Resume downloads over time](/insights/g43tfZu4)
+- [Contact conversion rate (visitors who click contact)](/insights/RiOCwxsX)
+- [Total contact actions (last 30 days)](/insights/tKBttj4a)
 
 ### Agent skill
 

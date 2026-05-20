@@ -20,6 +20,16 @@ app.use((req, res, next) => {
       },
     });
   }
+  if (req.path === '/resume.pdf') {
+    posthog.capture({
+      distinctId: req.ip || 'anonymous',
+      event: 'resume downloaded',
+      properties: {
+        $referrer: req.get('referer') || '',
+        $user_agent: req.get('user-agent') || '',
+      },
+    });
+  }
   next();
 });
 
