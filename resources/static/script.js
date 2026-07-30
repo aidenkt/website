@@ -75,6 +75,9 @@ function Background() {
 
   let renderer, scene, camera;
   let width, height;
+  let rootCanvasContext = null;
+  let lastRootCanvasFrame = 0;
+  const rootCanvasFrameInterval = 125;
   const largeViewportProbe = document.createElement("div");
   largeViewportProbe.style.cssText =
     "position:fixed;height:100lvh;visibility:hidden;pointer-events:none";
@@ -94,6 +97,11 @@ function Background() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     camera = new THREE.PerspectiveCamera();
+
+    if (typeof document.getCSSCanvasContext === "function") {
+      document.documentElement.classList.add("live-webgl-root");
+      document.body.classList.add("live-webgl-root");
+    }
 
     updateSize();
     window.addEventListener("resize", updateSize, false);
@@ -263,7 +271,58 @@ function Background() {
   function animate(t) {
     uTime.value = t * 0.001;
     renderer.render(scene, camera);
+    updateRootCanvas(t);
     requestAnimationFrame(animate);
+  }
+
+  function addRootCanvasTint(selector, stops) {
+    const overlay = document.querySelector(selector);
+    const opacity = overlay
+      ? Number.parseFloat(window.getComputedStyle(overlay).opacity)
+      : 0;
+
+    if (!rootCanvasContext || opacity <= 0) {
+      return;
+    }
+
+    rootCanvasContext.save();
+    rootCanvasContext.globalCompositeOperation = "color";
+
+    if (rootCanvasContext.globalCompositeOperation !== "color") {
+      rootCanvasContext.restore();
+      return;
+    }
+
+    rootCanvasContext.globalAlpha = opacity;
+    const gradient = rootCanvasContext.createLinearGradient(0, height, width, 0);
+    stops.forEach(([position, color]) => {
+      gradient.addColorStop(position, color);
+    });
+    rootCanvasContext.fillStyle = gradient;
+    rootCanvasContext.fillRect(0, 0, width, height);
+    rootCanvasContext.restore();
+  }
+
+  function updateRootCanvas(t) {
+    if (
+      !rootCanvasContext ||
+      t - lastRootCanvasFrame < rootCanvasFrameInterval
+    ) {
+      return;
+    }
+
+    rootCanvasContext.clearRect(0, 0, width, height);
+    rootCanvasContext.drawImage(renderer.domElement, 0, 0, width, height);
+    addRootCanvasTint(".blue-overlay", [
+      [0, "#88f44e"],
+      [1, "#3ca8ec"],
+    ]);
+    addRootCanvasTint(".green-overlay", [
+      [0, "#b636f2"],
+      [0.5, "#ff6666"],
+      [1, "#fb3737"],
+    ]);
+    lastRootCanvasFrame = t;
   }
 
   function updateSize() {
@@ -273,6 +332,16 @@ function Background() {
       largeViewportProbe.getBoundingClientRect().height,
     );
     renderer.setSize(width, height);
+
+    if (typeof document.getCSSCanvasContext === "function") {
+      rootCanvasContext = document.getCSSCanvasContext(
+        "2d",
+        "webgl-root",
+        Math.max(1, Math.round(width)),
+        Math.max(1, Math.round(height)),
+      );
+      lastRootCanvasFrame = 0;
+    }
   }
 }
 
