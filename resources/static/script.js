@@ -365,3 +365,90 @@ if (window.location.search == "?start") {
 if (runColors) {
   setInterval(updateColors, 20000);
 }
+
+function enableCardTilt() {
+  const card = document.querySelector(".content-container");
+
+  if (!card || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const maxTilt = 9;
+  const dragDistance = 140;
+  let activePointer = null;
+  let start = { x: 0, y: 0 };
+  let current = start;
+  let animationFrame = null;
+  let moved = false;
+  let suppressClicksUntil = 0;
+
+  function renderTilt() {
+    const clamp = (value) => Math.max(-maxTilt, Math.min(maxTilt, value));
+    const rotateX = clamp((-(current.y - start.y) / dragDistance) * maxTilt);
+    const rotateY = clamp(((current.x - start.x) / dragDistance) * maxTilt);
+
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    animationFrame = null;
+  }
+
+  function finishDrag(event) {
+    if (event.pointerId !== activePointer) {
+      return;
+    }
+
+    if (animationFrame !== null) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+
+    if (moved) {
+      suppressClicksUntil = performance.now() + 400;
+    }
+
+    activePointer = null;
+    card.classList.remove("is-dragging");
+    card.style.transform = "";
+  }
+
+  card.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    activePointer = event.pointerId;
+    start = { x: event.clientX, y: event.clientY };
+    current = start;
+    moved = false;
+    card.classList.add("is-dragging");
+    card.setPointerCapture(event.pointerId);
+  });
+
+  card.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== activePointer) {
+      return;
+    }
+
+    current = { x: event.clientX, y: event.clientY };
+    moved ||= Math.hypot(current.x - start.x, current.y - start.y) > 4;
+
+    if (animationFrame === null) {
+      animationFrame = requestAnimationFrame(renderTilt);
+    }
+  });
+
+  card.addEventListener("pointerup", finishDrag);
+  card.addEventListener("pointercancel", finishDrag);
+  card.addEventListener("dragstart", (event) => event.preventDefault());
+  card.addEventListener(
+    "click",
+    (event) => {
+      if (performance.now() < suppressClicksUntil) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    },
+    true,
+  );
+}
+
+enableCardTilt();
