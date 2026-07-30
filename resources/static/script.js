@@ -41,6 +41,8 @@ function Background() {
     };
   }
 
+  const saturationBoost = isiOS() ? 0.3 : 0;
+
   // "#f9442c",
   // "#fc9f58",
   // "#EBCF6B",
@@ -176,12 +178,17 @@ function Background() {
               rnd(0.4, 0.7),
             ),
           },
-          uColor1: { value: new THREE.Color(conf.cscale(i / conf.nx).hex()) },
+          uColor1: {
+            value: new THREE.Color(
+              conf.cscale(i / conf.nx).saturate(saturationBoost).hex(),
+            ),
+          },
           uColor2: {
             value: new THREE.Color(
               conf
                 .cscale(i / conf.nx)
                 .darken(conf.darken)
+                .saturate(saturationBoost)
                 .hex(),
             ),
           },
