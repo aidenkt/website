@@ -33,7 +33,33 @@ body {
   inset: 0 0 auto;
   z-index: 2;
   height: 5px;
-  background: linear-gradient(90deg, #c73524, #d0b64f, #0cc4a0, #3ca8ec, #bb55c6);
+  overflow: hidden;
+  background: linear-gradient(90deg, #c73524, #e28240, #d0b64f, #db4e46, #bb55c6, #d0247d);
+}
+
+.page-accent::before,
+.page-accent::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 10s ease;
+}
+
+.page-accent::before {
+  background: linear-gradient(90deg, #88f44e, #3ca8ec);
+}
+
+.page-accent::after {
+  background: linear-gradient(90deg, #b636f2, #ff6666, #fb3737);
+}
+
+.page-accent[data-palette="blue"]::before {
+  opacity: 1;
+}
+
+.page-accent[data-palette="green"]::after {
+  opacity: 1;
 }
 
 main {
@@ -77,15 +103,6 @@ nav a {
 
 header {
   margin-bottom: 56px;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: var(--green);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 h1 {
@@ -195,6 +212,11 @@ footer span {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .page-accent::before,
+  .page-accent::after {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {
