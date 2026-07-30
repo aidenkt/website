@@ -1,7 +1,20 @@
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #c73524;
+}
+
 body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
   overflow: hidden;
-  background-color: linear-gradient(#1499ba, #14ba88);
+  overscroll-behavior: none;
+  background: #c73524;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
 }
 
@@ -52,6 +65,9 @@ a {
   height: 100%;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
   perspective: 900px;
 }
 
