@@ -6,7 +6,7 @@ const themeColor = document.querySelector('meta[name="theme-color"]');
 const themeColors = {
   base: "#fdaa58",
   blue: "#69d1b0",
-  magenta: "#e84a9b",
+  magenta: "#d94b98",
 };
 let themeColorTimer = null;
 
@@ -16,11 +16,11 @@ function setThemeColor(color) {
   }
 }
 
-function setThemeColorMidTransition(color) {
+function scheduleThemeColor(color) {
   window.clearTimeout(themeColorTimer);
   themeColorTimer = window.setTimeout(() => {
     setThemeColor(color);
-  }, 5000);
+  }, 3500);
 }
 
 function Background() {
@@ -364,17 +364,17 @@ function updateColors() {
   if (blueOverlay.style.opacity == 0 && greenOverlay.style.opacity == 0) {
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 1;
-    setThemeColorMidTransition(themeColors.blue);
+    scheduleThemeColor(themeColors.blue);
   } else if (blueOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 0;
     greenOverlay.style.opacity = 1;
-    setThemeColorMidTransition(themeColors.magenta);
+    scheduleThemeColor(themeColors.magenta);
   } else if (greenOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     greenOverlay.style.opacity = 0;
-    setThemeColorMidTransition(themeColors.base);
+    scheduleThemeColor(themeColors.base);
   }
 }
 
