@@ -2,6 +2,19 @@ function isiOS() {
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+const themeColor = document.querySelector('meta[name="theme-color"]');
+const themeColors = {
+  base: "#e28240",
+  blue: "#3ca8ec",
+  magenta: "#d0247d",
+};
+
+function setThemeColor(color) {
+  if (themeColor) {
+    themeColor.content = color;
+  }
+}
+
 function Background() {
   if (window.location.search == "?start") {
     var conf = {
@@ -343,14 +356,17 @@ function updateColors() {
   if (blueOverlay.style.opacity == 0 && greenOverlay.style.opacity == 0) {
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 1;
+    setThemeColor(themeColors.blue);
   } else if (blueOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 0;
     greenOverlay.style.opacity = 1;
+    setThemeColor(themeColors.magenta);
   } else if (greenOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     greenOverlay.style.opacity = 0;
+    setThemeColor(themeColors.base);
   }
 }
 
@@ -358,6 +374,7 @@ let runColors = true;
 
 if (window.location.search == "?start") {
   runColors = false;
+  setThemeColor("#094876");
 } else {
   document.querySelector(".content-container").style.display = "flex";
 }
