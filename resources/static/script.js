@@ -63,6 +63,7 @@ function Background() {
       canvas: document.getElementById("canvas"),
       antialias: true,
     });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     camera = new THREE.PerspectiveCamera();
 
     updateSize();
