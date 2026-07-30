@@ -3,25 +3,25 @@ function isiOS() {
 }
 
 const themeColor = document.querySelector('meta[name="theme-color"]');
-const themeColors = {
-  base: "#fdaa58",
-  blue: "#69d1b0",
-  magenta: "#d94b98",
+const paletteColors = {
+  base: { theme: "#fdaa58", root: "#df63bd" },
+  blue: { theme: "#69d1b0", root: "#62cbb4" },
+  magenta: { theme: "#d94b98", root: "#d653b7" },
 };
 let themeColorTimer = null;
 
-function setThemeColor(color) {
+function setBrowserColors({ theme, root }) {
   if (themeColor) {
-    themeColor.content = color;
+    themeColor.content = theme;
   }
 
-  document.documentElement.style.setProperty("--browser-theme-color", color);
+  document.documentElement.style.setProperty("--root-background-color", root);
 }
 
-function scheduleThemeColor(color) {
+function scheduleBrowserColors(colors) {
   window.clearTimeout(themeColorTimer);
   themeColorTimer = window.setTimeout(() => {
-    setThemeColor(color);
+    setBrowserColors(colors);
   }, 3500);
 }
 
@@ -366,17 +366,17 @@ function updateColors() {
   if (blueOverlay.style.opacity == 0 && greenOverlay.style.opacity == 0) {
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 1;
-    scheduleThemeColor(themeColors.blue);
+    scheduleBrowserColors(paletteColors.blue);
   } else if (blueOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 0;
     greenOverlay.style.opacity = 1;
-    scheduleThemeColor(themeColors.magenta);
+    scheduleBrowserColors(paletteColors.magenta);
   } else if (greenOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     greenOverlay.style.opacity = 0;
-    scheduleThemeColor(themeColors.base);
+    scheduleBrowserColors(paletteColors.base);
   }
 }
 
@@ -384,7 +384,7 @@ let runColors = true;
 
 if (window.location.search == "?start") {
   runColors = false;
-  setThemeColor("#094876");
+  setBrowserColors({ theme: "#094876", root: "#0b4b5b" });
 } else {
   document.querySelector(".content-container").style.display = "flex";
 }
