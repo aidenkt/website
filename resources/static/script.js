@@ -8,11 +8,19 @@ const themeColors = {
   blue: "#69d1b0",
   magenta: "#e84a9b",
 };
+let themeColorTimer = null;
 
 function setThemeColor(color) {
   if (themeColor) {
     themeColor.content = color;
   }
+}
+
+function setThemeColorMidTransition(color) {
+  window.clearTimeout(themeColorTimer);
+  themeColorTimer = window.setTimeout(() => {
+    setThemeColor(color);
+  }, 5000);
 }
 
 function Background() {
@@ -356,17 +364,17 @@ function updateColors() {
   if (blueOverlay.style.opacity == 0 && greenOverlay.style.opacity == 0) {
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 1;
-    setThemeColor(themeColors.blue);
+    setThemeColorMidTransition(themeColors.blue);
   } else if (blueOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 0;
     greenOverlay.style.opacity = 1;
-    setThemeColor(themeColors.magenta);
+    setThemeColorMidTransition(themeColors.magenta);
   } else if (greenOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     greenOverlay.style.opacity = 0;
-    setThemeColor(themeColors.base);
+    setThemeColorMidTransition(themeColors.base);
   }
 }
 
