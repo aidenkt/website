@@ -4,9 +4,9 @@ function isiOS() {
 
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const themeColors = {
-  base: "#e28240",
-  blue: "#3ca8ec",
-  magenta: "#d0247d",
+  base: "#fdaa58",
+  blue: "#69d1b0",
+  magenta: "#e84a9b",
 };
 
 function setThemeColor(color) {
