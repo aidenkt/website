@@ -323,7 +323,7 @@ function Background() {
 
   function updateSize() {
     width = window.innerWidth;
-    height = window.innerHeight;
+    height = Math.max(window.innerHeight, document.body.scrollHeight);
     renderer.setSize(width, height);
 
     if (typeof document.getCSSCanvasContext === "function") {
