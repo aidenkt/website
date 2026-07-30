@@ -1,20 +1,20 @@
 html {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  overscroll-behavior: none;
+  min-height: 100%;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
   background: #c73524;
 }
 
 body {
-  position: fixed;
-  inset: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
-  overflow: hidden;
-  overscroll-behavior: none;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
   background: #c73524;
+  touch-action: pan-y pinch-zoom;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
 }
 
@@ -66,8 +66,8 @@ a {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  overscroll-behavior: none;
-  touch-action: none;
+  overscroll-behavior-x: none;
+  touch-action: pan-y pinch-zoom;
   perspective: 900px;
 }
 
