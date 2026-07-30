@@ -78,10 +78,6 @@ function Background() {
   let rootCanvasContext = null;
   let lastRootCanvasFrame = 0;
   const rootCanvasFrameInterval = 125;
-  const largeViewportProbe = document.createElement("div");
-  largeViewportProbe.style.cssText =
-    "position:fixed;height:100lvh;visibility:hidden;pointer-events:none";
-  document.body.appendChild(largeViewportProbe);
   const { randFloat: rnd } = THREE.Math;
 
   const uTime = { value: 0 },
@@ -327,10 +323,7 @@ function Background() {
 
   function updateSize() {
     width = window.innerWidth;
-    height = Math.max(
-      window.innerHeight,
-      largeViewportProbe.getBoundingClientRect().height,
-    );
+    height = window.innerHeight;
     renderer.setSize(width, height);
 
     if (typeof document.getCSSCanvasContext === "function") {
