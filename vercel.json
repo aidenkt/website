@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/privacy/?",
+      "dest": "/resources/static/privacy/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/resources/static/$1"
     }

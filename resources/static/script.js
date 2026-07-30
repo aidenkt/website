@@ -2,6 +2,29 @@ function isiOS() {
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+const themeColor = document.querySelector('meta[name="theme-color"]');
+const paletteColors = {
+  base: { theme: "#fdaa58", root: "#df63bd" },
+  blue: { theme: "#69d1b0", root: "#62cbb4" },
+  magenta: { theme: "#d94b98", root: "#d653b7" },
+};
+let themeColorTimer = null;
+
+function setBrowserColors({ theme, root }) {
+  if (themeColor) {
+    themeColor.content = theme;
+  }
+
+  document.documentElement.style.setProperty("--root-background-color", root);
+}
+
+function scheduleBrowserColors(colors) {
+  window.clearTimeout(themeColorTimer);
+  themeColorTimer = window.setTimeout(() => {
+    setBrowserColors(colors);
+  }, 3500);
+}
+
 function Background() {
   if (window.location.search == "?start") {
     var conf = {
@@ -41,6 +64,8 @@ function Background() {
     };
   }
 
+  const saturationBoost = isiOS() ? 0.3 : 0;
+
   // "#f9442c",
   // "#fc9f58",
   // "#EBCF6B",
@@ -63,6 +88,7 @@ function Background() {
       canvas: document.getElementById("canvas"),
       antialias: true,
     });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     camera = new THREE.PerspectiveCamera();
 
     updateSize();
@@ -175,12 +201,17 @@ function Background() {
               rnd(0.4, 0.7),
             ),
           },
-          uColor1: { value: new THREE.Color(conf.cscale(i / conf.nx).hex()) },
+          uColor1: {
+            value: new THREE.Color(
+              conf.cscale(i / conf.nx).saturate(saturationBoost).hex(),
+            ),
+          },
           uColor2: {
             value: new THREE.Color(
               conf
                 .cscale(i / conf.nx)
                 .darken(conf.darken)
+                .saturate(saturationBoost)
                 .hex(),
             ),
           },
@@ -335,25 +366,25 @@ function updateColors() {
   if (blueOverlay.style.opacity == 0 && greenOverlay.style.opacity == 0) {
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 1;
+    scheduleBrowserColors(paletteColors.blue);
   } else if (blueOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     blueOverlay.style.transition = "opacity 10s";
     blueOverlay.style.opacity = 0;
     greenOverlay.style.opacity = 1;
+    scheduleBrowserColors(paletteColors.magenta);
   } else if (greenOverlay.style.opacity == 1) {
     greenOverlay.style.transition = "opacity 10s";
     greenOverlay.style.opacity = 0;
+    scheduleBrowserColors(paletteColors.base);
   }
 }
 
-runColors = true;
-
-if (isiOS()) {
-  runColors = false;
-}
+let runColors = true;
 
 if (window.location.search == "?start") {
   runColors = false;
+  setBrowserColors({ theme: "#094876", root: "#0b4b5b" });
 } else {
   document.querySelector(".content-container").style.display = "flex";
 }
@@ -361,3 +392,122 @@ if (window.location.search == "?start") {
 if (runColors) {
   setInterval(updateColors, 20000);
 }
+
+function enableCardTilt() {
+  const card = document.querySelector(".content-container");
+
+  if (!card || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const maxTilt = 9;
+  const dragDistance = 140;
+  let activePointer = null;
+  let start = { x: 0, y: 0 };
+  let current = start;
+  let animationFrame = null;
+  let moved = false;
+  let suppressClicksUntil = 0;
+  let iconPointer = null;
+  let iconLink = null;
+
+  function renderTilt() {
+    const clamp = (value) => Math.max(-maxTilt, Math.min(maxTilt, value));
+    const rotateX = clamp((-(current.y - start.y) / dragDistance) * maxTilt);
+    const rotateY = clamp(((current.x - start.x) / dragDistance) * maxTilt);
+
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    animationFrame = null;
+  }
+
+  function finishDrag(event) {
+    if (event.pointerId !== activePointer) {
+      return;
+    }
+
+    if (animationFrame !== null) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+
+    if (moved) {
+      suppressClicksUntil = performance.now() + 400;
+    }
+
+    activePointer = null;
+    card.classList.remove("is-dragging");
+    card.style.transform = "";
+  }
+
+  card.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    const pressedIconLink = event.target.closest(".icon-container a");
+
+    if (pressedIconLink) {
+      event.preventDefault();
+      suppressClicksUntil = 0;
+      iconPointer = event.pointerId;
+      iconLink = pressedIconLink;
+      card.setPointerCapture(event.pointerId);
+      return;
+    }
+
+    activePointer = event.pointerId;
+    start = { x: event.clientX, y: event.clientY };
+    current = start;
+    moved = false;
+    card.classList.add("is-dragging");
+    card.setPointerCapture(event.pointerId);
+  });
+
+  card.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== activePointer) {
+      return;
+    }
+
+    current = { x: event.clientX, y: event.clientY };
+    moved ||= Math.hypot(current.x - start.x, current.y - start.y) > 4;
+
+    if (animationFrame === null) {
+      animationFrame = requestAnimationFrame(renderTilt);
+    }
+  });
+
+  card.addEventListener("pointerup", (event) => {
+    if (event.pointerId === iconPointer) {
+      const linkToActivate = iconLink;
+      iconPointer = null;
+      iconLink = null;
+      linkToActivate.click();
+      return;
+    }
+
+    finishDrag(event);
+  });
+
+  card.addEventListener("pointercancel", (event) => {
+    if (event.pointerId === iconPointer) {
+      iconPointer = null;
+      iconLink = null;
+      return;
+    }
+
+    finishDrag(event);
+  });
+  card.addEventListener("dragstart", (event) => event.preventDefault());
+  card.addEventListener(
+    "click",
+    (event) => {
+      if (performance.now() < suppressClicksUntil) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    },
+    true,
+  );
+}
+
+enableCardTilt();
