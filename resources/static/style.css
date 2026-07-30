@@ -156,6 +156,21 @@ a {
   flex-shrink: 0;
 }
 
+.privacy-link {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.76);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.privacy-link:hover,
+.privacy-link:focus-visible {
+  color: #FFFFFF;
+}
+
 .blue-overlay {
   position: fixed;
   top: 0;

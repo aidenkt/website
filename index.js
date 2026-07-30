@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { PostHog } = require('posthog-node');
 const app = express();
 const port = 3000;
@@ -31,6 +32,10 @@ app.use((req, res, next) => {
     });
   }
   next();
+});
+
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'resources/static/privacy/index.html'));
 });
 
 app.use(express.static('resources/static'))
