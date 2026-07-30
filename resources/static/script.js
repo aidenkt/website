@@ -14,6 +14,8 @@ function setThemeColor(color) {
   if (themeColor) {
     themeColor.content = color;
   }
+
+  document.documentElement.style.setProperty("--browser-theme-color", color);
 }
 
 function scheduleThemeColor(color) {

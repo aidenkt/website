@@ -1,9 +1,13 @@
+:root {
+  --browser-theme-color: #fdaa58;
+}
+
 html {
   width: 100%;
   height: 100%;
   overflow-x: clip;
   overscroll-behavior-x: none;
-  background: #c73524;
+  background: var(--browser-theme-color);
 }
 
 body {
@@ -13,7 +17,7 @@ body {
   margin: 0;
   overflow-x: clip;
   overscroll-behavior-x: none;
-  background: #c73524;
+  background: var(--browser-theme-color);
   touch-action: pan-y pinch-zoom;
   isolation: isolate;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
