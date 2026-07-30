@@ -185,11 +185,11 @@ a {
   height: 100%;
   background: linear-gradient(50deg, #88f44e, #3ca8ec);
   opacity: 0;
-  transition: 'opacity 10s';
+  transition: opacity 10s;
   mix-blend-mode: color;
   background-blend-mode: hue;
   pointer-events: none;
-  -webkit-transition: 'opacity 10s';
+  -webkit-transition: opacity 10s;
   -webkit-mix-blend-mode: color;
   -webkit-background-blend-mode: hue;
 }
@@ -202,11 +202,11 @@ a {
   height: 100%;
   background: linear-gradient(50deg, #b636f2, #ff6666, #fb3737);
   opacity: 0;
-  transition: 'opacity 10s';
+  transition: opacity 10s;
   mix-blend-mode: color;
   background-blend-mode: hue;
   pointer-events: none;
-  -webkit-transition: 'opacity 10s';
+  -webkit-transition: opacity 10s;
   -webkit-mix-blend-mode: color;
   -webkit-background-blend-mode: hue;
 }

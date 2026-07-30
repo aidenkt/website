@@ -354,11 +354,7 @@ function updateColors() {
   }
 }
 
-runColors = true;
-
-if (isiOS()) {
-  runColors = false;
-}
+let runColors = true;
 
 if (window.location.search == "?start") {
   runColors = false;
