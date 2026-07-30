@@ -381,6 +381,8 @@ function enableCardTilt() {
   let animationFrame = null;
   let moved = false;
   let suppressClicksUntil = 0;
+  let iconPointer = null;
+  let iconLink = null;
 
   function renderTilt() {
     const clamp = (value) => Math.max(-maxTilt, Math.min(maxTilt, value));
@@ -415,6 +417,17 @@ function enableCardTilt() {
       return;
     }
 
+    const pressedIconLink = event.target.closest(".icon-container a");
+
+    if (pressedIconLink) {
+      event.preventDefault();
+      suppressClicksUntil = 0;
+      iconPointer = event.pointerId;
+      iconLink = pressedIconLink;
+      card.setPointerCapture(event.pointerId);
+      return;
+    }
+
     activePointer = event.pointerId;
     start = { x: event.clientX, y: event.clientY };
     current = start;
@@ -436,8 +449,27 @@ function enableCardTilt() {
     }
   });
 
-  card.addEventListener("pointerup", finishDrag);
-  card.addEventListener("pointercancel", finishDrag);
+  card.addEventListener("pointerup", (event) => {
+    if (event.pointerId === iconPointer) {
+      const linkToActivate = iconLink;
+      iconPointer = null;
+      iconLink = null;
+      linkToActivate.click();
+      return;
+    }
+
+    finishDrag(event);
+  });
+
+  card.addEventListener("pointercancel", (event) => {
+    if (event.pointerId === iconPointer) {
+      iconPointer = null;
+      iconLink = null;
+      return;
+    }
+
+    finishDrag(event);
+  });
   card.addEventListener("dragstart", (event) => event.preventDefault());
   card.addEventListener(
     "click",
