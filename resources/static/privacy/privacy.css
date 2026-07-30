@@ -34,7 +34,7 @@ body {
   z-index: 2;
   height: 5px;
   overflow: hidden;
-  background: linear-gradient(90deg, #c73524, #e28240, #d0b64f, #db4e46, #bb55c6, #d0247d);
+  background: linear-gradient(90deg, #c73524, #e28240, #d0b64f, #bb55c6, #d0247d);
 }
 
 .page-accent::before,
