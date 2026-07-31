@@ -25,6 +25,44 @@ function scheduleBrowserColors(colors) {
   }, 3500);
 }
 
+// iOS 26+ Safari only composites real page pixels behind its translucent top
+// and bottom chrome when the document rests at a non-zero scroll offset; at
+// scrollY 0 it paints a flat sampled color instead. So the page carries a
+// "runway" of extra WebGL canvas above and below, and rests scrolled down by
+// the top runway amount. The root is overflow-y:hidden, so this scroll
+// distance exists for Safari's compositor but is not user-scrollable, leaving
+// the page a single screen with native overscroll intact.
+const edgeRunway = isiOS() ? { top: 140, bottom: 140 } : null;
+
+function setupEdgeRunway() {
+  if (!edgeRunway) {
+    return;
+  }
+
+  const root = document.documentElement;
+  root.style.setProperty("--edge-runway-top", `${edgeRunway.top}px`);
+  root.style.setProperty("--edge-runway-bottom", `${edgeRunway.bottom}px`);
+  root.classList.add("edge-extend");
+
+  const restoreRest = () => {
+    if (window.scrollY >= 0 && window.scrollY !== edgeRunway.top) {
+      window.scrollTo(0, edgeRunway.top);
+    }
+  };
+
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  window.scrollTo(0, edgeRunway.top);
+  window.addEventListener("load", restoreRest);
+  window.addEventListener("pageshow", restoreRest);
+  window.addEventListener("resize", restoreRest);
+  window.addEventListener("scroll", restoreRest, { passive: true });
+}
+
+setupEdgeRunway();
+
 function Background() {
   if (window.location.search == "?start") {
     var conf = {
@@ -264,7 +302,9 @@ function Background() {
 
   function updateSize() {
     width = window.innerWidth;
-    height = window.innerHeight;
+    height = edgeRunway
+      ? Math.max(window.innerHeight, document.body.scrollHeight)
+      : window.innerHeight;
     renderer.setSize(width, height);
   }
 }
