@@ -11,13 +11,13 @@ Small easter egg: append `?start` to the URL for a deep-teal palette with the ca
 
 | | |
 |---|---|
-| Rendering | [Three.js](https://threejs.org) r110 + custom GLSL, [chroma-js](https://gka.github.io/chroma.js/) |
+| Rendering | Three.js r110 + custom GLSL, chroma-js |
 | Page | Hand-written HTML/CSS/JS — no framework, no build step |
 | Icons | Inline SVG |
 | Server | Express (local dev + analytics middleware) |
-| Analytics | [PostHog](https://posthog.com), reverse-proxied through `wsp.aidenkt.com` |
+| Analytics | PostHog |
 | Hosting | Vercel static |
 
 ---
 
-<sub>© Aiden Tabrizi · <a href="https://github.com/aidenkt">GitHub</a> · <a href="https://www.linkedin.com/in/aidenkt/">LinkedIn</a></sub>
+<sub>© Aiden Tabrizi</sub>
