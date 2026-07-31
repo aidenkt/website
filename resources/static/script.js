@@ -31,6 +31,7 @@ function scheduleBrowserColors(colors) {
 // one screen while resting scrolled down, so waves render under the chrome
 // and during the first part of a pull-down. Tunables for on-device testing:
 // ?edge=off | ?edge=bottom | ?edge=<top>,<bottom> | ?snap=off
+// ?feel=elastic (default) | pin | lock | free, ?resist=0..100 (elastic only)
 const edgeExtend = (() => {
   if (!isiOS()) {
     return null;
@@ -58,7 +59,19 @@ const edgeExtend = (() => {
     }
   }
 
-  return { top, bottom, snap: params.get("snap") !== "off" };
+  const feel = params.get("feel") || "elastic";
+  let resist = Number.parseInt(params.get("resist"), 10);
+  resist = Number.isFinite(resist)
+    ? Math.min(Math.max(resist, 0), 100) / 100
+    : 0.55;
+
+  if (feel === "pin") {
+    resist = 1;
+  } else if (feel === "lock" || feel === "free") {
+    resist = 0;
+  }
+
+  return { top, bottom, snap: params.get("snap") !== "off", feel, resist };
 })();
 
 function setupEdgeExtend() {
@@ -69,9 +82,27 @@ function setupEdgeExtend() {
   const root = document.documentElement;
   root.style.setProperty("--edge-runway-top", `${edgeExtend.top}px`);
   root.style.setProperty("--edge-runway-bottom", `${edgeExtend.bottom}px`);
+  root.style.setProperty("--edge-resist", String(edgeExtend.resist));
   root.classList.add("edge-extend");
 
-  if (edgeExtend.snap) {
+  if (edgeExtend.feel === "elastic" || edgeExtend.feel === "pin") {
+    root.classList.add("edge-elastic");
+  }
+
+  if (edgeExtend.feel === "lock") {
+    root.classList.add("edge-lock");
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (window.scrollY >= 0 && window.scrollY !== edgeExtend.top) {
+          window.scrollTo(0, edgeExtend.top);
+        }
+      },
+      { passive: true },
+    );
+  }
+
+  if (edgeExtend.snap && edgeExtend.feel !== "lock") {
     root.classList.add("edge-snap");
   }
 
@@ -684,7 +715,8 @@ function setupSafariDebug() {
         ? `vv ${vv.width.toFixed(1)}x${vv.height.toFixed(1)} offsetTop ${vv.offsetTop.toFixed(1)} pageTop ${vv.pageTop.toFixed(1)} scale ${vv.scale}`
         : "vv unavailable",
       `safe-area top ${probeStyle.paddingTop} bottom ${probeStyle.paddingBottom}`,
-      `edge ${edgeExtend ? `top ${edgeExtend.top} bottom ${edgeExtend.bottom} snap ${edgeExtend.snap}` : "off"}`,
+      `edge ${edgeExtend ? `top ${edgeExtend.top} bottom ${edgeExtend.bottom} snap ${edgeExtend.snap} feel ${edgeExtend.feel} resist ${edgeExtend.resist}` : "off"}`,
+      `scroll-driven anim ${CSS.supports("animation-timeline", "scroll(root)")}`,
       `getCSSCanvasContext ${typeof document.getCSSCanvasContext} | touch-callout ${CSS.supports("-webkit-touch-callout", "none")}`,
       `html bg ${htmlStyle.backgroundColor} img ${htmlStyle.backgroundImage.slice(0, 40)}`,
       `body bg ${bodyStyle.backgroundColor} img ${bodyStyle.backgroundImage.slice(0, 40)}`,
