@@ -21,7 +21,7 @@ app.use((req, res, next) => {
       },
     });
   }
-  if (req.path === '/resume.pdf') {
+  if (req.path === '/resume.pdf' || req.path === '/resume' || req.path === '/resume/') {
     posthog.capture({
       distinctId: req.ip || 'anonymous',
       event: 'resume downloaded',
@@ -36,6 +36,10 @@ app.use((req, res, next) => {
 
 app.get('/privacy', (req, res) => {
   res.sendFile(path.join(__dirname, 'resources/static/privacy/index.html'));
+});
+
+app.get('/resume', (req, res) => {
+  res.sendFile(path.join(__dirname, 'resources/static/resume.pdf'));
 });
 
 app.use(express.static('resources/static'))

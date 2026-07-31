@@ -12,6 +12,10 @@
       "dest": "/resources/static/privacy/index.html"
     },
     {
+      "src": "/resume/?",
+      "dest": "/resources/static/resume.pdf"
+    },
+    {
       "src": "/(.*)",
       "dest": "/resources/static/$1"
     }
