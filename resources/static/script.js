@@ -25,139 +25,43 @@ function scheduleBrowserColors(colors) {
   }, 3500);
 }
 
-// iOS 26+ Safari only composites real page pixels behind its translucent
-// chrome when the document rests at a non-zero scroll offset; at scrollY 0 it
-// paints a sampled solid color instead. The "runway" keeps the page visually
-// one screen while resting scrolled down, so waves render under the chrome
-// and during the first part of a pull-down. Tunables for on-device testing:
-// ?edge=off | ?edge=bottom | ?edge=<top>,<bottom> | ?snap=off
-// ?feel=elastic (default) | pin | lock | free, ?resist=0..100 (elastic only)
-const edgeExtend = (() => {
-  if (!isiOS()) {
-    return null;
-  }
+// iOS 26+ Safari only composites real page pixels behind its translucent top
+// and bottom chrome when the document rests at a non-zero scroll offset; at
+// scrollY 0 it paints a flat sampled color instead. So the page carries a
+// "runway" of extra WebGL canvas above and below, and rests scrolled down by
+// the top runway amount. The root is overflow-y:hidden, so this scroll
+// distance exists for Safari's compositor but is not user-scrollable, leaving
+// the page a single screen with native overscroll intact.
+const edgeRunway = isiOS() ? { top: 140, bottom: 140 } : null;
 
-  const params = new URLSearchParams(window.location.search);
-  const preset = params.get("edge");
-
-  if (preset === "off") {
-    return null;
-  }
-
-  let top = 140;
-  let bottom = 140;
-
-  if (preset === "bottom") {
-    top = 0;
-  } else if (preset) {
-    const parts = preset.split(",").map((part) => Number.parseInt(part, 10));
-    if (Number.isFinite(parts[0])) {
-      top = Math.max(0, parts[0]);
-    }
-    if (Number.isFinite(parts[1])) {
-      bottom = Math.max(0, parts[1]);
-    }
-  }
-
-  const feel = params.get("feel") || "elastic";
-  let resist = Number.parseInt(params.get("resist"), 10);
-  resist = Number.isFinite(resist)
-    ? Math.min(Math.max(resist, 0), 100) / 100
-    : 0.55;
-
-  if (feel === "pin") {
-    resist = 1;
-  } else if (feel === "lock" || feel === "free") {
-    resist = 0;
-  }
-
-  return { top, bottom, snap: params.get("snap") !== "off", feel, resist };
-})();
-
-function setupEdgeExtend() {
-  if (!edgeExtend) {
+function setupEdgeRunway() {
+  if (!edgeRunway) {
     return;
   }
 
   const root = document.documentElement;
-  root.style.setProperty("--edge-runway-top", `${edgeExtend.top}px`);
-  root.style.setProperty("--edge-runway-bottom", `${edgeExtend.bottom}px`);
-  root.style.setProperty("--edge-resist", String(edgeExtend.resist));
+  root.style.setProperty("--edge-runway-top", `${edgeRunway.top}px`);
+  root.style.setProperty("--edge-runway-bottom", `${edgeRunway.bottom}px`);
   root.classList.add("edge-extend");
 
-  if (edgeExtend.feel === "elastic" || edgeExtend.feel === "pin") {
-    root.classList.add("edge-elastic");
-  }
+  const restoreRest = () => {
+    if (window.scrollY >= 0 && window.scrollY !== edgeRunway.top) {
+      window.scrollTo(0, edgeRunway.top);
+    }
+  };
 
-  if (edgeExtend.feel === "lock") {
-    root.classList.add("edge-lock");
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (window.scrollY >= 0 && window.scrollY !== edgeExtend.top) {
-          window.scrollTo(0, edgeExtend.top);
-        }
-      },
-      { passive: true },
-    );
-  }
-
-  if (edgeExtend.snap && edgeExtend.feel !== "lock") {
-    root.classList.add("edge-snap");
-  }
-
-  let touchActive = false;
-  let settleTimer = null;
-
-  function settleToRest() {
-    window.clearTimeout(settleTimer);
-    settleTimer = window.setTimeout(() => {
-      if (touchActive || window.scrollY < 0) {
-        return;
-      }
-
-      if (Math.abs(window.scrollY - edgeExtend.top) > 1) {
-        window.scrollTo({ top: edgeExtend.top, behavior: "smooth" });
-      }
-    }, 400);
-  }
-
-  window.addEventListener(
-    "touchstart",
-    () => {
-      touchActive = true;
-      window.clearTimeout(settleTimer);
-    },
-    { passive: true },
-  );
-  window.addEventListener(
-    "touchend",
-    () => {
-      touchActive = false;
-      settleToRest();
-    },
-    { passive: true },
-  );
-  window.addEventListener(
-    "touchcancel",
-    () => {
-      touchActive = false;
-      settleToRest();
-    },
-    { passive: true },
-  );
-  window.addEventListener("scroll", settleToRest, { passive: true });
-
-  const jumpToRest = () => window.scrollTo(0, edgeExtend.top);
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
-  jumpToRest();
-  window.addEventListener("load", jumpToRest);
-  window.addEventListener("pageshow", jumpToRest);
+
+  window.scrollTo(0, edgeRunway.top);
+  window.addEventListener("load", restoreRest);
+  window.addEventListener("pageshow", restoreRest);
+  window.addEventListener("resize", restoreRest);
+  window.addEventListener("scroll", restoreRest, { passive: true });
 }
 
-setupEdgeExtend();
+setupEdgeRunway();
 
 function Background() {
   if (window.location.search == "?start") {
@@ -398,7 +302,7 @@ function Background() {
 
   function updateSize() {
     width = window.innerWidth;
-    height = edgeExtend
+    height = edgeRunway
       ? Math.max(window.innerHeight, document.body.scrollHeight)
       : window.innerHeight;
     renderer.setSize(width, height);
@@ -648,105 +552,3 @@ function enableCardTilt() {
 }
 
 enableCardTilt();
-
-// Temporary on-device diagnostics for the Safari edge-to-edge work.
-// Only active with ?safari-debug=1 in the URL; inert otherwise.
-function setupSafariDebug() {
-  const params = new URLSearchParams(window.location.search);
-
-  if (!params.has("safari-debug")) {
-    return;
-  }
-
-  const panel = document.createElement("pre");
-  panel.id = "safari-debug";
-  document.body.appendChild(panel);
-
-  const insetProbe = document.createElement("div");
-  insetProbe.style.cssText =
-    "position:absolute;visibility:hidden;pointer-events:none;" +
-    "padding-top:env(safe-area-inset-top,0px);" +
-    "padding-bottom:env(safe-area-inset-bottom,0px);";
-  document.body.appendChild(insetProbe);
-
-  const recentEvents = [];
-  const noteEvent = (name) => {
-    recentEvents.unshift(`${name}@${Math.round(performance.now())}`);
-    recentEvents.length = Math.min(recentEvents.length, 5);
-  };
-
-  window.addEventListener("resize", () => noteEvent("resize"));
-  window.addEventListener("scroll", () => noteEvent("scroll"), {
-    passive: true,
-  });
-
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", () =>
-      noteEvent("vv-resize"),
-    );
-    window.visualViewport.addEventListener("scroll", () =>
-      noteEvent("vv-scroll"),
-    );
-  }
-
-  let frames = 0;
-  let fps = 0;
-  let fpsWindowStart = performance.now();
-  let fpsWindowFrames = 0;
-  let lastRender = 0;
-
-  function render(now) {
-    const html = document.documentElement;
-    const body = document.body;
-    const vv = window.visualViewport;
-    const canvas = document.getElementById("canvas");
-    const canvasRect = canvas ? canvas.getBoundingClientRect() : null;
-    const htmlStyle = window.getComputedStyle(html);
-    const bodyStyle = window.getComputedStyle(body);
-    const probeStyle = window.getComputedStyle(insetProbe);
-
-    panel.textContent = [
-      `frames ${frames} | ~${fps}fps (watch during rubber-band)`,
-      `scrollY ${window.scrollY.toFixed(1)} scrollX ${window.scrollX.toFixed(1)}`,
-      `inner ${window.innerWidth}x${window.innerHeight} outer ${window.outerWidth}x${window.outerHeight} screen ${screen.width}x${screen.height}`,
-      `html client ${html.clientWidth}x${html.clientHeight} scroll ${html.scrollWidth}x${html.scrollHeight}`,
-      `body client ${body.clientWidth}x${body.clientHeight} scroll ${body.scrollWidth}x${body.scrollHeight}`,
-      vv
-        ? `vv ${vv.width.toFixed(1)}x${vv.height.toFixed(1)} offsetTop ${vv.offsetTop.toFixed(1)} pageTop ${vv.pageTop.toFixed(1)} scale ${vv.scale}`
-        : "vv unavailable",
-      `safe-area top ${probeStyle.paddingTop} bottom ${probeStyle.paddingBottom}`,
-      `edge ${edgeExtend ? `top ${edgeExtend.top} bottom ${edgeExtend.bottom} snap ${edgeExtend.snap} feel ${edgeExtend.feel} resist ${edgeExtend.resist}` : "off"}`,
-      `scroll-driven anim ${CSS.supports("animation-timeline", "scroll(root)")}`,
-      `getCSSCanvasContext ${typeof document.getCSSCanvasContext} | touch-callout ${CSS.supports("-webkit-touch-callout", "none")}`,
-      `html bg ${htmlStyle.backgroundColor} img ${htmlStyle.backgroundImage.slice(0, 40)}`,
-      `body bg ${bodyStyle.backgroundColor} img ${bodyStyle.backgroundImage.slice(0, 40)}`,
-      canvasRect
-        ? `canvas css ${Math.round(canvasRect.width)}x${Math.round(canvasRect.height)} rect top ${canvasRect.top.toFixed(1)} bottom ${canvasRect.bottom.toFixed(1)}`
-        : "canvas missing",
-      `events ${recentEvents.join(" ") || "none"}`,
-      `ua ${navigator.userAgent}`,
-    ].join("\n");
-    lastRender = now;
-  }
-
-  function tick(now) {
-    frames += 1;
-    fpsWindowFrames += 1;
-
-    if (now - fpsWindowStart >= 1000) {
-      fps = Math.round((fpsWindowFrames * 1000) / (now - fpsWindowStart));
-      fpsWindowStart = now;
-      fpsWindowFrames = 0;
-    }
-
-    if (now - lastRender >= 200) {
-      render(now);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  requestAnimationFrame(tick);
-}
-
-setupSafariDebug();

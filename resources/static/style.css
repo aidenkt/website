@@ -2,7 +2,6 @@
   --root-background-color: #df63bd;
   --edge-runway-top: 0px;
   --edge-runway-bottom: 0px;
-  --edge-resist: 0;
 }
 
 html {
@@ -13,42 +12,12 @@ html {
   background: var(--root-background-color);
 }
 
-html.edge-snap {
-  scroll-snap-type: y mandatory;
-}
-
-html.edge-lock {
+/* The runway must exist as real scrollable distance for Safari to composite
+   the page behind its chrome, but the user should never actually scroll it.
+   overflow-y:hidden blocks user scrolling while still allowing the
+   programmatic rest offset, and leaves native overscroll intact. */
+html.edge-extend {
   overflow-y: hidden;
-}
-
-/* Runway scroll is required for Safari to composite the page behind its
-   chrome, but shouldn't feel like scrolling. This compositor-threaded
-   scroll-driven animation counter-translates the scene by --edge-resist of
-   the scroll delta, so runway travel feels like rubber-band resistance
-   instead of free scroll. Zero net shift at the resting offset. */
-@supports (animation-timeline: scroll(root)) {
-  html.edge-elastic body {
-    overflow-y: clip;
-  }
-
-  html.edge-elastic canvas,
-  html.edge-elastic .overlay-container,
-  html.edge-elastic .blue-overlay,
-  html.edge-elastic .green-overlay {
-    animation-name: edge-elastic-shift;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: scroll(root block);
-  }
-
-  @keyframes edge-elastic-shift {
-    from {
-      transform: translateY(calc(var(--edge-runway-top) * var(--edge-resist) * -1));
-    }
-    to {
-      transform: translateY(calc(var(--edge-runway-bottom) * var(--edge-resist)));
-    }
-  }
 }
 
 body {
@@ -113,8 +82,6 @@ a {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   height: 100vh;
   height: 100dvh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -126,23 +93,6 @@ a {
 
 html.edge-extend .overlay-container {
   box-shadow: none;
-}
-
-#safari-debug {
-  position: absolute;
-  top: calc(var(--edge-runway-top) + 70px);
-  left: 8px;
-  right: 8px;
-  z-index: 10;
-  margin: 0;
-  padding: 8px;
-  font: 9px/1.4 monospace;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-  pointer-events: none;
-  white-space: pre-wrap;
-  word-break: break-all;
 }
 
 .content-container {
