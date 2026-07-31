@@ -490,6 +490,7 @@ let runColors = true;
 if (window.location.search == "?start") {
   runColors = false;
   setBrowserColors({ theme: "#094876", root: "#0b4b5b" });
+  document.querySelector(".privacy-link").style.display = "none";
 } else {
   document.querySelector(".content-container").style.display = "flex";
 }
