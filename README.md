@@ -5,7 +5,7 @@
 
 [**aidenkt.com**](https://aidenkt.com) — a single-screen landing page with an animated WebGL gradient, a frosted-glass contact card, and not much else. It loads fast, works offline of any framework, and gets out of the way.
 
-Small easter egg: append `?start` to the URL for a deep-teal palette with the card hidden. I use it as my New Tab page on browsers.
+<sub>Small easter egg: append `?start` to the URL for a deep-teal palette with the card hidden. I use it as my New Tab page on browsers.</sub>
 
 ### Stack
 
