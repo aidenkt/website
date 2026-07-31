@@ -2,6 +2,7 @@ function isiOS() {
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const paletteColors = {
   base: { theme: "#fdaa58", root: "#df63bd" },
@@ -113,6 +114,9 @@ function Background() {
 
   let renderer, scene, camera;
   let width, height;
+  let animationFrameId = null;
+  let animationElapsed = 0;
+  let lastAnimationTime = null;
   const { randFloat: rnd } = THREE.Math;
 
   const uTime = { value: 0 },
@@ -133,7 +137,9 @@ function Background() {
     window.addEventListener("resize", updateSize, false);
 
     initScene();
-    requestAnimationFrame(animate);
+    document.addEventListener("visibilitychange", syncAnimationState);
+    motionPreference.addEventListener("change", syncAnimationState);
+    syncAnimationState();
   }
 
   function initScene() {
@@ -295,9 +301,40 @@ function Background() {
   }
 
   function animate(t) {
-    uTime.value = t * 0.001;
+    animationFrameId = null;
+
+    if (motionPreference.matches || document.hidden) {
+      lastAnimationTime = null;
+      renderer.render(scene, camera);
+      return;
+    }
+
+    if (lastAnimationTime === null) {
+      lastAnimationTime = t;
+    }
+
+    animationElapsed += Math.min(t - lastAnimationTime, 100);
+    lastAnimationTime = t;
+    uTime.value = animationElapsed * 0.001;
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
+  }
+
+  function syncAnimationState() {
+    if (motionPreference.matches || document.hidden) {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+
+      lastAnimationTime = null;
+      renderer.render(scene, camera);
+      return;
+    }
+
+    if (animationFrameId === null) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
   }
 
   function updateSize() {
@@ -306,6 +343,10 @@ function Background() {
       ? Math.max(window.innerHeight, document.body.scrollHeight)
       : window.innerHeight;
     renderer.setSize(width, height);
+
+    if (scene && (motionPreference.matches || document.hidden)) {
+      renderer.render(scene, camera);
+    }
   }
 }
 
@@ -421,6 +462,7 @@ function updateColors() {
 }
 
 let runColors = true;
+let colorIntervalId = null;
 
 if (window.location.search == "?start") {
   runColors = false;
@@ -430,14 +472,35 @@ if (window.location.search == "?start") {
   document.querySelector(".content-container").style.display = "flex";
 }
 
-if (runColors) {
-  setInterval(updateColors, 20000);
+function syncColorCycle() {
+  if (!runColors) {
+    return;
+  }
+
+  if (motionPreference.matches || document.hidden) {
+    if (colorIntervalId !== null) {
+      window.clearInterval(colorIntervalId);
+      colorIntervalId = null;
+    }
+
+    window.clearTimeout(themeColorTimer);
+    themeColorTimer = null;
+    return;
+  }
+
+  if (colorIntervalId === null) {
+    colorIntervalId = window.setInterval(updateColors, 20000);
+  }
 }
+
+document.addEventListener("visibilitychange", syncColorCycle);
+motionPreference.addEventListener("change", syncColorCycle);
+syncColorCycle();
 
 function enableCardTilt() {
   const card = document.querySelector(".content-container");
 
-  if (!card || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (!card || motionPreference.matches) {
     return;
   }
 
@@ -481,6 +544,10 @@ function enableCardTilt() {
   }
 
   card.addEventListener("pointerdown", (event) => {
+    if (motionPreference.matches) {
+      return;
+    }
+
     if (event.pointerType === "mouse" && event.button !== 0) {
       return;
     }

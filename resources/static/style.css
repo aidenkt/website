@@ -39,9 +39,10 @@ canvas {
   inset: 0;
   z-index: 0;
   display: block;
+  background: var(--root-background-color) url("./wallpaper.png") center / cover no-repeat;
 }
 
-h3 {
+h1 {
   background: #FFFFFF;
   -webkit-background-clip: text;
   -webkit-text-fill-color: white;
@@ -60,6 +61,13 @@ a {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.8)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
   font-size: 18px;
   transition: cursor 2s ease;
+}
+
+a:focus-visible {
+  outline: 3px solid #FFFFFF;
+  outline-offset: 3px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 6px rgba(19, 24, 30, 0.72);
 }
 
 
@@ -202,13 +210,12 @@ html.edge-extend .overlay-container {
   flex-shrink: 0;
 }
 
-.icon-container iconify-icon {
-  color: white;
+.icon-container svg {
   width: var(--icon-size);
   height: var(--icon-size);
-  font-size: var(--icon-size);
   display: block;
   flex-shrink: 0;
+  fill: #FFFFFF;
 }
 
 .privacy-link {
@@ -217,17 +224,46 @@ html.edge-extend .overlay-container {
   left: 50%;
   transform: translateX(-50%);
   color: #FFFFFF;
-  background: none;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(255, 255, 255, 0.14) 45%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
   -webkit-text-fill-color: currentColor;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.4;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  min-height: 44px;
+  padding: 8px 18px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.14),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(32px) saturate(155%);
+  -webkit-backdrop-filter: blur(32px) saturate(155%);
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease,
+    box-shadow 180ms ease;
+  z-index: 3;
 }
 
-.privacy-link:hover,
+.privacy-link:hover {
+  transform: translateX(-50%) translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.18),
+    0 6px 14px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.24),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+}
+
 .privacy-link:focus-visible {
   color: #FFFFFF;
 }
@@ -266,6 +302,22 @@ html.edge-extend .overlay-container {
   -webkit-mix-blend-mode: color;
   -webkit-background-blend-mode: hue;
   z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-container,
+  .blue-overlay,
+  .green-overlay {
+    transition: none !important;
+  }
+
+  .privacy-link {
+    transition: none;
+  }
+
+  .privacy-link:hover {
+    transform: translateX(-50%);
+  }
 }
 
 
