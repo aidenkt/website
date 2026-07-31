@@ -25,6 +25,109 @@ function scheduleBrowserColors(colors) {
   }, 3500);
 }
 
+// iOS 26+ Safari only composites real page pixels behind its translucent
+// chrome when the document rests at a non-zero scroll offset; at scrollY 0 it
+// paints a sampled solid color instead. The "runway" keeps the page visually
+// one screen while resting scrolled down, so waves render under the chrome
+// and during the first part of a pull-down. Tunables for on-device testing:
+// ?edge=off | ?edge=bottom | ?edge=<top>,<bottom> | ?snap=off
+const edgeExtend = (() => {
+  if (!isiOS()) {
+    return null;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const preset = params.get("edge");
+
+  if (preset === "off") {
+    return null;
+  }
+
+  let top = 140;
+  let bottom = 140;
+
+  if (preset === "bottom") {
+    top = 0;
+  } else if (preset) {
+    const parts = preset.split(",").map((part) => Number.parseInt(part, 10));
+    if (Number.isFinite(parts[0])) {
+      top = Math.max(0, parts[0]);
+    }
+    if (Number.isFinite(parts[1])) {
+      bottom = Math.max(0, parts[1]);
+    }
+  }
+
+  return { top, bottom, snap: params.get("snap") !== "off" };
+})();
+
+function setupEdgeExtend() {
+  if (!edgeExtend) {
+    return;
+  }
+
+  const root = document.documentElement;
+  root.style.setProperty("--edge-runway-top", `${edgeExtend.top}px`);
+  root.style.setProperty("--edge-runway-bottom", `${edgeExtend.bottom}px`);
+  root.classList.add("edge-extend");
+
+  if (edgeExtend.snap) {
+    root.classList.add("edge-snap");
+  }
+
+  let touchActive = false;
+  let settleTimer = null;
+
+  function settleToRest() {
+    window.clearTimeout(settleTimer);
+    settleTimer = window.setTimeout(() => {
+      if (touchActive || window.scrollY < 0) {
+        return;
+      }
+
+      if (Math.abs(window.scrollY - edgeExtend.top) > 1) {
+        window.scrollTo({ top: edgeExtend.top, behavior: "smooth" });
+      }
+    }, 400);
+  }
+
+  window.addEventListener(
+    "touchstart",
+    () => {
+      touchActive = true;
+      window.clearTimeout(settleTimer);
+    },
+    { passive: true },
+  );
+  window.addEventListener(
+    "touchend",
+    () => {
+      touchActive = false;
+      settleToRest();
+    },
+    { passive: true },
+  );
+  window.addEventListener(
+    "touchcancel",
+    () => {
+      touchActive = false;
+      settleToRest();
+    },
+    { passive: true },
+  );
+  window.addEventListener("scroll", settleToRest, { passive: true });
+
+  const jumpToRest = () => window.scrollTo(0, edgeExtend.top);
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+  jumpToRest();
+  window.addEventListener("load", jumpToRest);
+  window.addEventListener("pageshow", jumpToRest);
+}
+
+setupEdgeExtend();
+
 function Background() {
   if (window.location.search == "?start") {
     var conf = {
@@ -75,9 +178,6 @@ function Background() {
 
   let renderer, scene, camera;
   let width, height;
-  let rootCanvasContext = null;
-  let lastRootCanvasFrame = 0;
-  const rootCanvasFrameInterval = 125;
   const { randFloat: rnd } = THREE.Math;
 
   const uTime = { value: 0 },
@@ -93,11 +193,6 @@ function Background() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     camera = new THREE.PerspectiveCamera();
-
-    if (typeof document.getCSSCanvasContext === "function") {
-      document.documentElement.classList.add("live-webgl-root");
-      document.body.classList.add("live-webgl-root");
-    }
 
     updateSize();
     window.addEventListener("resize", updateSize, false);
@@ -267,74 +362,15 @@ function Background() {
   function animate(t) {
     uTime.value = t * 0.001;
     renderer.render(scene, camera);
-    updateRootCanvas(t);
     requestAnimationFrame(animate);
-  }
-
-  function addRootCanvasTint(selector, stops) {
-    const overlay = document.querySelector(selector);
-    const opacity = overlay
-      ? Number.parseFloat(window.getComputedStyle(overlay).opacity)
-      : 0;
-
-    if (!rootCanvasContext || opacity <= 0) {
-      return;
-    }
-
-    rootCanvasContext.save();
-    rootCanvasContext.globalCompositeOperation = "color";
-
-    if (rootCanvasContext.globalCompositeOperation !== "color") {
-      rootCanvasContext.restore();
-      return;
-    }
-
-    rootCanvasContext.globalAlpha = opacity;
-    const gradient = rootCanvasContext.createLinearGradient(0, height, width, 0);
-    stops.forEach(([position, color]) => {
-      gradient.addColorStop(position, color);
-    });
-    rootCanvasContext.fillStyle = gradient;
-    rootCanvasContext.fillRect(0, 0, width, height);
-    rootCanvasContext.restore();
-  }
-
-  function updateRootCanvas(t) {
-    if (
-      !rootCanvasContext ||
-      t - lastRootCanvasFrame < rootCanvasFrameInterval
-    ) {
-      return;
-    }
-
-    rootCanvasContext.clearRect(0, 0, width, height);
-    rootCanvasContext.drawImage(renderer.domElement, 0, 0, width, height);
-    addRootCanvasTint(".blue-overlay", [
-      [0, "#88f44e"],
-      [1, "#3ca8ec"],
-    ]);
-    addRootCanvasTint(".green-overlay", [
-      [0, "#b636f2"],
-      [0.5, "#ff6666"],
-      [1, "#fb3737"],
-    ]);
-    lastRootCanvasFrame = t;
   }
 
   function updateSize() {
     width = window.innerWidth;
-    height = Math.max(window.innerHeight, document.body.scrollHeight);
+    height = edgeExtend
+      ? Math.max(window.innerHeight, document.body.scrollHeight)
+      : window.innerHeight;
     renderer.setSize(width, height);
-
-    if (typeof document.getCSSCanvasContext === "function") {
-      rootCanvasContext = document.getCSSCanvasContext(
-        "2d",
-        "webgl-root",
-        Math.max(1, Math.round(width)),
-        Math.max(1, Math.round(height)),
-      );
-      lastRootCanvasFrame = 0;
-    }
   }
 }
 
@@ -580,3 +616,104 @@ function enableCardTilt() {
 }
 
 enableCardTilt();
+
+// Temporary on-device diagnostics for the Safari edge-to-edge work.
+// Only active with ?safari-debug=1 in the URL; inert otherwise.
+function setupSafariDebug() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (!params.has("safari-debug")) {
+    return;
+  }
+
+  const panel = document.createElement("pre");
+  panel.id = "safari-debug";
+  document.body.appendChild(panel);
+
+  const insetProbe = document.createElement("div");
+  insetProbe.style.cssText =
+    "position:absolute;visibility:hidden;pointer-events:none;" +
+    "padding-top:env(safe-area-inset-top,0px);" +
+    "padding-bottom:env(safe-area-inset-bottom,0px);";
+  document.body.appendChild(insetProbe);
+
+  const recentEvents = [];
+  const noteEvent = (name) => {
+    recentEvents.unshift(`${name}@${Math.round(performance.now())}`);
+    recentEvents.length = Math.min(recentEvents.length, 5);
+  };
+
+  window.addEventListener("resize", () => noteEvent("resize"));
+  window.addEventListener("scroll", () => noteEvent("scroll"), {
+    passive: true,
+  });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", () =>
+      noteEvent("vv-resize"),
+    );
+    window.visualViewport.addEventListener("scroll", () =>
+      noteEvent("vv-scroll"),
+    );
+  }
+
+  let frames = 0;
+  let fps = 0;
+  let fpsWindowStart = performance.now();
+  let fpsWindowFrames = 0;
+  let lastRender = 0;
+
+  function render(now) {
+    const html = document.documentElement;
+    const body = document.body;
+    const vv = window.visualViewport;
+    const canvas = document.getElementById("canvas");
+    const canvasRect = canvas ? canvas.getBoundingClientRect() : null;
+    const htmlStyle = window.getComputedStyle(html);
+    const bodyStyle = window.getComputedStyle(body);
+    const probeStyle = window.getComputedStyle(insetProbe);
+
+    panel.textContent = [
+      `frames ${frames} | ~${fps}fps (watch during rubber-band)`,
+      `scrollY ${window.scrollY.toFixed(1)} scrollX ${window.scrollX.toFixed(1)}`,
+      `inner ${window.innerWidth}x${window.innerHeight} outer ${window.outerWidth}x${window.outerHeight} screen ${screen.width}x${screen.height}`,
+      `html client ${html.clientWidth}x${html.clientHeight} scroll ${html.scrollWidth}x${html.scrollHeight}`,
+      `body client ${body.clientWidth}x${body.clientHeight} scroll ${body.scrollWidth}x${body.scrollHeight}`,
+      vv
+        ? `vv ${vv.width.toFixed(1)}x${vv.height.toFixed(1)} offsetTop ${vv.offsetTop.toFixed(1)} pageTop ${vv.pageTop.toFixed(1)} scale ${vv.scale}`
+        : "vv unavailable",
+      `safe-area top ${probeStyle.paddingTop} bottom ${probeStyle.paddingBottom}`,
+      `edge ${edgeExtend ? `top ${edgeExtend.top} bottom ${edgeExtend.bottom} snap ${edgeExtend.snap}` : "off"}`,
+      `getCSSCanvasContext ${typeof document.getCSSCanvasContext} | touch-callout ${CSS.supports("-webkit-touch-callout", "none")}`,
+      `html bg ${htmlStyle.backgroundColor} img ${htmlStyle.backgroundImage.slice(0, 40)}`,
+      `body bg ${bodyStyle.backgroundColor} img ${bodyStyle.backgroundImage.slice(0, 40)}`,
+      canvasRect
+        ? `canvas css ${Math.round(canvasRect.width)}x${Math.round(canvasRect.height)} rect top ${canvasRect.top.toFixed(1)} bottom ${canvasRect.bottom.toFixed(1)}`
+        : "canvas missing",
+      `events ${recentEvents.join(" ") || "none"}`,
+      `ua ${navigator.userAgent}`,
+    ].join("\n");
+    lastRender = now;
+  }
+
+  function tick(now) {
+    frames += 1;
+    fpsWindowFrames += 1;
+
+    if (now - fpsWindowStart >= 1000) {
+      fps = Math.round((fpsWindowFrames * 1000) / (now - fpsWindowStart));
+      fpsWindowStart = now;
+      fpsWindowFrames = 0;
+    }
+
+    if (now - lastRender >= 200) {
+      render(now);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+setupSafariDebug();

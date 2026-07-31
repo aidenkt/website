@@ -1,5 +1,7 @@
 :root {
   --root-background-color: #df63bd;
+  --edge-runway-top: 0px;
+  --edge-runway-bottom: 0px;
 }
 
 html {
@@ -10,11 +12,15 @@ html {
   background: var(--root-background-color);
 }
 
+html.edge-snap {
+  scroll-snap-type: y mandatory;
+}
+
 body {
   position: relative;
   width: 100%;
-  height: calc(100vh + 1px);
-  height: calc(100dvh + 1px);
+  height: calc(100vh + var(--edge-runway-top) + var(--edge-runway-bottom));
+  height: calc(100dvh + var(--edge-runway-top) + var(--edge-runway-bottom));
   margin: 0;
   overflow-x: clip;
   overscroll-behavior-x: none;
@@ -22,14 +28,6 @@ body {
   touch-action: pan-y pinch-zoom;
   isolation: isolate;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
-}
-
-html.live-webgl-root,
-body.live-webgl-root {
-  background-image: -webkit-canvas(webgl-root);
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
 }
 
 canvas {
@@ -73,13 +71,15 @@ a {
   display: flex;
   position: absolute;
   left: 0;
-  top: 0;
-  bottom: 0;
+  top: var(--edge-runway-top);
   right: 0;
   padding: 0;
   width: 100%;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -87,6 +87,27 @@ a {
   touch-action: pan-y pinch-zoom;
   perspective: 900px;
   z-index: 1;
+}
+
+html.edge-extend .overlay-container {
+  box-shadow: none;
+}
+
+#safari-debug {
+  position: absolute;
+  top: calc(var(--edge-runway-top) + 70px);
+  left: 8px;
+  right: 8px;
+  z-index: 10;
+  margin: 0;
+  padding: 8px;
+  font: 9px/1.4 monospace;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  pointer-events: none;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .content-container {
