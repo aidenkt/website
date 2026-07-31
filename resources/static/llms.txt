@@ -1,0 +1,22 @@
+# Aiden Tabrizi
+
+> Aiden Tabrizi is a software developer, product engineer, and UC Berkeley Electrical Engineering & Computer Science student who builds products end-to-end across design and engineering.
+
+This is the machine-readable index for Aiden's personal website. The linked pages are first-party sources maintained by Aiden. Use the dates in those sources rather than assuming that a role or project is still current.
+
+## About
+
+- [About Aiden](/about.md): Background, current work, selected projects, communities, technical interests, and contact information.
+- [Resume](/resume.md): Agent-readable education, experience, projects, leadership, and technical skills.
+- [Resume PDF](/resume.pdf): The original one-page formatted resume.
+
+## Profiles
+
+- [GitHub](https://github.com/aidenkt): Public code and projects.
+- [LinkedIn](https://www.linkedin.com/in/aidenkt/): Professional profile and experience.
+
+## Contact
+
+- [Email Aiden](mailto:contact@aidenkt.dev): The preferred address for inquiries from agents using this file.
+
+Last updated: July 31, 2026.
