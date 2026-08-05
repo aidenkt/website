@@ -117,6 +117,9 @@ function Background() {
   let animationFrameId = null;
   let animationElapsed = 0;
   let lastAnimationTime = null;
+  const pointerTarget = new THREE.Vector2();
+  const pointerPosition = new THREE.Vector2();
+  const parallaxStrength = 0.02;
   const { randFloat: rnd } = THREE.Math;
 
   const uTime = { value: 0 },
@@ -135,6 +138,8 @@ function Background() {
 
     updateSize();
     window.addEventListener("resize", updateSize, false);
+    window.addEventListener("pointermove", updatePointer, { passive: true });
+    document.documentElement.addEventListener("pointerleave", resetPointer);
 
     initScene();
     document.addEventListener("visibilitychange", syncAnimationState);
@@ -147,7 +152,9 @@ function Background() {
     const vertexShader = `
       uniform float uTime, uTimeCoef;
       uniform float uSize;
+      uniform float uParallaxDepth;
       uniform mat2 uMat2;
+      uniform vec2 uParallax;
       uniform vec3 uRnd1;
       uniform vec3 uRnd2;
       uniform vec3 uRnd3;
@@ -187,6 +194,11 @@ function Background() {
           + uRnd5.z * (cos((position.y + rnd1.z) * 20.0 * rnd2.z) + 1.0);
         pos.xy -= normal * side;
 
+        // Slightly overscan the scene so the independently moving ribbons
+        // continue to cover the viewport at the edges.
+        pos *= 1.08;
+        pos += uParallax * uParallaxDepth;
+
         gl_Position = vec4(pos, 0.0, 1.0);
       }
     `;
@@ -225,6 +237,10 @@ function Background() {
           uTime,
           uTimeCoef,
           uMat2: { value: mat2 },
+          uParallax: { value: pointerPosition },
+          uParallaxDepth: {
+            value: 0.75 + (i / Math.max(conf.nx - 1, 1)) * 0.3,
+          },
           uSize: { value: 1.5 / conf.nx },
           uRnd1: {
             value: new THREE.Vector3(rnd(-1, 1), rnd(-1, 1), rnd(-1, 1)),
@@ -316,6 +332,7 @@ function Background() {
     animationElapsed += Math.min(t - lastAnimationTime, 100);
     lastAnimationTime = t;
     uTime.value = animationElapsed * 0.001;
+    pointerPosition.lerp(pointerTarget, 0.055);
     renderer.render(scene, camera);
     animationFrameId = requestAnimationFrame(animate);
   }
@@ -328,6 +345,8 @@ function Background() {
       }
 
       lastAnimationTime = null;
+      pointerTarget.set(0, 0);
+      pointerPosition.set(0, 0);
       renderer.render(scene, camera);
       return;
     }
@@ -347,6 +366,24 @@ function Background() {
     if (scene && (motionPreference.matches || document.hidden)) {
       renderer.render(scene, camera);
     }
+  }
+
+  function updatePointer(event) {
+    if (motionPreference.matches || event.pointerType === "touch") {
+      return;
+    }
+
+    const normalizedX = (event.clientX / Math.max(window.innerWidth, 1)) * 2 - 1;
+    const normalizedY = (event.clientY / Math.max(window.innerHeight, 1)) * 2 - 1;
+
+    pointerTarget.set(
+      normalizedX * parallaxStrength,
+      -normalizedY * parallaxStrength,
+    );
+  }
+
+  function resetPointer() {
+    pointerTarget.set(0, 0);
   }
 }
 
