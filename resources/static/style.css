@@ -29,9 +29,9 @@ body {
   overflow-x: clip;
   overscroll-behavior-x: none;
   background:
-    radial-gradient(circle at 18% 16%, rgba(242, 161, 76, 0.95), transparent 38%),
-    radial-gradient(circle at 82% 78%, rgba(208, 36, 125, 0.82), transparent 42%),
-    linear-gradient(145deg, #c73524 0%, #e28240 42%, #db4e46 68%, #bb55c6 100%);
+    radial-gradient(circle at 82% 16%, rgba(242, 187, 76, 0.95), transparent 38%),
+    radial-gradient(circle at 18% 82%, rgba(208, 36, 125, 0.82), transparent 42%),
+    linear-gradient(215deg, #e28240 0%, #d0b64f 24%, #db4e46 62%, #d0247d 82%, #bb55c6 100%);
   touch-action: pan-y pinch-zoom;
   isolation: isolate;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
