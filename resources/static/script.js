@@ -5,7 +5,7 @@ function isiOS() {
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const paletteColors = {
-  base: { theme: "#fdaa58", root: "#df63bd" },
+  base: { theme: "#c73524", root: "#c73524" },
   blue: { theme: "#69d1b0", root: "#62cbb4" },
   magenta: { theme: "#d94b98", root: "#d653b7" },
 };
