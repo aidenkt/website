@@ -28,7 +28,10 @@ body {
   margin: 0;
   overflow-x: clip;
   overscroll-behavior-x: none;
-  background: var(--root-background-color);
+  background:
+    radial-gradient(circle at 18% 16%, rgba(242, 161, 76, 0.95), transparent 38%),
+    radial-gradient(circle at 82% 78%, rgba(208, 36, 125, 0.82), transparent 42%),
+    linear-gradient(145deg, #c73524 0%, #e28240 42%, #db4e46 68%, #bb55c6 100%);
   touch-action: pan-y pinch-zoom;
   isolation: isolate;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
@@ -41,10 +44,12 @@ canvas {
   height: 100%;
   z-index: 0;
   display: block;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(242, 161, 76, 0.95), transparent 38%),
-    radial-gradient(circle at 82% 78%, rgba(208, 36, 125, 0.82), transparent 42%),
-    linear-gradient(145deg, #c73524 0%, #e28240 42%, #db4e46 68%, #bb55c6 100%);
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+html.webgl-ready canvas {
+  opacity: 1;
 }
 
 h1 {
@@ -109,7 +114,7 @@ html.edge-extend .overlay-container {
 }
 
 .content-container {
-  display: none;
+  display: flex;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -310,6 +315,7 @@ html.edge-extend .overlay-container {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  canvas,
   .content-container,
   .blue-overlay,
   .green-overlay {

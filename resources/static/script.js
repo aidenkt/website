@@ -321,7 +321,7 @@ function Background() {
 
     if (motionPreference.matches || document.hidden) {
       lastAnimationTime = null;
-      renderer.render(scene, camera);
+      renderScene();
       return;
     }
 
@@ -333,7 +333,7 @@ function Background() {
     lastAnimationTime = t;
     uTime.value = animationElapsed * 0.001;
     pointerPosition.lerp(pointerTarget, 0.055);
-    renderer.render(scene, camera);
+    renderScene();
     animationFrameId = requestAnimationFrame(animate);
   }
 
@@ -347,7 +347,7 @@ function Background() {
       lastAnimationTime = null;
       pointerTarget.set(0, 0);
       pointerPosition.set(0, 0);
-      renderer.render(scene, camera);
+      renderScene();
       return;
     }
 
@@ -364,8 +364,13 @@ function Background() {
     renderer.setSize(width, height);
 
     if (scene && (motionPreference.matches || document.hidden)) {
-      renderer.render(scene, camera);
+      renderScene();
     }
+  }
+
+  function renderScene() {
+    renderer.render(scene, camera);
+    document.documentElement.classList.add("webgl-ready");
   }
 
   function updatePointer(event) {
@@ -504,9 +509,8 @@ let colorIntervalId = null;
 if (window.location.search == "?start") {
   runColors = false;
   setBrowserColors({ theme: "#094876", root: "#0b4b5b" });
+  document.querySelector(".content-container").style.display = "none";
   document.querySelector(".privacy-link").style.display = "none";
-} else {
-  document.querySelector(".content-container").style.display = "flex";
 }
 
 function syncColorCycle() {
