@@ -288,7 +288,7 @@ html.edge-extend .overlay-container {
   -webkit-transition: opacity 10s;
   -webkit-mix-blend-mode: color;
   -webkit-background-blend-mode: hue;
-  z-index: 2;
+  z-index: 0;
 }
 
 .green-overlay {
@@ -306,7 +306,7 @@ html.edge-extend .overlay-container {
   -webkit-transition: opacity 10s;
   -webkit-mix-blend-mode: color;
   -webkit-background-blend-mode: hue;
-  z-index: 2;
+  z-index: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
