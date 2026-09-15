@@ -12,6 +12,10 @@
       "dest": "/resources/static/privacy/index.html"
     },
     {
+      "src": "/wood/?",
+      "dest": "/resources/static/wood/index.html"
+    },
+    {
       "src": "/resume/?",
       "dest": "/resources/static/resume.pdf"
     },

@@ -38,6 +38,10 @@ app.get('/privacy', (req, res) => {
   res.sendFile(path.join(__dirname, 'resources/static/privacy/index.html'));
 });
 
+app.get('/wood', (req, res) => {
+  res.sendFile(path.join(__dirname, 'resources/static/wood/index.html'));
+});
+
 app.get('/resume', (req, res) => {
   res.sendFile(path.join(__dirname, 'resources/static/resume.pdf'));
 });

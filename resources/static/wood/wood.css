@@ -1,0 +1,476 @@
+:root {
+  --wood-base: #4a2a15;
+  --etch-ink: rgba(20, 8, 2, 0.86);
+  --etch-lit: rgba(255, 214, 160, 0.34);
+  --etch-shade: rgba(0, 0, 0, 0.62);
+  /* Laser engraving leaves a faint scorched halo around the cut. */
+  --char-glow: rgba(96, 44, 8, 0.42);
+  --char-glow-wide: rgba(150, 78, 22, 0.16);
+  /* Brass inlay and the LED backlight seen through thin veneer. */
+  --brass: rgba(222, 176, 104, 0.62);
+  --brass-dim: rgba(160, 118, 62, 0.35);
+  --led: #ffb257;
+  --led-glow: rgba(255, 160, 70, 0.85);
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--wood-base);
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-y pinch-zoom;
+  isolation: isolate;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 118px,
+      rgba(0, 0, 0, 0.35) 119px,
+      rgba(0, 0, 0, 0.35) 121px,
+      rgba(255, 210, 160, 0.08) 122px,
+      rgba(0, 0, 0, 0) 124px
+    ),
+    linear-gradient(180deg, #5a3419 0%, #6b4124 30%, #55311a 60%, #6a3f22 100%);
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 228, 190, 0.55)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+}
+
+html.webgl-ready canvas {
+  opacity: 1;
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.28) 78%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.overlay-container {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* A shallow routed plaque with a hairline brass inlay, in place of the glass card. */
+.content-container {
+  display: flex;
+  position: relative;
+  width: 30%;
+  min-width: 380px;
+  max-width: 520px;
+  padding: 34px 44px 28px;
+  border-radius: 14px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: rgba(18, 8, 2, 0.14);
+  backdrop-filter: brightness(0.92) saturate(1.06);
+  -webkit-backdrop-filter: brightness(0.92) saturate(1.06);
+  box-shadow:
+    inset 0 4px 10px rgba(0, 0, 0, 0.55),
+    inset 0 1px 2px rgba(0, 0, 0, 0.7),
+    inset 3px 0 6px rgba(0, 0, 0, 0.26),
+    inset -1px 0 1px rgba(255, 214, 160, 0.10),
+    inset 0 -1px 1px rgba(255, 214, 160, 0.26),
+    0 1px 0 rgba(255, 224, 186, 0.16);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Brass inlay line, set just inside the recess edge. */
+.content-container::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 8px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px var(--brass),
+    inset 0 1px 0 1px rgba(255, 236, 200, 0.18),
+    0 0 0 1px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(
+    115deg,
+    rgba(255, 236, 200, 0.05) 0%,
+    rgba(255, 236, 200, 0) 30%,
+    rgba(255, 236, 200, 0) 70%,
+    rgba(255, 236, 200, 0.04) 100%
+  );
+}
+
+/* CNC registration marks engraved at the four corners outside the plaque. */
+.plaque-marks {
+  position: absolute;
+  inset: -22px;
+  pointer-events: none;
+  --mark: rgba(20, 8, 2, 0.55);
+  --len: 12px;
+  --thick: 1px;
+  background:
+    linear-gradient(var(--mark), var(--mark)) left top / var(--len) var(--thick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) left top / var(--thick) var(--len) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) right top / var(--len) var(--thick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) right top / var(--thick) var(--len) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) left bottom / var(--len) var(--thick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) left bottom / var(--thick) var(--len) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) right bottom / var(--len) var(--thick) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) right bottom / var(--thick) var(--len) no-repeat;
+  filter: drop-shadow(0 1px 0 rgba(255, 214, 160, 0.22));
+}
+
+h1 {
+  margin: 0;
+}
+
+#name-handwritten {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  font-size: 76px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+  color: var(--etch-ink);
+  /* Light falls from above: the lower lip of the cut catches it, the upper
+     lip throws a thin shadow in. A scorched halo hugs the engraving. */
+  text-shadow:
+    0 1px 0 var(--etch-lit),
+    0 -1px 1px var(--etch-shade),
+    0 0 5px var(--char-glow),
+    0 0 16px var(--char-glow-wide);
+  -webkit-font-smoothing: antialiased;
+  animation: engrave 1.5s cubic-bezier(0.4, 0, 0.3, 1) 0.45s both;
+}
+
+.signature {
+  position: relative;
+  display: inline-block;
+  padding: 0 14px;
+}
+
+/* The laser head: a hot point that travels the length of the cut. */
+.ember {
+  position: absolute;
+  top: 52%;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3d6 0%, #ffb257 40%, rgba(255, 120, 40, 0) 75%);
+  box-shadow:
+    0 0 10px 3px rgba(255, 170, 70, 0.85),
+    0 0 28px 8px rgba(255, 120, 40, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  animation: ember 1.5s cubic-bezier(0.4, 0, 0.3, 1) 0.45s both;
+}
+
+@keyframes engrave {
+  from { clip-path: inset(-30% 100% -30% 0); }
+  to   { clip-path: inset(-30% 0% -30% 0); }
+}
+
+@keyframes ember {
+  0%   { left: 0;    opacity: 0; }
+  6%   { opacity: 1; }
+  94%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* Small engraved spec line, like a hardware label. */
+.tagline {
+  margin: 4px 0 0;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(20, 8, 2, 0.72);
+  text-shadow:
+    0 1px 0 rgba(255, 214, 160, 0.26),
+    0 -1px 0.6px rgba(0, 0, 0, 0.5);
+  animation: rise 0.8s ease-out 1.75s both;
+}
+
+.tagline span {
+  margin: 0 0.2em;
+  opacity: 0.6;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  font-size: 18px;
+  color: var(--etch-ink);
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 228, 190, 0.85)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
+}
+
+a:focus-visible {
+  outline: 3px solid rgba(255, 224, 186, 0.9);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.icon-container {
+  --icon-size: 26px;
+  --icon-tap: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+  animation: rise 0.8s ease-out 1.95s both;
+}
+
+.icon-container a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-tap);
+  height: var(--icon-tap);
+  padding: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border-radius: 12px;
+  transition: background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.icon-container svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: block;
+  flex-shrink: 0;
+  fill: var(--etch-ink);
+  filter:
+    drop-shadow(0 1px 0 var(--etch-lit))
+    drop-shadow(0 -1px 0.6px var(--etch-shade));
+  transition: fill 220ms ease, filter 220ms ease;
+}
+
+/* On hover the cut-out lights from behind, like an LED through veneer. */
+.icon-container a:hover svg,
+.icon-container a:focus-visible svg {
+  fill: var(--led);
+  filter:
+    drop-shadow(0 0 3px var(--led-glow))
+    drop-shadow(0 0 10px rgba(255, 140, 50, 0.55));
+}
+
+.icon-container a:hover,
+.icon-container a:focus-visible {
+  background-color: rgba(255, 170, 80, 0.06);
+  box-shadow: inset 0 0 18px rgba(255, 150, 60, 0.12);
+}
+
+.privacy-link {
+  position: absolute;
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  line-height: 1.4;
+  min-height: 44px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  color: rgba(20, 8, 2, 0.8);
+  text-shadow:
+    0 1px 0 rgba(255, 214, 160, 0.32),
+    0 -1px 1px rgba(0, 0, 0, 0.55);
+  transition: color 180ms ease;
+  z-index: 3;
+}
+
+.privacy-link:hover {
+  color: rgba(14, 6, 1, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  canvas,
+  .icon-container a,
+  .icon-container svg,
+  .privacy-link {
+    transition: none !important;
+  }
+
+  #name-handwritten,
+  .ember,
+  .tagline,
+  .icon-container {
+    animation: none !important;
+  }
+
+  .ember {
+    display: none;
+  }
+}
+
+/* Tablet Styles */
+@media screen and (max-width: 900px) and (min-width: 769px) {
+  .content-container {
+    width: 70%;
+    max-width: none;
+    padding: 44px 44px 34px;
+    border-radius: 18px;
+  }
+
+  #name-handwritten {
+    font-size: 92px;
+  }
+
+  .icon-container {
+    --icon-size: 46px;
+    --icon-tap: 56px;
+    gap: 25px;
+    margin-top: 22px;
+  }
+}
+
+/* Mobile Portrait Styles */
+@media screen and (max-width: 768px) {
+  .overlay-container {
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  .content-container {
+    width: min(92%, 380px);
+    min-width: 280px;
+    max-width: none;
+    padding: 36px 28px 30px;
+    border-radius: 18px;
+  }
+
+  .plaque-marks {
+    inset: -16px;
+    --len: 10px;
+  }
+
+  #name-handwritten {
+    font-size: 78px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .tagline {
+    font-size: 9.5px;
+    letter-spacing: 0.26em;
+  }
+
+  .icon-container {
+    --icon-size: 40px;
+    --icon-tap: 48px;
+    gap: 28px;
+    margin-top: 0;
+  }
+}
+
+/* Small Mobile Styles */
+@media screen and (max-width: 480px) {
+  .overlay-container {
+    padding: 12px;
+  }
+
+  .content-container {
+    width: min(94%, 340px);
+    min-width: 260px;
+    padding: 30px 22px 26px;
+    border-radius: 16px;
+  }
+
+  #name-handwritten {
+    font-size: 70px;
+  }
+
+  .icon-container {
+    --icon-size: 38px;
+    --icon-tap: 44px;
+    gap: 24px;
+  }
+}
+
+/* Mobile Landscape Styles */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .overlay-container {
+    padding: 12px;
+  }
+
+  .content-container {
+    width: min(85%, 480px);
+    min-width: 300px;
+    padding: 18px 28px 16px;
+    border-radius: 14px;
+  }
+
+  #name-handwritten {
+    font-size: 44px;
+    line-height: 1.1;
+  }
+
+  .tagline {
+    margin-top: 0;
+  }
+
+  .icon-container {
+    --icon-size: 36px;
+    --icon-tap: 44px;
+    gap: 24px;
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-height: 400px) and (orientation: landscape) {
+  .content-container {
+    width: min(80%, 440px);
+    min-width: 280px;
+    padding: 16px 24px 14px;
+  }
+
+  #name-handwritten {
+    font-size: 40px;
+  }
+
+  .icon-container {
+    --icon-size: 34px;
+    --icon-tap: 40px;
+    gap: 20px;
+  }
+}
