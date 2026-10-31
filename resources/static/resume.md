@@ -19,7 +19,7 @@ Berkeley, California | June 2028
 
 Part-time | Remote | June 2026 - Present
 
-- Shipped a university housing search app in React Native across 11 campuses, with live status updates via Firebase.
+- Shipped a university housing search app in React Native across 11 campuses with 1,500 monthly visitors, backed by a Prisma data layer.
 - Automated roommate assignment with Gale-Shapley stable matching over weighted lifestyle-preference profiles.
 
 ### Electrical Engineering Intern - ChipMango
@@ -65,7 +65,7 @@ San Diego, California | January 2024 - May 2024
 Next.js, Supabase, Python, PostgreSQL, Gemini, Vercel, OpenAI | November 2025
 
 - Won first place overall at HackCC 2025 with a full-stack Next.js platform for AI course planning.
-- Integrated BeautifulSoup scraping and the ChatGPT API for intelligent transfer advising.
+- Integrated BeautifulSoup scraping and the OpenAI API for intelligent transfer advising.
 
 ### Bluehax
 
@@ -88,7 +88,7 @@ San Diego, California | May 2025 - June 2026
 
 - **Languages:** Python, TypeScript, JavaScript, Swift, C/C++, Java, SQL
 - **Frameworks:** React, React Native, Node.js, Express.js, SwiftUI, SwiftData
-- **Developer tools:** Git, Docker, Linux, PostgreSQL, MySQL, Google Cloud Platform, Vercel, Firebase, Supabase, Railway, Xcode
+- **Developer tools:** Git, Docker, Linux, PostgreSQL, MySQL, Prisma, Google Cloud Platform, Vercel, Firebase, Supabase, Railway, Xcode
 - **AI and data:** OpenAI, Anthropic, Gemini, NumPy, Pandas, Scikit-learn, OpenCV, PyTorch, TensorFlow
 
-Last updated: July 31, 2026.
+Last updated: October 31, 2026.
