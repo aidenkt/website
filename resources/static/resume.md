@@ -89,6 +89,6 @@ San Diego, California | May 2025 - June 2026
 - **Languages:** Python, TypeScript, JavaScript, Swift, C/C++, Java, SQL
 - **Frameworks:** React, React Native, Node.js, Express.js, SwiftUI, SwiftData
 - **Developer tools:** Git, Docker, Linux, PostgreSQL, MySQL, Prisma, Google Cloud Platform, Vercel, Firebase, Supabase, Railway, Xcode
-- **AI and data:** OpenAI, Anthropic, Gemini, NumPy, Pandas, Scikit-learn, OpenCV, PyTorch, TensorFlow
+- **AI and data:** OpenAI, Anthropic, Gemini, Pandas, Scikit-learn, OpenCV, PyTorch
 
 Last updated: October 31, 2026.
