@@ -16,6 +16,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/brand/brand.css">
+  <script>
+    (function () {
+      var t; try { t = localStorage.getItem('brand-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -34,6 +41,7 @@
         <a href="#use">In use</a>
         <a href="#type">Type</a>
         <a href="#files">Files</a>
+        <button class="theme" id="theme" type="button" aria-label="Switch between light and dark"><i></i><span></span></button>
       </div>
     </nav>
     <button class="hero-mark" id="shuffle" type="button" aria-label="Change the page color">

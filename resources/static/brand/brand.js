@@ -102,3 +102,14 @@ const FILES = {
     JSON.stringify(COLORS.map(([n, h]) => ({ name: n, hex: h, rgb: rgb(h), oklch: oklch(h) })), null, 2) + '\n', 'application/json'),
 };
 for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener('click', () => FILES[btn.dataset.file]());
+
+// light / dark switch: follows the system until chosen, then remembers the choice
+const themeBtn = $('theme');
+function setTheme(t, keep) {
+  document.documentElement.dataset.theme = t;
+  themeBtn.lastElementChild.textContent = t === 'dark' ? 'Dark' : 'Light';
+  themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
+  if (keep) { try { localStorage.setItem('brand-theme', t); } catch (e) {} }
+}
+setTheme(document.documentElement.dataset.theme || 'light', false);
+themeBtn.addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
