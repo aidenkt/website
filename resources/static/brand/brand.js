@@ -352,23 +352,23 @@ void main() {
   const uRes = U('uRes'), uT = U('uT'), uP = U('uP');
   const tile = cv.parentElement;
   const size = () => { cv.width = Math.max(2, Math.round(cv.clientWidth * 1.5)); cv.height = Math.max(2, Math.round(cv.clientHeight * 1.5)); gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uRes, cv.width, cv.height); };
-  size(); new ResizeObserver(size).observe(cv);
+  // It holds still on a fixed starting frame and only moves while the pointer is over the tile.
+  const T0 = 48;   // chosen by looking at twenty candidates: stains on the top, left and lower right, with the middle clear
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const t0 = performance.now(); let last = 0, raf = 0, seen = false, px = 0, py = 0;
-  const draw = (now) => {
-    if (now - last > 32) {
-      last = now;
-      const tx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, ty = parseFloat(tile.style.getPropertyValue('--my')) || 0;
-      px += (tx - px) * 0.12; py += (-ty - py) * 0.12;       // the light eases toward the pointer; y is up in the shader
-      gl.uniform2f(uP, px, py); gl.uniform1f(uT, 40 + (now - t0) / 1000); gl.drawArrays(gl.TRIANGLES, 0, 3);
-    }
-    if (seen && !still) raf = requestAnimationFrame(draw);
+  let t = T0, hovering = false, raf = 0, lastNow = 0, px = 0, py = 0;
+  const paint = () => { gl.uniform2f(uP, px, py); gl.uniform1f(uT, t); gl.drawArrays(gl.TRIANGLES, 0, 3); };
+  const frame = (now) => {
+    if (lastNow) t += Math.min(0.1, (now - lastNow) / 1000) * 2.5;       // a little faster than the Garden, so the seep is visible
+    lastNow = now;
+    const tx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, ty = parseFloat(tile.style.getPropertyValue('--my')) || 0;
+    px += (tx - px) * 0.12; py += (-ty - py) * 0.12;                     // the light eases toward the pointer; y is up in the shader
+    paint();
+    if (hovering) raf = requestAnimationFrame(frame); else lastNow = 0;
   };
-  new IntersectionObserver((es) => {
-    seen = es.some((e) => e.isIntersecting); cancelAnimationFrame(raf);
-    if (seen) raf = requestAnimationFrame(draw);
-  }).observe(cv);
-  requestAnimationFrame(draw);
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; lastNow = 0; raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; cancelAnimationFrame(raf); lastNow = 0; });
+  new ResizeObserver(() => { size(); paint(); }).observe(cv);
+  size(); paint();
 })();
 
 // The paper tile carries the signature: the same pen strokes as the one under the statement, shown whole.
