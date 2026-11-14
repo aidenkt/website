@@ -273,3 +273,100 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     el.addEventListener('pointerleave', () => { for (const k of ['--mx', '--my', '--on']) el.style.setProperty(k, '0'); });
   }
 }
+
+// Parchment: the lit plaster from the Garden sign-in, drawn by its fragment shader. Stains seep in from beyond the
+// edges, spread with a ragged front, leave a tide line, dry and fade; a lamp in front of the page throws one soft pool
+// of light, which here leans toward the pointer. Runs only while the tile is on screen, at about 30 frames a second.
+(function () {
+  const cv = $('plaster'); if (!cv) return;
+  const gl = cv.getContext('webgl', { premultipliedAlpha: true, antialias: false, alpha: true });
+  if (!gl) return;                                   // no WebGL: the plain parchment gradient is the whole effect
+  const FRAG = `
+precision mediump float;
+uniform vec2 uRes; uniform float uT; uniform vec3 uCol; uniform float uStrength; uniform vec3 uLift; uniform float uStain; uniform vec3 uGlint; uniform float uSpark; uniform vec3 uSink; uniform vec2 uP;
+float hash(float n) { return fract(sin(n) * 43758.5453); }
+float h2(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vn(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
+  return mix(mix(h2(i), h2(i + vec2(1., 0.)), f.x), mix(h2(i + vec2(0., 1.)), h2(i + vec2(1., 1.)), f.x), f.y); }
+float fb(vec2 p) { float a = .5, s = 0.; for (int i = 0; i < 5; i++) { s += a * vn(p); p = p * 2.03 + vec2(17., 9.); a *= .5; } return s; }
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes; float asp = uRes.x / uRes.y;
+  vec2 p = vec2(uv.x * asp, uv.y);
+  vec2 q = p * 1.5;
+  vec2 flow = vec2(fb(q + vec2(0., uT * .011)), fb(q + vec2(5.2, -uT * .009)));
+  float ragA = fb(p * 3.2 + flow), ragB = fb(p * 6.5 - flow + 11.);
+  float fine = fb(p * 9. + flow) - .5;
+  float lift = 0., sink = 0., tide = 0., wet = 0.;
+  for (int i = 0; i < 6; i++) {
+    float fi = float(i), period = 46. + fi * 9.;
+    float ph = uT / period + fi * .37, k = floor(ph), f = fract(ph);
+    float side = floor(h2(vec2(k, fi)) * 4.), along = h2(vec2(fi + 3.1, k)), off = .06 + .1 * h2(vec2(k + 2.2, fi));
+    vec2 c = side < 1. ? vec2(along * asp, 1. + off) : side < 2. ? vec2(asp + off, along) : side < 3. ? vec2(along * asp, -off) : vec2(-off, along);
+    float maxR = .42 + .4 * h2(vec2(k + 7., fi));
+    float r = maxR * (1. - exp(-f * 4.2));
+    float life = smoothstep(0., .03, f) * (1. - smoothstep(.62, 1., f));
+    float an = h2(vec2(fi, k + 1.3)) * 6.283; vec2 dv = p - c; dv = vec2(dv.x * cos(an) - dv.y * sin(an), dv.x * sin(an) + dv.y * cos(an));
+    dv.y *= 1.25 + .7 * h2(vec2(k, fi + 9.));
+    float d = length(dv) * (1. + (ragA - .5) * 1.5 * cos(fi * 1.7 + k) + (ragB - .5) * .8 * sin(fi * 2.3 + k));
+    float inside = smoothstep(r, r - .07, d) * life;
+    float front = exp(-pow((d - r) / .014, 2.)) * life * smoothstep(0., .04, r) * (.35 + ragB);
+    if (mod(fi, 2.) < 1.) lift += inside; else sink += inside;
+    tide += front; wet += inside;
+  }
+  tide = clamp(tide, 0., 1.); wet = clamp(wet, 0., 1.);
+  lift = clamp(lift + fine * .2, 0., 1.) * uStain;
+  sink = clamp(sink + tide * .35 - fine * .15, 0., 1.) * uStain;
+  vec2 cell = floor(gl_FragCoord.xy);
+  float r = h2(cell), where = clamp(tide * 1.2 + wet * .3, 0., 1.);
+  lift += max(r - .55, 0.) * where * uStain * 1.6; sink += max(.45 - r, 0.) * where * uStain * 1.6;
+  float tw = sin(uT * (.9 + r * 2.6) + r * 60.) * .5 + .5;
+  float glint = step(.972, h2(cell + 31.7)) * pow(tw, 5.) * where * uSpark;
+  vec4 col = vec4(uLift * lift + uSink * sink * (1. - lift), lift + sink * (1. - lift));
+  col = vec4(uGlint * glint, glint) + col * (1. - glint);
+  vec3 lamp = vec3(asp * .5 - .42, .5 - .34, .95);
+  vec3 aim = normalize(vec3(asp * .5 + .08 + uP.x * .5, .5 + .06 + uP.y * .34, 0.) - lamp);
+  vec3 toL = lamp - vec3(p, 0.); float r2 = dot(toL, toL); vec3 l = toL / sqrt(r2);
+  float facing = l.z;
+  float cone = smoothstep(.72, .97, dot(-l, aim));
+  float uneven = .88 + .12 * fb(p * 2.2 + flow * .6 + uT * .006);
+  float a = facing * cone * (lamp.z * lamp.z / r2) * uneven * uStrength;
+  a += (hash(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) - .5) / 255.;
+  a = clamp(a, 0., 1.);
+  gl_FragColor = vec4(uCol * a, a) + col * (1. - a);
+}`;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, 'attribute vec2 p; void main() { gl_Position = vec4(p, 0., 1.); }'));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FRAG)); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const U = (n) => gl.getUniformLocation(prog, n);
+  // the Garden's daytime values
+  gl.uniform3f(U('uCol'), 255 / 255, 252 / 255, 242 / 255); gl.uniform1f(U('uStrength'), 0.5);
+  gl.uniform3f(U('uLift'), 255 / 255, 250 / 255, 236 / 255); gl.uniform1f(U('uStain'), 0.2);
+  gl.uniform3f(U('uGlint'), 255 / 255, 246 / 255, 214 / 255); gl.uniform1f(U('uSpark'), 0.8);
+  gl.uniform3f(U('uSink'), 122 / 255, 84 / 255, 38 / 255);
+  const uRes = U('uRes'), uT = U('uT'), uP = U('uP');
+  const tile = cv.parentElement;
+  const size = () => { cv.width = Math.max(2, Math.round(cv.clientWidth * 1.5)); cv.height = Math.max(2, Math.round(cv.clientHeight * 1.5)); gl.viewport(0, 0, cv.width, cv.height); gl.uniform2f(uRes, cv.width, cv.height); };
+  size(); new ResizeObserver(size).observe(cv);
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const t0 = performance.now(); let last = 0, raf = 0, seen = false, px = 0, py = 0;
+  const draw = (now) => {
+    if (now - last > 32) {
+      last = now;
+      const tx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, ty = parseFloat(tile.style.getPropertyValue('--my')) || 0;
+      px += (tx - px) * 0.12; py += (-ty - py) * 0.12;       // the light eases toward the pointer; y is up in the shader
+      gl.uniform2f(uP, px, py); gl.uniform1f(uT, 40 + (now - t0) / 1000); gl.drawArrays(gl.TRIANGLES, 0, 3);
+    }
+    if (seen && !still) raf = requestAnimationFrame(draw);
+  };
+  new IntersectionObserver((es) => {
+    seen = es.some((e) => e.isIntersecting); cancelAnimationFrame(raf);
+    if (seen) raf = requestAnimationFrame(draw);
+  }).observe(cv);
+  requestAnimationFrame(draw);
+})();
