@@ -616,3 +616,59 @@ void main() {
   tile.addEventListener('pointerleave', () => { hovering = false; });
   new ResizeObserver(build).observe(cv); build();
 })();
+
+// Blueprint: line art in the manner of the Anchor House model. The logo is the floor plan of three blocks; each is
+// drawn as lines only (structure strong, frame lighter, detail faint), and faces are filled with the background
+// navy so the walls behind are hidden. Still until hovered; then it turns, and eases back to rest when you leave.
+(function () {
+  const cv = $('blueprint'); if (!cv) return;
+  const ctx = cv.getContext('2d'), tile = cv.parentElement, NAVY = '#0B1630', LINE = '184,203,232', REST = -0.62;
+  const B = [
+    { h: 250, p: [[0, 0], [152, 0], [152, 473], [0, 473]] },
+    { h: 330, p: [[321, 0], [708, 0], [708, 473], [556, 473], [556, 121], [403, 121], [340, 195], [512, 473], [333, 473], [232, 296], [232, 107]] },
+    { h: 150, p: [[788, 0], [863, 0], [863, 121], [788, 121]] },
+  ];
+  let W = 0, H = 0, dpr = 1, ang = REST, hovering = false, raf = 0, last = 0;
+  const size = () => { dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr)); };
+  const paint = () => {
+    const c = Math.cos(ang), s = Math.sin(ang), PITCH = 0.62, cp = Math.cos(PITCH), sp = Math.sin(PITCH), sc = W * 0.62 / 863;
+    // plan coordinates (x, z on the ground, y up) -> screen, plus depth for ordering
+    const pr = (x, y, z) => { const X = x - 431.5, Z = z - 236.5, x1 = X * c + Z * s, z1 = -X * s + Z * c; return [W / 2 + x1 * sc, H * 0.62 + (z1 * sp - y * cp) * sc, z1 * cp + y * sp]; };
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    const stroke = (pts, o, w, close) => { ctx.strokeStyle = `rgba(${LINE},${o})`; ctx.lineWidth = w; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); if (close) ctx.closePath(); ctx.stroke(); };
+    const fill = (pts) => { ctx.fillStyle = NAVY; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath(); ctx.fill(); };
+    const lw = Math.max(1, W / 420);
+    // the site: a faint ground grid
+    for (let g = -200; g <= 1063; g += 105) { stroke([pr(g, 0, -260), pr(g, 0, 733)], 0.1, lw * .7); }
+    for (let g = -260; g <= 733; g += 105) { stroke([pr(-200, 0, g), pr(1063, 0, g)], 0.1, lw * .7); }
+    const order = B.map((b) => ({ b, d: b.p.reduce((a, q) => a + pr(q[0], 0, q[1])[2], 0) / b.p.length })).sort((a, b) => a.d - b.d);   // far blocks first
+    for (const { b } of order) {
+      const n = b.p.length, walls = [];
+      for (let i = 0; i < n; i++) {
+        const a = b.p[i], q = b.p[(i + 1) % n], A0 = pr(a[0], 0, a[1]), Q0 = pr(q[0], 0, q[1]), A1 = pr(a[0], b.h, a[1]), Q1 = pr(q[0], b.h, q[1]);
+        if ((Q0[0] - A0[0]) * (A1[1] - A0[1]) - (Q0[1] - A0[1]) * (A1[0] - A0[0]) >= 0) continue;                // faces away
+        walls.push({ a, q, A0, Q0, A1, Q1, d: (A0[2] + Q0[2]) / 2 });
+      }
+      walls.sort((x, y) => x.d - y.d);
+      for (const w of walls) {
+        fill([w.A0, w.Q0, w.Q1, w.A1]);
+        const len = Math.hypot(w.q[0] - w.a[0], w.q[1] - w.a[1]), at = (t, y) => pr(w.a[0] + (w.q[0] - w.a[0]) * t, y, w.a[1] + (w.q[1] - w.a[1]) * t);
+        for (let y = 42; y < b.h - 8; y += 42) stroke([at(0, y), at(1, y)], 0.28, lw * .7);                        // floors
+        for (let k = 1, m = Math.max(1, Math.round(len / 46)); k < m; k++) stroke([at(k / m, 0), at(k / m, b.h)], 0.28, lw * .7);   // mullions
+        stroke([w.A0, w.Q0, w.Q1, w.A1], 0.6, lw, true);
+        stroke([w.A0, w.A1], 0.95, lw * 1.2); stroke([w.Q0, w.Q1], 0.95, lw * 1.2);
+      }
+      const top = b.p.map((q) => pr(q[0], b.h, q[1])); fill(top); stroke(top, 0.95, lw * 1.3, true);
+    }
+  };
+  const frame = (now) => {
+    const dt = Math.min(48, now - (last || now)) / 1000; last = now;
+    if (hovering) ang += dt * 0.4;
+    else { let d = (REST - ang) % 6.2832; if (d > 3.1416) d -= 6.2832; if (d < -3.1416) d += 6.2832; ang += d * Math.min(1, dt * 5); if (Math.abs(d) < 0.004) { ang = REST; paint(); last = 0; return; } }
+    paint(); raf = requestAnimationFrame(frame);
+  };
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; });
+  new ResizeObserver(() => { size(); paint(); }).observe(cv); size(); paint();
+})();
