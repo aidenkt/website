@@ -376,3 +376,57 @@ void main() {
   const to = $('paper-sig'), from = document.querySelector('#sign .ink'); if (!to || !from) return;
   for (const path of from.querySelectorAll('path')) { const c = path.cloneNode(false); c.removeAttribute('mask'); to.appendChild(c); }
 })();
+
+// Particles: the logo as loose grains. Still until the pointer is over the tile; then they shiver, move away from the
+// pointer and spring back. They take the page's chosen color.
+(function () {
+  const cv = $('grains'); if (!cv) return;
+  const ctx = cv.getContext('2d'), tile = cv.parentElement;
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pts = [], W = 0, H = 0, hovering = false, raf = 0, calm = 0;
+  const build = () => {
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    W = cv.width = Math.max(2, Math.round(cv.clientWidth * dpr)); H = cv.height = Math.max(2, Math.round(cv.clientHeight * dpr));
+    const mw = W * 0.56, sc = mw / 863, ox = (W - mw) / 2, oy = (H - 473 * sc) / 2;
+    const shape = new Path2D(MARK); const step = Math.max(2.4, W / 150);
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;     // the same grains every time
+    pts = [];
+    for (let y = 0; y < 473 * sc; y += step) for (let x = 0; x < mw; x += step) {
+      const jx = x + (rnd() - .5) * step * .9, jy = y + (rnd() - .5) * step * .9;
+      if (ctx.isPointInPath(shape, jx / sc, jy / sc)) pts.push({ hx: ox + jx, hy: oy + jy, x: ox + jx, y: oy + jy, vx: 0, vy: 0, r: (0.5 + rnd() * 0.7) * step * 0.4, w: rnd() < 0.16, ph: rnd() * 6.28 });
+    }
+    paint(0);
+  };
+  const paint = (t) => {
+    const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#15DD7D';
+    ctx.clearRect(0, 0, W, H);
+    for (const pass of [false, true]) {
+      ctx.fillStyle = pass ? '#FDFFFF' : acc; ctx.beginPath();
+      for (const p of pts) if (p.w === pass) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, 6.2832); }
+      ctx.fill();
+    }
+  };
+  const frame = (now) => {
+    const mx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, my = parseFloat(tile.style.getPropertyValue('--my')) || 0;
+    const px = (mx + 1) / 2 * W, py = (my + 1) / 2 * H, R = W * 0.2, t = now / 1000; let energy = 0;
+    for (const p of pts) {
+      let ax = (p.hx - p.x) * 0.06, ay = (p.hy - p.y) * 0.06;                      // spring home
+      if (hovering) {
+        const dx = p.x - px, dy = p.y - py, d = Math.hypot(dx, dy) || 1;
+        if (d < R) { const f = (1 - d / R) * 2.4; ax += dx / d * f; ay += dy / d * f; }   // pushed away by the pointer
+        ax += Math.cos(t * 2.1 + p.ph) * 0.05; ay += Math.sin(t * 1.7 + p.ph * 1.3) * 0.05;   // a small shiver
+      }
+      p.vx = (p.vx + ax) * 0.86; p.vy = (p.vy + ay) * 0.86; p.x += p.vx; p.y += p.vy;
+      energy += Math.abs(p.vx) + Math.abs(p.vy);
+    }
+    paint(t);
+    calm = hovering ? 0 : (energy / pts.length < 0.02 ? calm + 1 : 0);
+    if (hovering || calm < 20) raf = requestAnimationFrame(frame);
+    else { for (const p of pts) { p.x = p.hx; p.y = p.hy; p.vx = p.vy = 0; } paint(0); }
+  };
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; });
+  new ResizeObserver(build).observe(cv);
+  new MutationObserver(() => { if (!hovering) paint(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });   // repaint when the color changes
+  build();
+})();
