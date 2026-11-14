@@ -86,8 +86,16 @@ $('shuffle').addEventListener('click', () => {
   pick(pool[Math.floor(Math.random() * pool.length)], false);
 });
 
-$('icons').innerHTML = COLORS.map(([, hex, dark]) =>
-  `<i style="--c:${hex};--t:${dark ? '#0D0D0D' : '#FDFFFF'}"><svg class="kt"><use href="#kt"/></svg></i>`).join('');
+// the row of small icons: pressing one puts that color on the examples above it (and the rest of the page)
+for (const color of COLORS) {
+  const [name, hex, dark] = color;
+  const b = document.createElement('button');
+  b.type = 'button'; b.setAttribute('aria-label', `Show the examples in ${name}`);
+  b.style.setProperty('--c', hex); b.style.setProperty('--t', dark ? '#0D0D0D' : '#FDFFFF');
+  b.innerHTML = '<svg class="kt"><use href="#kt"/></svg>';
+  b.addEventListener('click', () => pick(color, false));
+  $('icons').appendChild(b);
+}
 
 pick(KT_GREEN, false);
 

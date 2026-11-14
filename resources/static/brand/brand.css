@@ -165,7 +165,8 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .tab span { flex: 1; }
 .tab em { font-style: normal; opacity: .4; }
 .icons { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
-.icons i { aspect-ratio: 1; border-radius: 23%; display: grid; place-items: center; background: var(--c); color: var(--t); }
+.icons button { aspect-ratio: 1; border-radius: 23%; display: grid; place-items: center; background: var(--c); color: var(--t); border: 0; padding: 0; cursor: pointer; transition: transform .2s var(--ease); }
+.icons button:hover { transform: scale(1.08); }
 .icons .kt { width: 58%; }
 
 /* type */
