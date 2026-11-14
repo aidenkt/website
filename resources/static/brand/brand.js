@@ -114,13 +114,32 @@ function setTheme(t, keep) {
 setTheme(document.documentElement.dataset.theme || 'light', false);
 themeBtn.addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
 
-// the signature writes itself the first time it scrolls into view
+// The signature is tied to scrolling: it is written as it rises through the screen and unwritten on the way back.
+// Stroke order and relative speeds are Aiden's (from his recording); pauses are shortened so no scrolling is dead.
 const sign = $('sign');
-if (sign && 'IntersectionObserver' in window) {
-  sign.classList.add('wait');
-  const seen = new IntersectionObserver((entries) => {
-    if (!entries.some((e) => e.isIntersecting)) return;
-    sign.classList.replace('wait', 'write'); seen.disconnect();
-  }, { threshold: 0.6 });
-  seen.observe(sign);
+if (sign && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const pens = [...sign.querySelectorAll('.pen')].map((el) => ({
+    el, len: parseFloat(el.style.getPropertyValue('--len')), at: parseFloat(el.style.getPropertyValue('--at')) }));
+  let clock = 0, last = 0;
+  for (const p of pens) {               // rebuild the timeline with every pause capped
+    clock += Math.min(p.at - last, 0.1); p.from = clock; clock += p.len; last = p.at + p.len;
+  }
+  const total = clock;
+  const ease = (x) => x * x * (3 - 2 * x);
+  let queued = false;
+  const draw = () => {
+    queued = false;
+    const r = sign.getBoundingClientRect(), vh = window.innerHeight;
+    // starts when the top of the signature is 88% down the screen, finishes when its middle is 48% down
+    const start = vh * 0.88, end = vh * 0.48 - r.height / 2;
+    const t = Math.max(0, Math.min(1, (start - r.top) / (start - end))) * total;
+    for (const p of pens) {
+      const x = Math.max(0, Math.min(1, (t - p.from) / p.len));
+      p.el.style.strokeDashoffset = String(1 - ease(x));
+      p.el.style.opacity = x > 0 ? '1' : '0';
+    }
+  };
+  const ask = () => { if (!queued) { queued = true; requestAnimationFrame(draw); } };
+  addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
+  draw();
 }
