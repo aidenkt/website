@@ -260,3 +260,16 @@ if (lines.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   addEventListener('resize', () => { measure(); tick(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); tick(); });
 }
+
+// Materials react to the pointer: each tile gets --mx and --my (-1 to 1 across it) and --on while it is inside.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  for (const el of document.querySelectorAll('.mat-surface')) {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 2 - 1).toFixed(3));
+      el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 2 - 1).toFixed(3));
+      el.style.setProperty('--on', '1');
+    });
+    el.addEventListener('pointerleave', () => { for (const k of ['--mx', '--my', '--on']) el.style.setProperty(k, '0'); });
+  }
+}
