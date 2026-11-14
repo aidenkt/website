@@ -143,3 +143,42 @@ if (sign && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   addEventListener('scroll', ask, { passive: true }); addEventListener('resize', ask);
   draw();
 }
+
+// The statement lights up as you read down it: each word goes from dim to full as it passes the reading line,
+// left to right within a line, and dims again when you scroll back up.
+const lines = [...document.querySelectorAll('.statement')];
+if (lines.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const words = [];
+  for (const p of lines) {
+    for (const node of [...p.childNodes]) {
+      if (node.nodeType !== 3) continue;                      // keep the <br>s where they are
+      const frag = document.createDocumentFragment();
+      for (const part of node.textContent.split(/(\s+)/)) {
+        if (!part.trim()) { frag.append(part); continue; }
+        const s = document.createElement('span'); s.className = 'w'; s.textContent = part; frag.append(s); words.push({ el: s });
+      }
+      node.replaceWith(frag);
+    }
+  }
+  const measure = () => {
+    for (const w of words) {
+      const r = w.el.getBoundingClientRect();
+      w.y = r.top + scrollY + r.height / 2; w.x = r.left / Math.max(1, innerWidth); w.h = r.height;
+    }
+  };
+  let pending = false;
+  const light = () => {
+    pending = false;
+    const vh = innerHeight, from = vh * 0.80, band = vh * 0.20;
+    for (const w of words) {
+      const y = w.y - scrollY + w.x * w.h * 1.6;              // words further right light a little later
+      const lit = Math.max(0, Math.min(1, (from - y) / band));
+      w.el.style.setProperty('--lit', (0.22 + 0.78 * lit).toFixed(3));
+    }
+  };
+  const tick = () => { if (!pending) { pending = true; requestAnimationFrame(light); } };
+  measure(); light();
+  addEventListener('scroll', tick, { passive: true });
+  addEventListener('resize', () => { measure(); tick(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); tick(); });
+}

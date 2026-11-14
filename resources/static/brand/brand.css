@@ -71,9 +71,10 @@ button { font: inherit; color: inherit; }
 h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.035em; max-width: 15ch; margin-bottom: clamp(32px, 6vw, 88px); text-wrap: balance; }
 
 /* name */
-.statement { font: 700 clamp(26px, 3.7vw, 62px)/1.02 var(--display); letter-spacing: -0.03em; max-width: 30ch; text-wrap: balance; color: var(--faint); }
+.statement { font: 700 clamp(26px, 3.7vw, 62px)/1.02 var(--display); letter-spacing: -0.03em; max-width: 30ch; text-wrap: balance; color: var(--ink); }
 .statement + .statement { margin-top: .5em; }
-.statement.last { color: var(--ink); }
+/* brand.js wraps each word; words light up as they pass the reading line and dim again on the way back */
+.statement .w { opacity: var(--lit, 1); transition: opacity .12s linear; }
 .sign { display: block; width: clamp(190px, 23vw, 350px); height: auto; margin: clamp(16px, 2.4vw, 36px) 0 0 -1%; overflow: visible; }
 .sign .ink { fill: var(--ink); }
 .sign .pen { fill: none; stroke: #fff; stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
