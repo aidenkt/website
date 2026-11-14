@@ -567,3 +567,47 @@ void main() {
   new ResizeObserver(() => { size(); paint(); }).observe(cv);
   size(); paint();
 })();
+
+// Hologram: the logo as a slab of points in space, turning, with the color split slightly at its edges (a red copy
+// one way, a cyan copy the other). Still until the pointer is over the tile; then it turns, and leans with the pointer.
+(function () {
+  const cv = $('holo'); if (!cv) return;
+  const ctx = cv.getContext('2d'), tile = cv.parentElement;
+  let P = [], W = 0, H = 0, dpr = 1, ang = -0.42, hovering = false, raf = 0, last = 0;
+  const build = () => {
+    dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr));
+    const shape = new Path2D(MARK), step = 15; P = [];
+    let seed = 3; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let y = 0; y <= 473; y += step) for (let x = 0; x <= 863; x += step) {
+      if (!ctx.isPointInPath(shape, x + .5, y + .5)) continue;
+      const edge = !(ctx.isPointInPath(shape, x + step, y) && ctx.isPointInPath(shape, x - step, y) && ctx.isPointInPath(shape, x, y + step) && ctx.isPointInPath(shape, x, y - step));
+      for (const z of (edge ? [-45, -22, 0, 22, 45] : [-45, 45])) P.push([x - 431.5 + (rnd() - .5) * 7, y - 236.5 + (rnd() - .5) * 7, z, rnd()]);   // faces front and back, walls round the edge
+    }
+    paint();
+  };
+  const paint = () => {
+    const mx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, my = parseFloat(tile.style.getPropertyValue('--my')) || 0;
+    const yaw = ang + mx * 0.35, pitch = -0.12 + my * 0.25, cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const sc = W * 0.56 / 863, F = 2600, t = performance.now() / 1000;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.globalCompositeOperation = 'lighter';
+    const proj = P.map(([x, y, z, r]) => {
+      const x1 = x * cy + z * sy, z1 = -x * sy + z * cy, y1 = y * cp - z1 * sp, z2 = y * sp + z1 * cp, k = F / (F + z2);
+      return [W / 2 + x1 * k * sc, H * 0.47 + y1 * k * sc, k, r];
+    });
+    for (const [dx, col] of [[-1.6, 'rgba(255,60,90,.55)'], [1.6, 'rgba(60,220,255,.6)'], [0, 'rgba(225,255,245,.75)']]) {
+      ctx.fillStyle = col;
+      for (const [x, y, k, r] of proj) {
+        const s = Math.max(1, 1.5 * k * W / 420), fl = hovering ? 0.75 + 0.25 * Math.sin(t * 7 + r * 40) : 1;
+        ctx.globalAlpha = Math.min(1, (0.42 + (k - 0.97) * 7) * fl);
+        ctx.fillRect(x + dx * (W / 420) - s / 2, y - s / 2, s, s);
+      }
+    }
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+  };
+  const frame = (now) => { ang += Math.min(48, now - (last || now)) / 1000 * 0.55; last = now; paint(); if (hovering) raf = requestAnimationFrame(frame); else last = 0; };
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; last = 0; raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; cancelAnimationFrame(raf); last = 0; paint(); });
+  new ResizeObserver(build).observe(cv); build();
+})();
