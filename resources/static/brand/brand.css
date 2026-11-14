@@ -370,7 +370,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .maker-row button:hover { border-color: var(--ink); }
 .maker-row button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .maker-row.get { margin-top: 4px; }
-.maker-row.get button { background: var(--accent); color: var(--on-accent); border-color: transparent; font-weight: 600; padding: 14px 20px; }
+.maker-row.get button { background: var(--accent); color: var(--on-accent); border-color: var(--rule); font-weight: 600; padding: 14px 20px; }
 .maker-row.get button:hover { filter: brightness(.94); }
 .maker-dots { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 5px; max-width: 520px; }
 .maker-dots button { aspect-ratio: 1; border-radius: 50%; border: 0; padding: 0; background: var(--c); cursor: pointer; transition: transform .2s var(--ease); }
