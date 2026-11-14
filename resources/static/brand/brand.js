@@ -377,56 +377,88 @@ void main() {
   for (const path of from.querySelectorAll('path')) { const c = path.cloneNode(false); c.removeAttribute('mask'); to.appendChild(c); }
 })();
 
-// Particles: the logo as loose grains. Still until the pointer is over the tile; then they shiver, move away from the
-// pointer and spring back. They take the page's chosen color.
+// Particles: the logo in thousands of specks of ink, behaving like the hands on the Garden sign-in. At rest it is
+// still. While the pointer is over the tile the specks breathe and twinkle, and a pointer moving THROUGH them knocks
+// some loose at random (how fast it moves matters, not where it sits); each wanders on its own, then slowly finds
+// its way home. It keeps running after the pointer leaves until every speck is back.
 (function () {
   const cv = $('grains'); if (!cv) return;
   const ctx = cv.getContext('2d'), tile = cv.parentElement;
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let pts = [], W = 0, H = 0, hovering = false, raf = 0, calm = 0;
+  let n = 0, hx, hy, x, y, vx, vy, loose, heal, base, rad, cosPh, sinPh, cosPh13, sinPh13, ph;
+  let W = 0, H = 0, dpr = 1, hovering = false, raf = 0, last = 0, t = 0;
+  const ptr = { x: -1e4, y: -1e4, vx: 0, vy: 0 };
   const build = () => {
-    const dpr = Math.min(2, devicePixelRatio || 1);
-    W = cv.width = Math.max(2, Math.round(cv.clientWidth * dpr)); H = cv.height = Math.max(2, Math.round(cv.clientHeight * dpr));
-    const mw = W * 0.56, sc = mw / 863, ox = (W - mw) / 2, oy = (H - 473 * sc) / 2;
-    const shape = new Path2D(MARK); const step = Math.max(2.4, W / 150);
-    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;     // the same grains every time
-    pts = [];
-    for (let y = 0; y < 473 * sc; y += step) for (let x = 0; x < mw; x += step) {
-      const jx = x + (rnd() - .5) * step * .9, jy = y + (rnd() - .5) * step * .9;
-      if (ctx.isPointInPath(shape, jx / sc, jy / sc)) pts.push({ hx: ox + jx, hy: oy + jy, x: ox + jx, y: oy + jy, vx: 0, vy: 0, r: (0.5 + rnd() * 0.7) * step * 0.4, w: rnd() < 0.16, ph: rnd() * 6.28 });
+    dpr = Math.min(2, devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr));
+    const mw = W * 0.6, sc = mw / 863, mh = 473 * sc, ox = (W - mw) / 2, oy = (H - mh) / 2;
+    const shape = new Path2D(MARK), step = Math.max(1.6, W / 190);
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;     // the same specks every time
+    const P = [];
+    for (let py = 0; py < mh; py += step) for (let px = 0; px < mw; px += step) {
+      const jx = px + (rnd() - .5) * step * 1.6, jy = py + (rnd() - .5) * step * 1.6;
+      if (!ctx.isPointInPath(shape, jx / sc, jy / sc)) continue;
+      if (rnd() < 0.22) continue;                                                           // a few gaps, so it reads as specks and not a fill
+      P.push([ox + jx, oy + jy, rnd(), rnd() * 6.2832, 150 + rnd() * 330]);
     }
-    paint(0);
+    n = P.length; const F = () => new Float32Array(n);
+    hx = F(); hy = F(); x = F(); y = F(); vx = F(); vy = F(); loose = F(); heal = F(); base = F(); rad = F(); ph = F(); cosPh = F(); sinPh = F(); cosPh13 = F(); sinPh13 = F();
+    for (let i = 0; i < n; i++) {
+      const [a, b, shade, phase, h] = P[i];
+      hx[i] = x[i] = a; hy[i] = y[i] = b; heal[i] = h; ph[i] = phase;
+      base[i] = 0.34 + shade * 0.66; rad[i] = (1.15 + shade * 0.55) * Math.max(1, W / 420);
+      cosPh[i] = Math.cos(phase); sinPh[i] = Math.sin(phase); cosPh13[i] = Math.cos(phase * 1.3); sinPh13[i] = Math.sin(phase * 1.3);
+    }
+    paint(false);
   };
-  const paint = (t) => {
-    const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#15DD7D';
-    ctx.clearRect(0, 0, W, H);
-    for (const pass of [false, true]) {
-      ctx.fillStyle = pass ? '#FDFFFF' : acc; ctx.beginPath();
-      for (const p of pts) if (p.w === pass) { ctx.moveTo(p.x + p.r, p.y); ctx.arc(p.x, p.y, p.r, 0, 6.2832); }
-      ctx.fill();
+  const paint = (live) => {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#2A2017';
+    const s13 = Math.sin(t * 1.3), c13 = Math.cos(t * 1.3);
+    for (let i = 0; i < n; i++) {
+      const tw = live ? s13 * cosPh[i] + c13 * sinPh[i] : 0.75;
+      ctx.globalAlpha = base[i] * (0.55 + 0.45 * tw * tw);
+      const r = rad[i]; ctx.fillRect(x[i] - r / 2, y[i] - r / 2, r, r);
     }
+    ctx.globalAlpha = 1;
   };
   const frame = (now) => {
-    const mx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, my = parseFloat(tile.style.getPropertyValue('--my')) || 0;
-    const px = (mx + 1) / 2 * W, py = (my + 1) / 2 * H, R = W * 0.2, t = now / 1000; let energy = 0;
-    for (const p of pts) {
-      let ax = (p.hx - p.x) * 0.06, ay = (p.hy - p.y) * 0.06;                      // spring home
-      if (hovering) {
-        const dx = p.x - px, dy = p.y - py, d = Math.hypot(dx, dy) || 1;
-        if (d < R) { const f = (1 - d / R) * 2.4; ax += dx / d * f; ay += dy / d * f; }   // pushed away by the pointer
-        ax += Math.cos(t * 2.1 + p.ph) * 0.05; ay += Math.sin(t * 1.7 + p.ph * 1.3) * 0.05;   // a small shiver
+    const dt = Math.min(48, now - (last || now)) / 16.67; last = now; t += dt / 60;
+    const stir = Math.min(1, Math.hypot(ptr.vx, ptr.vy) / 14); ptr.vx *= Math.pow(0.8, dt); ptr.vy *= Math.pow(0.8, dt);
+    const s9 = Math.sin(t * 0.9), c9 = Math.cos(t * 0.9), s7 = Math.sin(t * 0.7), c7 = Math.cos(t * 0.7);
+    const pull = 0.012 * 1.4, heldDrag = Math.pow(0.86, dt), stirring = stir > 0.02, reach = W * 0.3, soft = reach * reach * 0.24;
+    let free = 0;
+    for (let i = 0; i < n; i++) {
+      const tx = hx[i] + (s9 * cosPh[i] + c9 * sinPh[i]) * 1.1, ty = hy[i] + (c7 * cosPh13[i] - s7 * sinPh13[i]) * 1.1;   // a slow breathing drift
+      if (stirring) {
+        const dx = x[i] - ptr.x, dy = y[i] - ptr.y, d2 = dx * dx + dy * dy;
+        if (d2 < reach * reach && Math.random() < Math.exp(-d2 / soft) * stir * 0.5 * dt) {
+          const a = Math.random() * 6.2832, kick = (0.6 + Math.random() * 3.4) * (0.4 + stir) * 0.6;
+          vx[i] += Math.cos(a) * kick + ptr.vx * 0.12 * Math.random(); vy[i] += Math.sin(a) * kick + ptr.vy * 0.12 * Math.random();
+          loose[i] = 1;
+        }
       }
-      p.vx = (p.vx + ax) * 0.86; p.vy = (p.vy + ay) * 0.86; p.x += p.vx; p.y += p.vy;
-      energy += Math.abs(p.vx) + Math.abs(p.vy);
+      const L = loose[i];
+      if (L > 0) {
+        free++;
+        const grip = (1 - L) * (1 - L);                                   // home's pull returns gradually as it calms
+        vx[i] += (tx - x[i]) * pull * grip; vy[i] += (ty - y[i]) * pull * grip;
+        const w = ph[i] + Math.sin(t * 0.6 + ph[i] * 3.1) * 2.4 + y[i] * 0.01;   // while loose it wanders on its own
+        vx[i] += Math.cos(w) * 0.035 * L * dt; vy[i] += Math.sin(w) * 0.035 * L * dt;
+        loose[i] = Math.max(0, L - dt / heal[i]);
+        const drag = Math.pow(0.86 + 0.115 * L, dt); vx[i] *= drag; vy[i] *= drag;   // loose specks glide
+      } else { vx[i] = (vx[i] + (tx - x[i]) * pull) * heldDrag; vy[i] = (vy[i] + (ty - y[i]) * pull) * heldDrag; }
+      x[i] += vx[i] * dt; y[i] += vy[i] * dt;
     }
-    paint(t);
-    calm = hovering ? 0 : (energy / pts.length < 0.02 ? calm + 1 : 0);
-    if (hovering || calm < 20) raf = requestAnimationFrame(frame);
-    else { for (const p of pts) { p.x = p.hx; p.y = p.hy; p.vx = p.vy = 0; } paint(0); }
+    paint(true);
+    if (hovering || free > 0) raf = requestAnimationFrame(frame); else { last = 0; }
   };
-  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); });
-  tile.addEventListener('pointerleave', () => { hovering = false; });
-  new ResizeObserver(build).observe(cv);
-  new MutationObserver(() => { if (!hovering) paint(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });   // repaint when the color changes
+  tile.addEventListener('pointermove', (e) => {
+    const b = cv.getBoundingClientRect(), nx = e.clientX - b.left, ny = e.clientY - b.top;
+    if (ptr.x > -1e3) { ptr.vx += (nx - ptr.x) * 0.5; ptr.vy += (ny - ptr.y) * 0.5; }
+    ptr.x = nx; ptr.y = ny;
+  }, { passive: true });
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; ptr.x = ptr.y = -1e4; });
+  new ResizeObserver(() => { if (!hovering) build(); }).observe(cv);
   build();
 })();
