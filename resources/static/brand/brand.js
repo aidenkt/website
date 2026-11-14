@@ -1,20 +1,20 @@
 // The aidenkt palette. Order and names are Aiden's. Third value: 1 = dark label on the swatch. Fourth: where it came from.
 const COLORS = [
   ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0], ['3DS Red', '#B5121B', 0, 'My Flame Red 3DS.'],
-  ['Dragon Red', '#7D3230', 0], ['Strawberry Lemonade', '#F76D53', 0], ['Overwatch Orange', '#FF7D25', 1],
-  ['Iced Latte', '#755640', 0, 'My playlist called Caramel.'], ['Mocha', '#563A26', 0],
-  ['Creamsicle', '#FCE3C8', 1], ['Starlight Gold', '#DCA021', 1, "The amber in the Aiden's Lounge logo."],
+  ['Dragon Red', '#7D3230', 0, "The red paint on my elementary school."], ['Strawberry Lemonade', '#F76D53', 0], ['Overwatch Orange', '#FF7D25', 1],
+  ['Iced Latte', '#755640', 0, 'My playlist called Caramel.'], ['Mocha', '#563A26', 0, "The dark part of my Caramel playlist cover."],
+  ['Creamsicle', '#FCE3C8', 1, "A friend's playlist cover."], ['Starlight Gold', '#DCA021', 1, "The amber in the Aiden's Lounge logo."],
   ['Berkeley Yellow', '#FBC81F', 1], ['Glasses Green', '#919762', 0, 'My Warby Parker Carltons, in Seaweed Crystal.'],
   ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."],
-  ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0],
-  ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1], ['Scout Teal', '#08C6BE', 1],
-  ['Park Sky', '#5FE4FF', 1], ['Space', '#1C3249', 0],
-  ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1],
+  ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0, "One of my playlist covers."],
+  ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1, "A mint green from the Dorms app."], ['Scout Teal', '#08C6BE', 1, "The accent color of Scout."],
+  ['Park Sky', '#5FE4FF', 1], ['Space', '#1C3249', 0, "My Space playlist cover."],
+  ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1, "My Snow playlist cover."],
   ['Persian Sapphire', '#0445DF', 0, 'My playlist called Cobalt.'],
-  ['Stardust Blue', '#225FFD', 0], ['After Hours Indigo', '#252452', 0], ['Early Purple', '#7367FF', 0], ['Coastal Lavender', '#D4CDFF', 1],
-  ['Turn Back Purple', '#6728EF', 0], ['Booster Orchid', '#E46BF4', 0], ['Held Violet', '#DE5BB6', 0], ['Disney Pink', '#FC2F99', 0],
-  ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1, 'The cream from CollegeOS.'], ['Titanium', '#8F8A82', 0],
-  ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0], ['Black', '#0D0D0D', 0],
+  ['Stardust Blue', '#225FFD', 0], ['After Hours Indigo', '#252452', 0], ['Early Purple', '#7367FF', 0], ['Coastal Lavender', '#D4CDFF', 1, "A soft tint from the first version of Dorms."],
+  ['Turn Back Purple', '#6728EF', 0], ['Booster Orchid', '#E46BF4', 0, "From a brighter version of this site's background that I never switched on."], ['Held Violet', '#DE5BB6', 0, "The neon glow on my Held playlist cover."], ['Disney Pink', '#FC2F99', 0, "From the same unused set as Booster Orchid."],
+  ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1, 'The cream from CollegeOS.'], ['Titanium', '#8F8A82', 0, "My Apple Watch Series 10, in natural titanium."],
+  ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0, "My Charcoal playlist cover."], ['Black', '#0D0D0D', 0],
 ];
 const LOGO_GREEN = ['Logo Green', '#15DD7D', 0, 'The green of the wordmark and the mark.'];
 const EDGE = new Set(['Tech White', 'House White']);
