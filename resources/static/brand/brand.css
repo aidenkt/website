@@ -271,14 +271,10 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .partm::after { background: radial-gradient(95% 95% at 47% 54%, transparent 38%, rgba(74, 52, 20, .2)); }
 .partm canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-.wavesm { background: linear-gradient(28deg, #4AB85F 0%, #62D592 42%, #78E2CB 72%, #82E9EE 100%); }
-.wavesm .bands { position: absolute; inset: 0; width: 100%; height: 100%; }
-.wavesm .bands path { opacity: var(--o); animation: flow var(--s) linear infinite paused; animation-direction: var(--dir); }
-.wavesm .bands .w { fill: #FFFFFF; } .wavesm .bands .d { fill: #006633; }
-.wavesm:hover .bands path { animation-play-state: running; }
+.wavesm { background: #62CBB4; isolation: isolate; }
+.wavesm canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wavesm .tint { position: absolute; inset: 0; background: linear-gradient(50deg, #88F44E, #3CA8EC); mix-blend-mode: color; }   /* the home page's own green and blue wash */
 .wavesm .kt { position: relative; z-index: 1; width: 40%; color: #FDFFFF; filter: drop-shadow(0 6px 14px rgba(0, 60, 30, .22)); }
-@keyframes flow { to { transform: translateX(-400px); } }
-@media (prefers-reduced-motion: reduce) { .wavesm:hover .bands path { animation-play-state: paused; } }
 
 /* in use */
 .use { display: grid; grid-template-columns: 1fr 1.7fr 1fr 1.5fr; gap: 12px; align-items: stretch; }

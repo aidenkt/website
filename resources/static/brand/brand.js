@@ -462,3 +462,75 @@ void main() {
   new ResizeObserver(() => { if (!hovering) build(); }).observe(cv);
   build();
 })();
+
+// Waves: the home page's background, redrawn here from its own recipe. Sixty ribbons lie side by side along a tilted
+// axis; each one's width swells and thins along its length by three slow cosines of its own, and each is shaded
+// across its width from its color to a brighter version. The colors run through the home page's six anchors, and
+// the green and blue wash on top is the home page's too. Still until the pointer is over the tile.
+(function () {
+  const cv = $('ribbons'); if (!cv) return;
+  const ctx = cv.getContext('2d'), tile = cv.parentElement;
+  const NX = 60, NY = 90, ANG = Math.PI * 1.4, COS = Math.cos(ANG), SIN = Math.sin(ANG), SIZE = 1.5 / NX;
+  const dp = (x, y) => [1.5 * (x * COS - y * SIN), 1.5 * (x * SIN + y * COS)];
+  // color: interpolate the six anchors in LCH, as the home page does, and brighten for the far edge of each ribbon
+  const toLab = (hex) => {
+    const [r, g, b] = rgb(hex).map(lin);
+    const f = (v) => (v > 0.008856 ? Math.cbrt(v) : 7.787 * v + 16 / 116);
+    const X = f((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047), Y = f(0.2126729 * r + 0.7151522 * g + 0.072175 * b), Z = f((0.0193339 * r + 0.119192 * g + 0.9503041 * b) / 1.08883);
+    return [116 * Y - 16, 500 * (X - Y), 200 * (Y - Z)];
+  };
+  const fromLab = ([L, a, b]) => {
+    const fy = (L + 16) / 116, fx = fy + a / 500, fz = fy - b / 200, g = (v) => (v * v * v > 0.008856 ? v * v * v : (v - 16 / 116) / 7.787);
+    const X = g(fx) * 0.95047, Y = g(fy), Z = g(fz) * 1.08883;
+    const out = [3.2404542 * X - 1.5371385 * Y - 0.4985314 * Z, -0.969266 * X + 1.8760108 * Y + 0.041556 * Z, 0.0556434 * X - 0.2040259 * Y + 1.0572252 * Z];
+    return 'rgb(' + out.map((v) => Math.round(255 * Math.max(0, Math.min(1, v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055)))).join(',') + ')';
+  };
+  const ANCH = ['#C73524', '#E28240', '#D0B64F', '#DB4E46', '#BB55C6', '#D0247D'].map((h) => { const [L, a, b] = toLab(h); return [L, Math.hypot(a, b), Math.atan2(b, a)]; });
+  const scale = (t) => {
+    const f = t * (ANCH.length - 1), i = Math.min(ANCH.length - 2, Math.floor(f)), k = f - i, A = ANCH[i], B = ANCH[i + 1];
+    let dh = B[2] - A[2]; if (dh > Math.PI) dh -= 2 * Math.PI; if (dh < -Math.PI) dh += 2 * Math.PI;
+    const L = A[0] + (B[0] - A[0]) * k, C = A[1] + (B[1] - A[1]) * k, h = A[2] + dh * k;
+    return [L, C * Math.cos(h), C * Math.sin(h)];
+  };
+  let seed = 11; const rnd = (lo, hi) => lo + ((seed = (seed * 16807) % 2147483647) / 2147483647) * (hi - lo);   // the same ribbons every time
+  const R = [];
+  for (let i = 0; i < NX; i++) {
+    const v3 = (lo, hi) => [rnd(lo, hi), rnd(lo, hi), rnd(lo, hi)], lab = scale(i / NX);
+    R.push({ r1: v3(-1, 1), r2: v3(-1, 1), r3: v3(-1, 1), r4: v3(-1, 1), r5: [rnd(0.2, 0.5), rnd(0.3, 0.6), rnd(0.4, 0.7)],
+             c1: fromLab(lab), c2: fromLab([lab[0] + 19.8, lab[1], lab[2]]) });
+  }
+  const [nbx, nby] = dp(1, 0);
+  let W = 0, H = 0, time = 600, hovering = false, raf = 0, last = 0;
+  const size = () => { const d = Math.min(2, devicePixelRatio || 1); W = cv.width = Math.max(2, Math.round(cv.clientWidth * d)); H = cv.height = Math.max(2, Math.round(cv.clientHeight * d)); };
+  const paint = () => {
+    const t = time * 0.035, X = (x) => (x * 1.08 + 1) / 2 * W, Y = (y) => (1 - y * 1.08) / 2 * H;
+    for (let i = 0; i < NX; i++) {
+      const r = R[i], x0 = -1 + 1 / NX + i * (2 / NX);
+      const a = [Math.cos(t * r.r1[0] + r.r3[0]), Math.cos(t * r.r1[1] + r.r3[1]), Math.cos(t * r.r1[2] + r.r3[2])];
+      const b = [Math.cos(t * r.r2[0] + r.r4[0]), Math.cos(t * r.r2[1] + r.r4[1]), Math.cos(t * r.r2[2] + r.r4[2])];
+      const left = [], right = [];
+      for (let k = 0; k < NY; k++) {
+        const y = 1 - k * (2 / (NY - 1)), [px, py] = dp(x0, y);
+        const w = SIZE * (1 + r.r5[0] * (Math.cos((y + a[0]) * 20 * a[1]) + 1) + r.r5[1] * (Math.sin((y + b[0]) * 20 * b[1]) + 1) + r.r5[2] * (Math.cos((y + a[2]) * 20 * b[2]) + 1));
+        left.push([X(px + nbx * w), Y(py + nby * w)]); right.push([X(px - nbx * w), Y(py - nby * w)]);
+      }
+      const [mx, my] = dp(x0, 0), span = SIZE * 2.4;
+      const g = ctx.createLinearGradient(X(mx + nbx * span), Y(my + nby * span), X(mx - nbx * span), Y(my - nby * span));
+      g.addColorStop(0, r.c1); g.addColorStop(1, r.c2); ctx.fillStyle = g;
+      ctx.beginPath(); ctx.moveTo(left[0][0], left[0][1]);
+      for (let k = 1; k < NY; k++) ctx.lineTo(left[k][0], left[k][1]);
+      for (let k = NY - 1; k >= 0; k--) ctx.lineTo(right[k][0], right[k][1]);
+      ctx.closePath(); ctx.fill();
+    }
+  };
+  const frame = (now) => {
+    time += Math.min(100, now - (last || now)) / 1000 * 3;        // three times the home page's pace, so a short hover shows it
+    last = now; paint();
+    if (hovering) raf = requestAnimationFrame(frame); else last = 0;
+  };
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; last = 0; raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; cancelAnimationFrame(raf); last = 0; });
+  new ResizeObserver(() => { size(); paint(); }).observe(cv);
+  size(); paint();
+})();
