@@ -206,21 +206,8 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   box-shadow: 0 1px 1px rgba(60, 40, 20, .1), 0 10px 24px rgba(60, 40, 20, .14); color: #0D0D0D; }
 .paper .sheet .kt { width: 52%; opacity: .92; }
 
-.wood { background:
-  repeating-linear-gradient(92deg, rgba(0, 0, 0, .0) 0 9px, rgba(0, 0, 0, .10) 9px 10px, rgba(255, 220, 170, .05) 10px 17px, rgba(0, 0, 0, .07) 17px 19px),
-  linear-gradient(100deg, #5A3419, #6B4124 30%, #55311A 62%, #6A3F22); }
-.wood::after { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); opacity: .35; mix-blend-mode: multiply; }
-.wood .kt { color: rgba(20, 8, 2, .78); filter: drop-shadow(0 1.5px 0 rgba(255, 214, 160, .28)); }
-.wood .led { position: absolute; right: 9%; bottom: 12%; width: 9px; height: 9px; border-radius: 50%; background: #FFF3D6;
-  box-shadow: 0 0 6px 2px #FFB257, 0 0 22px 8px rgba(255, 178, 87, .55); z-index: 1; }
-
-.metal { background:
-  repeating-linear-gradient(0deg, rgba(255, 255, 255, .07) 0 1px, rgba(0, 0, 0, .05) 1px 2px),
-  linear-gradient(115deg, #8F8A82 0%, #C9CCD1 28%, #9A968F 50%, #D5D8DC 72%, #8F8A82 100%); }
-.metal .kt { color: rgba(30, 28, 26, .5); filter: drop-shadow(0 1.5px 0 rgba(255, 255, 255, .6)); }
-
-.lift { background: #FDFFFF; box-shadow: inset 0 0 0 1px var(--rule); }
-.lift .kt { color: var(--accent); filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .2)); transition: color .45s var(--ease); }
+.float { background: var(--accent); transition: background-color .45s var(--ease); }
+.float .kt { color: #FDFFFF; filter: drop-shadow(0 0 10px rgba(255, 255, 255, .55)) drop-shadow(0 0 38px rgba(255, 255, 255, .7)) drop-shadow(0 22px 46px rgba(255, 255, 255, .45)); }
 
 /* in use */
 .use { display: grid; grid-template-columns: 1fr 1.7fr 1fr 1.5fr; gap: 12px; align-items: stretch; }
