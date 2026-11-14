@@ -125,7 +125,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 }
 .detail-main { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
 .detail-name { font: 700 clamp(40px, 7vw, 116px)/.86 var(--display); letter-spacing: -0.035em; padding-top: .08em; }
-.detail-story a { color: inherit; text-underline-offset: 3px; white-space: nowrap; }
+.detail-story a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
 .detail-story { font-size: clamp(15px, 1.5vw, 20px); font-weight: 500; max-width: 36ch; min-height: 1.5em; }
 .detail-values { display: grid; gap: 2px; }
 .detail-values button {
