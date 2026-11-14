@@ -1,4 +1,4 @@
-// The aidenkt palette. Order and names are Aiden's. Third value: 1 = dark label on the swatch. Fourth: where it came
+// The aidenkt palette. Names are Aiden's; the display order is set by ORDER below. Third value: 1 = dark label on the swatch. Fourth: where it came
 // from. Fifth (optional): [address, the words in the origin that link to it].
 const COLORS = [
   ['Aiden Red', '#E41D4C', 0, "My favorite shade of red, and the color I used to identify myself from ages 5 to 18, before switching to green."], ['ID Coral', '#FF566A', 0, "The color of the digital student IDs I built for my high school.", ["https://aidenkt.medium.com/launching-digital-student-ids-to-over-13-000-students-without-storing-anything-82f891c27f06", "digital student IDs"]], ['3DS Red', '#B5121B', 0, "The color of my first ever Nintendo 3DS, a very bright flame red.", ["https://en.wikipedia.org/wiki/Nintendo_3DS", "Nintendo 3DS"]],
@@ -17,6 +17,16 @@ const COLORS = [
   ['Tech White', '#FDFFFF', 1, "The slightly too blue white that most tech people use, including me."], ['House White', '#FBF7F0', 1, "The eggshell white of houses built in the 90s, including my childhood home."], ['Titanium', '#8F8A82', 0, "My Apple Watch Series 10, in natural titanium."],
   ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0, "The color of New York City."], ['Black', '#0D0D0D', 0, "I don't know what to say about black, lol."],
 ];
+// Display order: around the color wheel, each family running into the next, with the darkest blues and purples meeting
+// in the middle, then the warm neutrals, then white to black. Eight to a row, so the last row is the neutrals.
+const ORDER = [
+  'Aiden Red', 'ID Coral', '3DS Red', 'Dragon Red', 'Strawberry Lemonade', 'Overwatch Orange', 'Starlight Gold', 'Berkeley Yellow',
+  'Glasses Green', 'Bot Green', 'LAX Mint', 'Reveria Green', 'KT Green', 'Matcha', 'Payback Pine', 'Scout Teal',
+  'Park Sky', 'Airport Blue', 'Stardust Blue', 'Persian Sapphire', 'Space', 'After Hours Indigo', 'Elementary Purple', 'Turn Back Purple',
+  'Early Purple', 'Coastal Lavender', 'Booster Orchid', 'Held Violet', 'Disney Pink', 'Creamsicle', 'Iced Latte', 'Mocha',
+  'Tech White', 'House White', 'Snow', 'Titanium', 'iPhone Gray', 'Charcoal', 'Black',
+];
+COLORS.sort((a, b) => ORDER.indexOf(a[0]) - ORDER.indexOf(b[0]));
 const KT_GREEN = COLORS.find((c) => c[0] === 'KT Green');   // the brand color; the page opens in it
 const EDGE = new Set(['Tech White', 'House White']);
 const MARK = 'M0 0h152v473H0zM321 0h387v473H556V121H403l-63 74 172 278H333L232 296V107zM788 0h75v121h-75z';
