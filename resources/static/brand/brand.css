@@ -182,7 +182,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .pal-foot button { font: 500 11px/1 var(--mono); color: var(--text); background: none; border: 1.5px solid currentColor; border-radius: 7px; padding: 7px 9px; cursor: pointer; white-space: nowrap; }
 
 /* materials: six surfaces, each drawn in CSS with the logo on it */
-.mats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 36px) 12px; }
+.mats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 36px) 12px; }
 .mat-surface { position: relative; aspect-ratio: 4 / 3; border-radius: clamp(16px, 2vw, 28px); overflow: hidden; display: grid; place-items: center; }
 .mat-surface .kt { width: 46%; }
 .mat figcaption { margin-top: 14px; font-size: 15px; color: var(--soft); max-width: 38ch; }
@@ -208,6 +208,15 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 
 .float { background: var(--accent); transition: background-color .45s var(--ease); }
 .float .kt { color: #FDFFFF; filter: drop-shadow(0 0 10px rgba(255, 255, 255, .55)) drop-shadow(0 0 38px rgba(255, 255, 255, .7)) drop-shadow(0 22px 46px rgba(255, 255, 255, .45)); }
+
+.stickers { background: #4D4947; }
+.stickers .st { position: absolute; filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .25)) drop-shadow(0 10px 14px rgba(0, 0, 0, .28)); }
+.st-mark { width: 50%; left: 8%; top: 14%; transform: rotate(-8deg); overflow: visible; }
+.st-mark .edge { fill: #FDFFFF; stroke: #FDFFFF; stroke-width: 130; stroke-linejoin: round; }
+.st-mark .ink { fill: var(--accent); transition: fill .45s var(--ease); }
+.st-round { width: 30%; aspect-ratio: 1; right: 9%; top: 12%; border-radius: 50%; background: #E41D4C; border: clamp(5px, .5vw, 9px) solid #FDFFFF; display: grid; place-items: center; transform: rotate(11deg); color: #FDFFFF; }
+.st-round .kt { width: 62%; }
+.st-word { right: 12%; bottom: 13%; background: #FDFFFF; color: #15DD7D; font: 700 clamp(20px, 2.3vw, 38px)/1 var(--display); letter-spacing: -0.012em; padding: .42em .5em .28em; border-radius: .42em; transform: rotate(4deg); }
 
 /* in use */
 .use { display: grid; grid-template-columns: 1fr 1.7fr 1fr 1.5fr; gap: 12px; align-items: stretch; }
