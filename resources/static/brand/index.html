@@ -238,18 +238,8 @@
           <figcaption><b>Sheet</b>A white panel with rounded top corners that slides up over whatever is behind it.</figcaption>
         </figure>
         <figure class="mat">
-          <div class="mat-surface hardm">
-            <div class="unit">
-              <i class="screw" style="left:2.2%;top:3.2%"></i><i class="screw" style="right:2.2%;top:3.2%"></i><i class="screw" style="left:2.2%;bottom:3.2%"></i><i class="screw" style="right:2.2%;bottom:3.2%"></i>
-              <div class="unit-top">
-                <div class="lcd"><svg class="kt"><use href="#kt"/></svg><span>KT-01</span><i></i><i></i><i></i><i></i></div>
-                <div class="enc"><small>LEVEL</small><div class="knob"></div></div>
-                <div class="enc"><small>TONE</small><div class="knob two"></div></div>
-              </div>
-              <div class="keys"><div class="kcell"><small>1</small><button type="button" class="key" aria-label="Key 1"></button></div><div class="kcell"><small>2</small><button type="button" class="key" aria-label="Key 2"></button></div><div class="kcell"><small>3</small><button type="button" class="key" aria-label="Key 3"></button></div><div class="kcell"><small>4</small><button type="button" class="key" aria-label="Key 4"></button></div><div class="kcell"><small>5</small><button type="button" class="key" aria-label="Key 5"></button></div><div class="kcell"><small>6</small><button type="button" class="key" aria-label="Key 6"></button></div><div class="kcell"><small>7</small><button type="button" class="key" aria-label="Key 7"></button></div><div class="kcell"><small>8</small><button type="button" class="key hot" aria-label="Key 8"></button></div></div>
-            </div>
-          </div>
-          <figcaption><b>Hardware</b>A machined metal box with real keys and knurled knobs. Press the keys and turn the knobs.</figcaption>
+          <div class="mat-surface hardm"><canvas id="hw3d"></canvas></div>
+          <figcaption><b>Hardware</b>A small machined device, modelled in 3D. Move over it to tilt it, press the keys and turn the knobs.</figcaption>
         </figure>
         <figure class="mat">
           <div class="mat-surface holom"><canvas id="holo"></canvas><i class="scan"></i><small>KT // MODEL 01</small></div>
@@ -331,5 +321,6 @@
   </footer>
 
   <script src="/brand/brand.js"></script>
+  <script type="module" src="/brand/hardware3d.js"></script>
 </body>
 </html>

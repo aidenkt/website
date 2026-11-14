@@ -311,37 +311,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .sheet3 .lines u:nth-child(2) { width: 78%; } .sheet3 .lines u:nth-child(3) { width: 52%; }
 
 .hardm { background: #2A2928; }
-.unit { position: relative; width: 78%; aspect-ratio: 1.62; border-radius: 2.2% / 3.5%; padding: 6% 6.5% 5.5%; display: flex; flex-direction: column; gap: 9%;
-  /* bead-blasted aluminium: flat, with a fine horizontal grain and a thin chamfer along the top edge */
-  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .035) 0 1px, rgba(0, 0, 0, .025) 1px 2px), #C9C9C6;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .75), inset 0 -1px 0 rgba(0, 0, 0, .28), inset 1px 0 0 rgba(255, 255, 255, .25), inset -1px 0 0 rgba(0, 0, 0, .12), 0 1px 0 #8C8C89, 0 2px 0 #7A7A77, 0 10px 18px rgba(0, 0, 0, .5); }
-.unit small { font: 500 clamp(5px, .5vw, 8px)/1 var(--mono); letter-spacing: .08em; color: rgba(13, 13, 13, .55); text-transform: uppercase; }
-.screw { position: absolute; width: 3%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #A9A9A6, #7E7E7B); box-shadow: inset 0 1px 1px rgba(0, 0, 0, .55), 0 1px 0 rgba(255, 255, 255, .5); }
-.screw::after { content: ''; position: absolute; inset: 24%; background: #2B2B2A; clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0 50%); }
-.unit-top { display: flex; align-items: flex-end; gap: 6%; height: 40%; }
-.lcd { flex: 1; height: 100%; border-radius: 2px; background: #0A0C0D; box-shadow: inset 0 0 0 1px #000, inset 0 2px 5px rgba(0, 0, 0, .9), 0 1px 0 rgba(255, 255, 255, .55), 0 0 0 1px rgba(0, 0, 0, .35);
-  display: flex; align-items: flex-end; gap: 3.5%; padding: 7% 7%; color: var(--accent); position: relative; }
-.lcd .kt { position: absolute; left: 7%; top: 16%; width: 26%; }
-.lcd span { position: absolute; right: 7%; top: 16%; font: 500 clamp(5px, .55vw, 9px)/1 var(--mono); letter-spacing: .06em; }
-.lcd i { flex: 1; background: currentColor; height: 22%; opacity: .9; }
-.lcd i:nth-of-type(2) { height: 40%; } .lcd i:nth-of-type(3) { height: 30%; } .lcd i:nth-of-type(4) { height: 14%; opacity: .45; }
-.enc { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8%; }
-.knob { height: 70%; aspect-ratio: 1; border-radius: 50%; position: relative; transform: rotate(calc(var(--mx) * 130deg)); transition: transform .1s linear;
-  /* a knurled edge: fine ridges all the way round, with a flat machined cap */
-  background: radial-gradient(circle, #3A3A39 0 56%, transparent 57%), repeating-conic-gradient(#1C1C1B 0 3deg, #6A6A68 3deg 6deg);
-  box-shadow: 0 0 0 1px #111, 0 2px 0 1px #1A1A19, 0 4px 5px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .08); }
-.knob::after { content: ''; position: absolute; left: 47%; top: 12%; width: 6%; height: 24%; background: #FF7D25; }
-.knob.two { transform: rotate(calc(var(--my) * -130deg)); }
-.knob.two::after { background: #E8E4DB; }
-.keys { flex: 1; display: grid; grid-template-columns: repeat(8, 1fr); gap: 3.2%; align-items: end; }
-.kcell { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 12%; }
-.key { width: 100%; aspect-ratio: 1; border: 0; padding: 0; border-radius: 50%; cursor: pointer;
-  /* a rubber cap sitting in a milled recess */
-  background: radial-gradient(circle at 50% 42%, #3B3B3A, #262625 70%);
-  box-shadow: 0 0 0 1.5px #8F8F8C, 0 0 0 2.5px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .14), 0 2px 0 #121212, 0 3px 3px rgba(0, 0, 0, .5);
-  transform: translateY(0); transition: transform .05s linear, box-shadow .05s linear; }
-.key.hot { background: radial-gradient(circle at 50% 42%, #FF8F45, #E8661A 70%); box-shadow: 0 0 0 1.5px #8F8F8C, 0 0 0 2.5px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .3), 0 2px 0 #8E3A08, 0 3px 3px rgba(0, 0, 0, .5); }
-.key:hover, .key:active { transform: translateY(2px); box-shadow: 0 0 0 1.5px #8F8F8C, 0 0 0 2.5px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .1), 0 0 0 #121212, 0 1px 1px rgba(0, 0, 0, .4); }
+.hardm canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .holom { background: radial-gradient(120% 100% at 50% 60%, #121A22, #06080B); }
 .holom canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
