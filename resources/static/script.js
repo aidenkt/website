@@ -91,7 +91,7 @@ function Background() {
         .scale([
           "#B5121B",
           "#FF7D25",
-          "#DCA021",
+          "#FBC81F",
           "#F76D53",
           "#E46BF4",
           "#FC2F99",
