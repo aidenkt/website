@@ -101,7 +101,8 @@ h2 { font-size: clamp(32px, 5vw, 64px); font-weight: 600; letter-spacing: -0.035
 .logos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .logos figure { position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 1; background: #FDFFFF; }
 .logos figure.edge { box-shadow: inset 0 0 0 1px var(--rule); }
-.logos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.logos img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.215); transform-origin: 51.25% 52.6%; }
+.logos .ref img { transform: none; }   /* the green file is the reference size; the others are drawn smaller in their files */
 .logos figcaption { position: absolute; left: 20px; bottom: 16px; font-size: 13px; font-weight: 500; color: #FDFFFF; opacity: 0.85; }
 .logos figure.edge figcaption { color: #0D0D0D; opacity: 0.6; }
 .logos figure.edge::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(13,13,13,0.1); pointer-events: none; }
