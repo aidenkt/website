@@ -130,8 +130,9 @@ if (sign && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const draw = () => {
     queued = false;
     const r = sign.getBoundingClientRect(), vh = window.innerHeight;
-    // starts when the top of the signature is 88% down the screen, finishes when its middle is 48% down
-    const start = vh * 0.88, end = vh * 0.48 - r.height / 2;
+    // starts once "Only then I sign" has finished lighting (signature top 68% down the screen, so it is in
+    // full view) and finishes a short scroll later (top 46% down)
+    const start = vh * 0.68, end = vh * 0.46;
     const t = Math.max(0, Math.min(1, (start - r.top) / (start - end))) * total;
     for (const p of pens) {
       const x = Math.max(0, Math.min(1, (t - p.from) / p.len));
