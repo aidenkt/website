@@ -1,13 +1,13 @@
 // The aidenkt palette. Order and names are Aiden's. Third value: 1 = dark label on the swatch. Fourth: where it came from.
 const COLORS = [
-  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0, "The color I used to promote digital student IDs.", ["https://aidenkt.medium.com/launching-digital-student-ids-to-over-13-000-students-without-storing-anything-82f891c27f06", "Read the article"]], ['3DS Red', '#B5121B', 0, "The color of my first ever Nintendo 3DS, a very bright flame red."],
+  ['Aiden Red', '#E41D4C', 0, "My favorite shade of red, and the color I used to identify myself from ages 5 to 18, before switching to green."], ['ID Coral', '#FF566A', 0, "The color I used to promote digital student IDs.", ["https://aidenkt.medium.com/launching-digital-student-ids-to-over-13-000-students-without-storing-anything-82f891c27f06", "Read the article"]], ['3DS Red', '#B5121B', 0, "The color of my first ever Nintendo 3DS, a very bright flame red."],
   ['Dragon Red', '#7D3230', 0, "The red paint on my elementary school."], ['Strawberry Lemonade', '#F76D53', 0, "The color of my playlist about the sunset, my favorite playlist."], ['Overwatch Orange', '#FF7D25', 1, "From my time as an administrator of r/Overwatch2."],
   ['Iced Latte', '#755640', 0, "My default coffee order."], ['Mocha', '#563A26', 0, "The dark part of my Caramel playlist cover."],
   ['Creamsicle', '#FCE3C8', 1, "A friend's playlist cover."], ['Starlight Gold', '#DCA021', 1, "The color the lights in my room at home in San Diego turn in the evening."],
   ['Berkeley Yellow', '#FBC81F', 1, "The yellow of my university, the University of California, Berkeley."], ['Glasses Green', '#919762', 0, 'My Warby Parker Carltons, in Seaweed Crystal.'],
   ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."],
   ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1, "The brand color of my first Minecraft server."], ['Matcha', '#0A864C', 0, "One of my playlist covers."],
-  ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1, "Derived from Reveria Green, and now my primary brand color on the internet."], ['Scout Teal', '#08C6BE', 1, "The accent color of Scout, an app to map college campuses."],
+  ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#15DD7D', 0, "Derived from Reveria Green, and now my primary brand color on the internet."], ['Scout Teal', '#08C6BE', 1, "The accent color of Scout, an app to map college campuses."],
   ['Park Sky', '#5FE4FF', 1, "The color of my first public Discord bot, ParksBot, which let users track theme park wait times."], ['Space', '#1C3249', 0, "My Space playlist cover."],
   ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1, "The color of snow at Mammoth Mountain."],
   ['Persian Sapphire', '#0445DF', 0, 'My playlist called Cobalt.'],
@@ -16,7 +16,7 @@ const COLORS = [
   ['Tech White', '#FDFFFF', 1, "The slightly too blue white that most tech people use, including me."], ['House White', '#FBF7F0', 1, "The eggshell white of houses built in the 90s, including my childhood home."], ['Titanium', '#8F8A82', 0, "My Apple Watch Series 10, in natural titanium."],
   ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0, "The color of New York City."], ['Black', '#0D0D0D', 0],
 ];
-const LOGO_GREEN = ['Logo Green', '#15DD7D', 0, 'The green of the wordmark and the mark.'];
+const KT_GREEN = COLORS.find((c) => c[0] === 'KT Green');   // the brand color; the page opens in it
 const EDGE = new Set(['Tech White', 'House White']);
 const MARK = 'M0 0h152v473H0zM321 0h387v473H556V121H403l-63 74 172 278H333L232 296V107zM788 0h75v121h-75z';
 
@@ -39,7 +39,7 @@ const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const $ = (id) => document.getElementById(id);
 
 const grid = $('grid');
-let current = LOGO_GREEN;
+let current = KT_GREEN;
 
 function pick(color, copy) {
   current = color;
@@ -56,7 +56,7 @@ function pick(color, copy) {
     st.append(' ', a);
   }
   const rows = [['HEX', hex], ['RGB', `rgb(${rgb(hex).join(' ')})`], ['OKLCH', oklch(hex)],
-                ...(color === LOGO_GREEN ? [] : [['CSS', `var(--${slug(name)})`]])];
+                ['CSS', `var(--${slug(name)})`]];
   $('d-values').innerHTML = rows.map(([k, v]) => `<button type="button" data-copy="${v}"><span>${k}</span><span>${v}</span></button>`).join('')
     + `<button type="button" class="static" tabindex="-1"><span>On white / on black</span><span>${contrast(hex, '#FFFFFF')} · ${contrast(hex, '#000000')}</span></button>`;
   for (const b of grid.children) b.setAttribute('aria-pressed', String(b.dataset.hex === hex));
@@ -89,7 +89,7 @@ $('shuffle').addEventListener('click', () => {
 $('icons').innerHTML = COLORS.map(([, hex, dark]) =>
   `<i style="--c:${hex};--t:${dark ? '#0D0D0D' : '#FDFFFF'}"><svg class="kt"><use href="#kt"/></svg></i>`).join('');
 
-pick(LOGO_GREEN, false);
+pick(KT_GREEN, false);
 
 function save(name, text, type) {
   const a = document.createElement('a');
