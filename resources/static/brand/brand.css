@@ -277,11 +277,21 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 
 .boardm { background: #FBF7F0; box-shadow: inset 0 0 0 1px var(--rule); }
 .snaps { position: relative; width: 38%; aspect-ratio: 190 / 126; }
-.snaps i { position: absolute; inset: 0; border-radius: 9%/13%; border: clamp(2px, .24vw, 4px) solid #FDFFFF; background: var(--c);
-  box-shadow: 0 4px 6px rgba(13, 13, 13, .10), 0 2px 4px rgba(13, 13, 13, .06); z-index: calc(1 + var(--i));
-  /* resting: a loose stack. Open: the four corners of the board, each a little more tilted. */
+.snaps i { position: absolute; inset: 0; border-radius: 9%/13%; background: #FDFFFF; color: #0D0D0D; overflow: hidden; font-style: normal;
+  display: flex; flex-direction: column; justify-content: center; gap: 7%; padding: 9% 10%;
+  box-shadow: 0 0 0 1px rgba(13, 13, 13, .05), 0 4px 6px rgba(13, 13, 13, .10), 0 2px 4px rgba(13, 13, 13, .06); z-index: calc(1 + var(--i));
+  /* resting: a loose pile. Open: the four corners of the board, each a little more tilted. */
   transform: translate(calc(var(--x) * var(--on)), calc(var(--y) * var(--on) + (1 - var(--on)) * var(--i) * 7%)) rotate(calc(var(--r) * (.7 + var(--on) * .5))) scale(calc(1 + var(--on) * .015));
   transition: transform .55s cubic-bezier(.3, 1.35, .5, 1); }
+.snaps b { font: 700 clamp(9px, 1vw, 15px)/1 var(--sans); letter-spacing: -0.02em; }
+.snaps small { font: 600 clamp(6px, .6vw, 9px)/1 var(--sans); color: #E41D4C; }
+.snaps span { display: block; height: 7%; border-radius: 99px; background: rgba(13, 13, 13, .13); }
+.snaps span:last-child { width: 62%; }
+.snaps .c-note { background: #FDE58A; }
+.snaps .c-photo { border: clamp(2px, .24vw, 4px) solid #FDFFFF; background: linear-gradient(180deg, #69A6FD 0 56%, #F76D53 56% 62%, #1C3249 62%); }
+.snaps .c-map { border: clamp(2px, .24vw, 4px) solid #FDFFFF; background:
+  linear-gradient(90deg, transparent 46%, #FDFFFF 46% 52%, transparent 52%), linear-gradient(8deg, transparent 54%, #FDFFFF 54% 61%, transparent 61%), #B6EAB6; align-items: center; }
+.snaps .c-map u { width: 13%; aspect-ratio: 1; border-radius: 50% 50% 50% 0; background: #E41D4C; transform: rotate(-45deg); }
 
 /* in use */
 .use { display: grid; grid-template-columns: 1fr 1.7fr 1fr 1.5fr; gap: 12px; align-items: stretch; }
