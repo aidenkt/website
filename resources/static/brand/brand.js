@@ -370,3 +370,9 @@ void main() {
   }).observe(cv);
   requestAnimationFrame(draw);
 })();
+
+// The paper tile carries the signature: the same pen strokes as the one under the statement, shown whole.
+(function () {
+  const to = $('paper-sig'), from = document.querySelector('#sign .ink'); if (!to || !from) return;
+  for (const path of from.querySelectorAll('path')) { const c = path.cloneNode(false); c.removeAttribute('mask'); to.appendChild(c); }
+})();
