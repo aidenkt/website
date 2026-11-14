@@ -557,7 +557,7 @@ void main() {
     }
   };
   const frame = (now) => {
-    time += Math.min(100, now - (last || now)) / 1000 * 3;        // three times the home page's pace, so a short hover shows it
+    time += Math.min(100, now - (last || now)) / 1000;            // the home page's own pace
     last = now; paint();
     if (hovering) raf = requestAnimationFrame(frame); else last = 0;
   };
