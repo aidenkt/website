@@ -622,18 +622,18 @@ void main() {
 // navy so the walls behind are hidden. Still until hovered; then it turns, and eases back to rest when you leave.
 (function () {
   const cv = $('blueprint'); if (!cv) return;
-  const ctx = cv.getContext('2d'), tile = cv.parentElement, NAVY = '#0B1630', LINE = '184,203,232', REST = -0.62;
+  const ctx = cv.getContext('2d'), tile = cv.parentElement, NAVY = '#0B1630', LINE = '184,203,232', REST = -0.34;
   const B = [
-    { h: 250, p: [[0, 0], [152, 0], [152, 473], [0, 473]] },
-    { h: 330, p: [[321, 0], [708, 0], [708, 473], [556, 473], [556, 121], [403, 121], [340, 195], [512, 473], [333, 473], [232, 296], [232, 107]] },
-    { h: 150, p: [[788, 0], [863, 0], [863, 121], [788, 121]] },
+    { h: 190, p: [[0, 0], [152, 0], [152, 473], [0, 473]] },
+    { h: 190, p: [[321, 0], [708, 0], [708, 473], [556, 473], [556, 121], [403, 121], [340, 195], [512, 473], [333, 473], [232, 296], [232, 107]] },
+    { h: 190, p: [[788, 0], [863, 0], [863, 121], [788, 121]] },
   ];
   let W = 0, H = 0, dpr = 1, ang = REST, hovering = false, raf = 0, last = 0;
   const size = () => { dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr)); };
   const paint = () => {
-    const c = Math.cos(ang), s = Math.sin(ang), PITCH = 0.62, cp = Math.cos(PITCH), sp = Math.sin(PITCH), sc = W * 0.62 / 863;
+    const c = Math.cos(ang), s = Math.sin(ang), PITCH = 0.98, cp = Math.cos(PITCH), sp = Math.sin(PITCH), sc = W * 0.62 / 863;
     // plan coordinates (x, z on the ground, y up) -> screen, plus depth for ordering
-    const pr = (x, y, z) => { const X = x - 431.5, Z = z - 236.5, x1 = X * c + Z * s, z1 = -X * s + Z * c; return [W / 2 + x1 * sc, H * 0.62 + (z1 * sp - y * cp) * sc, z1 * cp + y * sp]; };
+    const pr = (x, y, z) => { const X = x - 431.5, Z = z - 236.5, x1 = X * c + Z * s, z1 = -X * s + Z * c; return [W / 2 + x1 * sc, H * 0.56 + (z1 * sp - y * cp) * sc, z1]; };
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     const stroke = (pts, o, w, close) => { ctx.strokeStyle = `rgba(${LINE},${o})`; ctx.lineWidth = w; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); if (close) ctx.closePath(); ctx.stroke(); };
     const fill = (pts) => { ctx.fillStyle = NAVY; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath(); ctx.fill(); };
@@ -644,9 +644,12 @@ void main() {
     const order = B.map((b) => ({ b, d: b.p.reduce((a, q) => a + pr(q[0], 0, q[1])[2], 0) / b.p.length })).sort((a, b) => a.d - b.d);   // far blocks first
     for (const { b } of order) {
       const n = b.p.length, walls = [];
+      let area = 0; for (let i = 0; i < n; i++) { const a = b.p[i], q = b.p[(i + 1) % n]; area += a[0] * q[1] - q[0] * a[1]; }
+      const wind = area > 0 ? 1 : -1;
       for (let i = 0; i < n; i++) {
         const a = b.p[i], q = b.p[(i + 1) % n], A0 = pr(a[0], 0, a[1]), Q0 = pr(q[0], 0, q[1]), A1 = pr(a[0], b.h, a[1]), Q1 = pr(q[0], b.h, q[1]);
-        if ((Q0[0] - A0[0]) * (A1[1] - A0[1]) - (Q0[1] - A0[1]) * (A1[0] - A0[0]) >= 0) continue;                // faces away
+        const nx = (q[1] - a[1]) * wind, nz = -(q[0] - a[0]) * wind;                                              // the wall's outward direction on the plan
+        if (-nx * s + nz * c <= 0) continue;                                                                      // faces away from the viewer
         walls.push({ a, q, A0, Q0, A1, Q1, d: (A0[2] + Q0[2]) / 2 });
       }
       walls.sort((x, y) => x.d - y.d);
@@ -658,7 +661,7 @@ void main() {
         stroke([w.A0, w.Q0, w.Q1, w.A1], 0.6, lw, true);
         stroke([w.A0, w.A1], 0.95, lw * 1.2); stroke([w.Q0, w.Q1], 0.95, lw * 1.2);
       }
-      const top = b.p.map((q) => pr(q[0], b.h, q[1])); fill(top); stroke(top, 0.95, lw * 1.3, true);
+      const top = b.p.map((q) => pr(q[0], b.h, q[1])); ctx.fillStyle = '#132447'; ctx.beginPath(); top.forEach((q, i) => (i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.closePath(); ctx.fill(); stroke(top, 1, lw * 1.7, true);   // the roof is a shade lighter, so the logo reads
     }
   };
   const frame = (now) => {
