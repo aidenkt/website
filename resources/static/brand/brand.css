@@ -181,6 +181,52 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .pal-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: auto; font: 500 11px/1.2 var(--mono); color: var(--muted); }
 .pal-foot button { font: 500 11px/1 var(--mono); color: var(--text); background: none; border: 1.5px solid currentColor; border-radius: 7px; padding: 7px 9px; cursor: pointer; white-space: nowrap; }
 
+/* materials: six surfaces, each drawn in CSS with the logo on it */
+.mats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 36px) 12px; }
+.mat-surface { position: relative; aspect-ratio: 4 / 3; border-radius: clamp(16px, 2vw, 28px); overflow: hidden; display: grid; place-items: center; }
+.mat-surface .kt { width: 46%; }
+.mat figcaption { margin-top: 14px; font-size: 15px; color: var(--soft); max-width: 38ch; }
+.mat figcaption b { display: block; color: var(--ink); font: 700 clamp(20px, 1.9vw, 28px)/1.1 var(--display); letter-spacing: -0.02em; margin-bottom: 4px; padding-top: .1em; }
+.mat-surface::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
+
+.glass { background:
+  radial-gradient(60% 70% at 18% 22%, #FBC81F 0, transparent 60%),
+  radial-gradient(55% 65% at 85% 20%, #FC2F99 0, transparent 62%),
+  radial-gradient(60% 70% at 75% 90%, #69A6FD 0, transparent 60%),
+  var(--accent); transition: background-color .45s var(--ease); }
+.glass .pane { width: 62%; aspect-ratio: 16 / 10; display: grid; place-items: center; border-radius: clamp(14px, 1.6vw, 22px);
+  background: rgba(255, 255, 255, .26); border: 1px solid rgba(255, 255, 255, .5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .6); color: #FDFFFF; }
+.glass .pane .kt { width: 58%; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .18)); }
+
+.paper { background: #FBF7F0; box-shadow: inset 0 0 0 1px var(--rule); }
+.paper::after { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); opacity: .22; mix-blend-mode: multiply; }
+.paper .sheet { width: 58%; aspect-ratio: 1.42; background: #FDFFFF; display: grid; place-items: center; transform: rotate(-3deg);
+  box-shadow: 0 1px 1px rgba(60, 40, 20, .1), 0 10px 24px rgba(60, 40, 20, .14); color: #0D0D0D; }
+.paper .sheet .kt { width: 52%; opacity: .92; }
+
+.wood { background:
+  repeating-linear-gradient(92deg, rgba(0, 0, 0, .0) 0 9px, rgba(0, 0, 0, .10) 9px 10px, rgba(255, 220, 170, .05) 10px 17px, rgba(0, 0, 0, .07) 17px 19px),
+  linear-gradient(100deg, #5A3419, #6B4124 30%, #55311A 62%, #6A3F22); }
+.wood::after { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); opacity: .35; mix-blend-mode: multiply; }
+.wood .kt { color: rgba(20, 8, 2, .78); filter: drop-shadow(0 1.5px 0 rgba(255, 214, 160, .28)); }
+.wood .led { position: absolute; right: 9%; bottom: 12%; width: 9px; height: 9px; border-radius: 50%; background: #FFF3D6;
+  box-shadow: 0 0 6px 2px #FFB257, 0 0 22px 8px rgba(255, 178, 87, .55); z-index: 1; }
+
+.felt { background: radial-gradient(120% 120% at 30% 20%, #2BE88C, #12C96F); }
+.felt::after { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); background-size: 90px; opacity: .55; mix-blend-mode: multiply; }
+.felt .kt { color: #FDFFFF; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .22)); overflow: visible; }
+.felt .stitch { fill: none; stroke: rgba(13, 13, 13, .32); stroke-width: 5; stroke-dasharray: 16 11; stroke-linecap: round; transform: scale(.955); transform-origin: 431.5px 236.5px; }
+
+.metal { background:
+  repeating-linear-gradient(0deg, rgba(255, 255, 255, .07) 0 1px, rgba(0, 0, 0, .05) 1px 2px),
+  linear-gradient(115deg, #8F8A82 0%, #C9CCD1 28%, #9A968F 50%, #D5D8DC 72%, #8F8A82 100%); }
+.metal .kt { color: rgba(30, 28, 26, .5); filter: drop-shadow(0 1.5px 0 rgba(255, 255, 255, .6)); }
+
+.lift { background: #FDFFFF; box-shadow: inset 0 0 0 1px var(--rule); }
+.lift .kt { color: var(--accent); filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .2)); transition: color .45s var(--ease); }
+
 /* in use */
 .use { display: grid; grid-template-columns: 1fr 1.7fr 1fr 1.5fr; gap: 12px; align-items: stretch; }
 .use figure { background: var(--deep-panel); border-radius: clamp(16px, 2vw, 28px); padding: clamp(18px, 3vw, 44px); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 22px; min-height: clamp(220px, 24vw, 360px); position: relative; }
@@ -229,6 +275,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 @media (max-width: 1100px) {
   .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .tiles.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .use { grid-template-columns: 1fr 1.6fr; }
   .icons { grid-template-columns: repeat(10, minmax(0, 1fr)); }
@@ -241,6 +288,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   .build, .detail, .types article { grid-template-columns: minmax(0, 1fr); }
   .types article { align-items: start; }
   .tiles.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mats { grid-template-columns: minmax(0, 1fr); }
   .pals { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .tiles { gap: 8px; }
   .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
