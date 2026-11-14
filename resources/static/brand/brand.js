@@ -120,6 +120,47 @@ const FILES = {
 };
 for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener('click', () => FILES[btn.dataset.file]());
 
+// Suggested mixes for interfaces. Every value is one of the palette's own colors, by name.
+const PALETTES = [
+  ['KT', 'The default. Clean, with one loud color.', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
+  ['KT at night', 'The same idea in the dark.', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
+  ['After Hours', 'Deep and purple, for late.', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
+  ['Sunset', 'Warm paper and a warm accent.', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
+  ['Arrivals', 'Light, airy, a little like an airport.', 'Tech White', 'LAX Mint', 'Space', 'iPhone Gray', 'Stardust Blue', 'Airport Blue'],
+  ['Aiden Red', 'Loud on purpose.', 'House White', 'Tech White', 'Black', 'Charcoal', 'Aiden Red', '3DS Red'],
+  ['Pine', 'Dark green with a gold light on.', 'Payback Pine', 'Matcha', 'House White', 'LAX Mint', 'Berkeley Yellow', 'Bot Green'],
+  ['Parks', 'Night sky and neon.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
+];
+const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
+const ROLE_LABELS = ['Background', 'Surface', 'Text', 'Quiet text', 'Accent', 'Second accent'];
+const byName = Object.fromEntries(COLORS.map((c) => [c[0], c]));
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+const pals = $('pals');
+if (pals) for (const [title, note, ...names] of PALETTES) {
+  const cs = names.map((n) => byName[n]);
+  const [bg, surface, text, muted, accent, accent2] = cs.map((c) => c[1]);
+  const on = (c) => (ratio('#0D0D0D', c[1]) >= ratio('#FDFFFF', c[1]) ? '#0D0D0D' : '#FDFFFF');   // whichever reads better
+  const card = document.createElement('article');
+  card.className = 'pal';
+  card.style.cssText = `--bg:${bg};--surface:${surface};--text:${text};--muted:${muted};--accent:${accent};--on-accent:${on(cs[4])};--accent2:${accent2};--on-accent2:${on(cs[5])}`;
+  card.innerHTML = `
+    <div class="pal-ui">
+      <p class="pal-title">${title}</p>
+      <p class="pal-note">${note}</p>
+      <div class="pal-panel"><span class="pal-bar"><i></i></span><span class="pal-chip">New</span></div>
+      <div class="pal-actions"><span class="pal-btn">Continue</span><span class="pal-link">Not now</span></div>
+    </div>
+    <ul class="pal-roles">${cs.map((c, i) => `<li><i style="background:${c[1]}"></i><span>${ROLE_LABELS[i]}</span><b>${c[0]}</b></li>`).join('')}</ul>
+    <div class="pal-foot"><span>Text on background ${ratio(text, bg).toFixed(1)} : 1</span><button type="button">Copy CSS</button></div>`;
+  const btn = card.querySelector('button');
+  btn.addEventListener('click', () => {
+    const css = `/* aidenkt · ${title} */\n:root {\n` + cs.map((c, i) => `  --${ROLES[i]}: ${c[1]}; /* ${c[0]} */`).join('\n') + '\n}\n';
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(css).then(() => { btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy CSS'; }, 1100); }).catch(() => {});
+  });
+  pals.appendChild(card);
+}
+
 // light / dark switch: follows the system until chosen, then remembers the choice
 const themeBtn = $('theme');
 function setTheme(t, keep) {
