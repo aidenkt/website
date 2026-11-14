@@ -8,7 +8,7 @@ const COLORS = [
   ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."],
   ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1, "The brand color of my first Minecraft server."], ['Matcha', '#0A864C', 0, "One of my playlist covers."],
   ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1, "A mint green from the Dorms app."], ['Scout Teal', '#08C6BE', 1, "The accent color of Scout."],
-  ['Park Sky', '#5FE4FF', 1, "The color of my first public Discord bot, ParksBot."], ['Space', '#1C3249', 0, "My Space playlist cover."],
+  ['Park Sky', '#5FE4FF', 1, "The color of my first public Discord bot, ParksBot, which let users track theme park wait times."], ['Space', '#1C3249', 0, "My Space playlist cover."],
   ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1, "The color of snow at Mammoth Mountain."],
   ['Persian Sapphire', '#0445DF', 0, 'My playlist called Cobalt.'],
   ['Stardust Blue', '#225FFD', 0, "The UI color of a testing portal for my first startup."], ['After Hours Indigo', '#252452', 0, "The theme color of my Discord podcast, Discord After Hours w/ Aiden. It peaked at 120 listeners."], ['Early Purple', '#7367FF', 0, "The brand color of Early, my first startup, now defunct.", ["https://aidenkt.medium.com", "Read about it"]], ['Coastal Lavender', '#D4CDFF', 1, "From CoastalCare, an advanced business project."],
