@@ -132,17 +132,17 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 
 // Suggested mixes for interfaces. Every value is one of the palette's own colors, by name.
 const PALETTES = [
-  ['KT', 'The default. Clean, with one loud color.', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
-  ['KT at night', 'The same idea in the dark.', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
-  ['After Hours', 'Deep and purple, for late.', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
-  ['Sunset', 'Warm paper and a warm accent.', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
-  ['Arrivals', 'Light, airy, a little like an airport.', 'Tech White', 'LAX Mint', 'Space', 'iPhone Gray', 'Stardust Blue', 'Airport Blue'],
-  ['Aiden Red', 'Loud on purpose.', 'House White', 'Tech White', 'Black', 'Charcoal', 'Aiden Red', '3DS Red'],
-  ['Pine', 'Dark green with a gold light on.', 'Payback Pine', 'Matcha', 'House White', 'LAX Mint', 'Berkeley Yellow', 'Bot Green'],
-  ['Parks', 'Night sky and neon.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
+  ['KT', 'My default. Mostly white, with KT Green for anything important.', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
+  ['KT at night', 'The same thing in dark mode.', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
+  ['After Hours', 'A dark purple theme, named after my podcast.', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
+  ['Sunset', 'Warm and soft, based on my sunset playlist.', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
+  ['Arrivals', 'Light blues and mint from the arrivals wall at LAX.', 'Tech White', 'LAX Mint', 'Space', 'iPhone Gray', 'Stardust Blue', 'Airport Blue'],
+  ['Aiden Red', 'For when I want red to be the first thing you see.', 'House White', 'Tech White', 'Black', 'Charcoal', 'Aiden Red', '3DS Red'],
+  ['Pine', 'A dark green theme with yellow buttons.', 'Payback Pine', 'Matcha', 'House White', 'LAX Mint', 'Berkeley Yellow', 'Bot Green'],
+  ['Parks', 'Dark blue with bright pink and cyan, like a theme park at night.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
 ];
 const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
-const ROLE_LABELS = ['Background', 'Surface', 'Text', 'Quiet text', 'Accent', 'Second accent'];
+const ROLE_LABELS = ['Background', 'Surface', 'Text', 'Secondary text', 'Accent', 'Accent 2'];
 const byName = Object.fromEntries(COLORS.map((c) => [c[0], c]));
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 const pals = $('pals');
