@@ -138,14 +138,14 @@ const PALETTES = [
   ['After Hours', 'A dark purple theme, named after my podcast.', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
   ['Parks', 'Dark blue with bright pink and cyan, like a theme park at night.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
   // the rest are the colors of interfaces I built, each rounded to the nearest color in the palette
-  ['Aiden Red', 'Cream, with a red that fades into coral.', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
+  ['College', 'Cream, with a red that fades into coral.', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
   ['Green and Teal', 'White with green for anything you can press, and teal for cards.', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
-  ['Scout Teal', 'Plain white with teal, and yellow as a second color.', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
-  ['Early Purple', 'White with one purple, and coral for anything urgent.', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
-  ['Stardust Blue', 'White with a strong blue, and orange for the main button.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
-  ['Airport Blue', 'White with a soft blue, and red for the one thing that matters.', 'Tech White', 'House White', 'Black', 'Titanium', 'Airport Blue', 'Aiden Red'],
-  ['Blue and Yellow', 'Greys, with blue for actions and yellow for highlights.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
-  ['Blue and Yellow at Night', 'The same thing in dark mode.', 'Black', 'Space', 'Tech White', 'Snow', 'Airport Blue', 'Berkeley Yellow'],
+  ['Scout', 'Plain white with teal, and yellow as a second color.', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
+  ['Taskmaster', 'White with one purple, and coral for anything urgent.', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
+  ['Tester', 'White with a strong blue, and orange for the main button.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
+  ['Takeoff', 'White with a soft blue, and red for the one thing that matters.', 'Tech White', 'House White', 'Black', 'Titanium', 'Airport Blue', 'Aiden Red'],
+  ['BYK', 'Greys, with blue for actions and yellow for highlights.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
+  ['BYK at Night', 'The same thing in dark mode.', 'Black', 'Space', 'Tech White', 'Snow', 'Airport Blue', 'Berkeley Yellow'],
 ];
 const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
 const ROLE_LABELS = ['Background', 'Surface', 'Text', 'Secondary text', 'Accent', 'Accent 2'];
