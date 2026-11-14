@@ -140,7 +140,7 @@ const PALETTES = [
   ['Scout', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
   ['Taskmaster', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'Coastal Lavender'],
   ['Tester', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
-  ['Mammoth', 'Snow', 'Tech White', 'Space', 'iPhone Gray', 'Persian Sapphire', 'Park Sky'],
+  ['Booster', 'Tech White', 'Coastal Lavender', 'Black', 'iPhone Gray', 'Booster Orchid', 'Disney Pink'],
   ['Sunset', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
   ['KT at Night', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
   ['After Hours', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
