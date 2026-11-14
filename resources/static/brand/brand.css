@@ -164,7 +164,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .tab i .kt { width: 72%; }
 .tab span { flex: 1; }
 .tab em { font-style: normal; opacity: .4; }
-.icons { display: grid; grid-template-columns: repeat(19, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.icons { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
 .icons i { aspect-ratio: 1; border-radius: 23%; display: grid; place-items: center; background: var(--c); color: var(--t); }
 .icons .kt { width: 58%; }
 
@@ -195,7 +195,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .tiles.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .use { grid-template-columns: 1fr 1.6fr; }
-  .icons { grid-template-columns: repeat(13, minmax(0, 1fr)); }
+  .icons { grid-template-columns: repeat(10, minmax(0, 1fr)); }
   .sw b { font-size: 13px; } .sw code { font-size: 10px; }
 }
 @media (max-width: 760px) {
