@@ -219,7 +219,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   filter: drop-shadow(0 calc(5px + var(--on) * 5px) calc(11px + var(--on) * 8px) rgba(0, 0, 0, calc(.16 + var(--on) * .05))) drop-shadow(0 0 1px rgba(0, 0, 0, .12)); }
 .float .pills { display: flex; gap: 8px; justify-content: center; }
 .float .pills span { display: inline-flex; align-items: center; gap: .5em; background: #FDFFFF; color: #0D0D0D; white-space: nowrap;
-  font: 500 clamp(11px, 1vw, 15px)/1 var(--sans); padding: .75em 1em; border-radius: 1em;
+  font: 500 clamp(11px, 1vw, 15px)/1 var(--sans); padding: .75em 1em; border-radius: .55em;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 calc(3px + var(--on) * 4px) calc(14px + var(--on) * 8px) rgba(0, 0, 0, calc(.10 + var(--on) * .04));
   transform: translateY(calc(var(--on) * -2px)); transition: transform .25s ease-out, box-shadow .25s ease-out; }
 .float .pills .kt { width: 1.9em; color: var(--accent); transition: color .45s var(--ease); }
