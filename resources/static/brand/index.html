@@ -4,136 +4,182 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>aidenkt · Brand</title>
-  <meta name="description" content="The aidenkt brand book: the name, the wordmark, 38 named colors and the type.">
+  <meta name="description" content="The aidenkt brand book: the name, the KT mark, the wordmark, 38 named colors and the type.">
   <meta property="og:title" content="aidenkt · Brand">
-  <meta property="og:description" content="The name, the logo, the wordmark, 38 named colors and the type.">
+  <meta property="og:description" content="The name, the KT mark, the wordmark, 38 named colors and the type.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aidenkt.com/brand">
   <meta name="theme-color" content="#15DD7D">
   <link rel="canonical" href="https://aidenkt.com/brand">
+  <link rel="icon" href="/brand/logo/kt-white-on-green.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/brand/brand.css">
 </head>
 <body>
-  <header class="bar">
-    <a class="bar-mark" href="/" aria-label="aidenkt home">
-      <picture><source srcset="/brand/logo/kt-white.png" media="(prefers-color-scheme: dark)"><img src="/brand/logo/kt-black.png" alt="KT" width="44" height="44"></picture>
-    </a>
-    <nav aria-label="Sections">
-      <a href="#name">Name</a>
-      <a href="#logo">Logo</a>
-      <a href="#wordmark">Wordmark</a>
-      <a href="#color">Color</a>
-      <a href="#type">Type</a>
-      <a href="#files">Files</a>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="kt" viewBox="0 0 863 473">
+      <path d="M0 0h152v473H0zM321 0h387v473H556V121H403l-63 74 172 278H333L232 296V107zM788 0h75v121h-75z"/>
+    </symbol>
+  </svg>
+
+  <header class="hero" id="top">
+    <nav class="nav" aria-label="Sections">
+      <a class="nav-word" href="/" aria-label="aidenkt home">aidenkt</a>
+      <div class="nav-links">
+        <a href="#logo">Logo</a>
+        <a href="#wordmark">Wordmark</a>
+        <a href="#color">Color</a>
+        <a href="#use">In use</a>
+        <a href="#type">Type</a>
+        <a href="#files">Files</a>
+      </div>
     </nav>
+    <button class="hero-mark" id="shuffle" type="button" aria-label="Change the page color">
+      <svg class="kt" role="img" aria-label="KT mark"><use href="#kt"/></svg>
+    </button>
+    <div class="hero-foot">
+      <h1>Brand<br>book</h1>
+      <p class="hero-meta"><span id="hero-name">Logo Green</span><span id="hero-hex">#15DD7D</span><span>Press the mark</span></p>
+    </div>
   </header>
 
   <main>
-    <section class="cover" aria-labelledby="cover-title">
-      <p class="eyebrow">Brand book · November 2026</p>
-      <h1 id="cover-title" class="cover-mark"><span class="wm" role="img" aria-label="aidenkt"></span></h1>
-      <div class="cover-strip" id="strip" aria-hidden="true"></div>
-    </section>
-
     <section id="name" class="sec">
-      <div class="sec-head">
-        <span class="num">01</span>
-        <h2>Name</h2>
+      <p class="tag">01 · Name</p>
+      <p class="statement">aidenkt is Aiden Tabrizi's name for everything he makes. KT is Khalili Tabrizi.</p>
+      <dl class="spec">
+        <div><dt>Wordmark and handles</dt><dd>aidenkt</dd></div>
+        <div><dt>In a sentence</dt><dd>AidenKT</dd></div>
+        <div><dt>Short form</dt><dd>KT</dd></div>
+        <div><dt>Said aloud</dt><dd>Aiden K T</dd></div>
+      </dl>
+    </section>
+
+    <section id="logo" class="sec dark">
+      <p class="tag">02 · Logo</p>
+      <h2>The KT mark</h2>
+      <div class="build">
+        <svg class="build-svg" viewBox="-250 -215 1363 903" role="img" aria-label="Construction of the KT mark">
+          <rect class="clear" x="-152" y="-152" width="1167" height="777"/>
+          <g class="guides">
+            <path d="M0-185V655M152-185V655M232-185V655M708-185V655M788-185V655M863-185V655M-220 0H1083M-220 121H1083M-220 473H1083"/>
+          </g>
+          <use href="#kt" width="863" height="473"/>
+          <g class="dims">
+            <text x="76" y="520">2</text><text x="192" y="520">1</text><text x="470" y="520">6.3</text><text x="748" y="520">1</text><text x="825.5" y="520">1</text>
+            <text x="910" y="68" class="l">1.6</text><text x="910" y="305" class="l">4.7</text>
+          </g>
+        </svg>
+        <ul class="build-notes">
+          <li><b>One block, three pieces.</b> A bar, a K that turns into a T, and a square set apart at the top right.</li>
+          <li><b>The square is the unit.</b> Every stroke is two squares wide. Every gap is about one.</li>
+          <li><b>Clear space.</b> Keep one stroke of empty space on every side, shown by the dashed frame.</li>
+          <li><b>One color at a time.</b> The mark is always a single flat color from the palette.</li>
+        </ul>
       </div>
-      <div class="cols">
-        <div>
-          <p class="lede">aidenkt is Aiden Tabrizi's name for everything he makes. KT stands for Khalili Tabrizi.</p>
-        </div>
-        <dl class="spec">
-          <div><dt>Wordmark and handles</dt><dd><span class="mono">aidenkt</span>, one word, all lowercase</dd></div>
-          <div><dt>In a sentence</dt><dd>AidenKT</dd></div>
-          <div><dt>Short form</dt><dd>KT</dd></div>
-          <div><dt>Say it</dt><dd>Aiden K T</dd></div>
-        </dl>
+      <div class="tiles six">
+        <figure style="--bg:#000000;--fg:#FDFFFF"><svg class="kt"><use href="#kt"/></svg><figcaption>White on black</figcaption></figure>
+        <figure style="--bg:#15DD7D;--fg:#FDFFFF"><svg class="kt"><use href="#kt"/></svg><figcaption>White on green</figcaption></figure>
+        <figure class="sunset" style="--fg:#FDFFFF"><svg class="kt"><use href="#kt"/></svg><figcaption>White on color</figcaption></figure>
+        <figure style="--bg:#FDFFFF;--fg:#0D0D0D"><svg class="kt"><use href="#kt"/></svg><figcaption>Black on white</figcaption></figure>
+        <figure style="--bg:#FDFFFF;--fg:#15DD7D"><svg class="kt"><use href="#kt"/></svg><figcaption>Green on white</figcaption></figure>
+        <figure class="accent"><svg class="kt"><use href="#kt"/></svg><figcaption>On the color you picked</figcaption></figure>
       </div>
     </section>
 
-    <section id="logo" class="sec">
-      <div class="sec-head">
-        <span class="num">02</span>
-        <h2>Logo</h2>
+    <section id="wordmark" class="sec cream">
+      <p class="tag">03 · Wordmark</p>
+      <p class="word-big" aria-label="aidenkt">aidenkt</p>
+      <div class="word-notes">
+        <p>The name, lowercase, in League Spartan Bold. Green first. Black or white when green can't be used.</p>
       </div>
-      <p class="lede narrow">The logo is the KT mark: a K and a T cut from one block, with a single square set apart at the top right.</p>
-      <div class="logos">
-        <figure><img src="/brand/logo/kt-white-on-black.png" alt="KT mark, white on black" loading="lazy"><figcaption>White on Black</figcaption></figure>
-        <figure class="ref"><img src="/brand/logo/kt-white-on-green.png" alt="KT mark, white on green" loading="lazy"><figcaption>White on green</figcaption></figure>
-        <figure><img src="/brand/logo/kt-white-on-color.png" alt="KT mark, white on a warm gradient" loading="lazy"><figcaption>White on color</figcaption></figure>
-        <figure class="edge"><img src="/brand/logo/kt-black-on-white.png" alt="KT mark, black on white" loading="lazy"><figcaption>Black on white</figcaption></figure>
-        <figure class="edge"><img src="/brand/logo/kt-green-on-white.png" alt="KT mark, green on white" loading="lazy"><figcaption>Green on white</figcaption></figure>
-        <figure class="edge"><img src="/brand/logo/kt-white-on-white.png" alt="KT mark, white on white" loading="lazy"><figcaption>White on white</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="wordmark" class="sec">
-      <div class="sec-head">
-        <span class="num">03</span>
-        <h2>Wordmark</h2>
-      </div>
-      <p class="lede narrow">The wordmark is the name in lowercase, in green.</p>
-      <div class="marks">
-        <figure class="mark-tile" style="--bg:#FDFFFF"><span class="wm" role="img" aria-label="aidenkt wordmark"></span><figcaption>On white</figcaption></figure>
-        <figure class="mark-tile" style="--bg:#0D0D0D;--fg:#FDFFFF"><span class="wm" role="img" aria-label="aidenkt wordmark"></span><figcaption>On Black</figcaption></figure>
+      <div class="tiles four words">
+        <figure style="--bg:#FDFFFF;--fg:#15DD7D"><span>aidenkt</span><figcaption>Green on white</figcaption></figure>
+        <figure style="--bg:#0D0D0D;--fg:#15DD7D"><span>aidenkt</span><figcaption>Green on Black</figcaption></figure>
+        <figure style="--bg:#15DD7D;--fg:#FDFFFF"><span>aidenkt</span><figcaption>White on green</figcaption></figure>
+        <figure class="accent"><span>aidenkt</span><figcaption>On the color you picked</figcaption></figure>
       </div>
     </section>
 
     <section id="color" class="sec">
-      <div class="sec-head">
-        <span class="num">04</span>
-        <h2>Color</h2>
-        <div class="seg" role="group" aria-label="Color format">
-          <button type="button" data-fmt="hex" aria-pressed="true">HEX</button>
-          <button type="button" data-fmt="rgb" aria-pressed="false">RGB</button>
-          <button type="button" data-fmt="oklch" aria-pressed="false">OKLCH</button>
+      <p class="tag">04 · Color</p>
+      <h2>Thirty-eight colors, each named for where it came from</h2>
+      <div class="detail" id="detail" aria-live="polite">
+        <div class="detail-main">
+          <p class="detail-name" id="d-name"></p>
+          <p class="detail-story" id="d-story"></p>
         </div>
+        <dl class="detail-values" id="d-values"></dl>
       </div>
-      <p class="lede narrow">Thirty-eight colors, each named for where it came from. Select a color to copy it.</p>
       <div class="grid" id="grid"></div>
-      <p class="live" id="live" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="use" class="sec dark">
+      <p class="tag">05 · In use</p>
+      <h2>The mark at work</h2>
+      <div class="use">
+        <figure class="use-icon">
+          <div class="icon accent"><svg class="kt"><use href="#kt"/></svg></div>
+          <figcaption>App icon</figcaption>
+        </figure>
+        <figure class="use-card">
+          <div class="card">
+            <svg class="kt"><use href="#kt"/></svg>
+            <div><b>Aiden Tabrizi</b><span>aidenkt.com</span></div>
+          </div>
+          <figcaption>Card</figcaption>
+        </figure>
+        <figure class="use-avatar">
+          <div class="avatar accent"><svg class="kt"><use href="#kt"/></svg></div>
+          <figcaption>Avatar</figcaption>
+        </figure>
+        <figure class="use-tab">
+          <div class="tab"><i class="accent"><svg class="kt"><use href="#kt"/></svg></i><span>aidenkt</span><em>×</em></div>
+          <figcaption>Browser tab</figcaption>
+        </figure>
+      </div>
+      <div class="icons" id="icons" aria-hidden="true"></div>
     </section>
 
     <section id="type" class="sec">
-      <div class="sec-head">
-        <span class="num">05</span>
-        <h2>Type</h2>
-      </div>
+      <p class="tag">06 · Type</p>
       <div class="types">
-        <article class="type-row">
-          <div class="type-meta"><h3>Inter</h3><p>Everything you read: names, headings, body.</p></div>
-          <p class="specimen inter">Strawberry Lemonade<br><span>Aa Bb Cc 0123456789</span></p>
+        <article>
+          <header><h3>League Spartan Bold</h3><p>The wordmark and every headline.</p></header>
+          <p class="specimen ls">Everything he makes</p>
         </article>
-        <article class="type-row">
-          <div class="type-meta"><h3>JetBrains Mono</h3><p>Codes and values.</p></div>
-          <p class="specimen jb">#E41D4C<br><span>oklch(0.59 0.22 16)</span></p>
+        <article>
+          <header><h3>Inter</h3><p>Text you read.</p></header>
+          <p class="specimen inter">aidenkt is Aiden Tabrizi's name for everything he makes. KT is Khalili Tabrizi.</p>
+        </article>
+        <article>
+          <header><h3>JetBrains Mono</h3><p>Codes and values.</p></header>
+          <p class="specimen jb">#15DD7D&nbsp; rgb(21 221 125)</p>
         </article>
       </div>
     </section>
 
     <section id="files" class="sec">
-      <div class="sec-head">
-        <span class="num">06</span>
-        <h2>Files</h2>
-      </div>
+      <p class="tag">07 · Files</p>
       <ul class="files">
-        <li><a href="/brand/logo/kt-black.png" download="aidenkt-kt-black.png"><span>aidenkt-kt-black.png</span><small>Logo, black</small></a></li>
-        <li><a href="/brand/logo/kt-white.png" download="aidenkt-kt-white.png"><span>aidenkt-kt-white.png</span><small>Logo, white</small></a></li>
-        <li><a href="/brand/logo/kt-green.png" download="aidenkt-kt-green.png"><span>aidenkt-kt-green.png</span><small>Logo, green</small></a></li>
-        <li><a href="/brand/logo/aidenkt-wordmark-green.png" download="aidenkt-wordmark-green.png"><span>aidenkt-wordmark-green.png</span><small>Wordmark</small></a></li>
+        <li><button type="button" data-file="svg-black"><span>aidenkt-kt-black.svg</span><small>Mark, vector</small></button></li>
+        <li><button type="button" data-file="svg-white"><span>aidenkt-kt-white.svg</span><small>Mark, vector</small></button></li>
+        <li><button type="button" data-file="svg-green"><span>aidenkt-kt-green.svg</span><small>Mark, vector</small></button></li>
+        <li><a href="/brand/logo/kt-black.png" download="aidenkt-kt-black.png"><span>aidenkt-kt-black.png</span><small>Mark, original</small></a></li>
+        <li><a href="/brand/logo/kt-white.png" download="aidenkt-kt-white.png"><span>aidenkt-kt-white.png</span><small>Mark, original</small></a></li>
+        <li><a href="/brand/logo/kt-green.png" download="aidenkt-kt-green.png"><span>aidenkt-kt-green.png</span><small>Mark, original</small></a></li>
+        <li><a href="/brand/logo/aidenkt-wordmark-green.png" download="aidenkt-wordmark-green.png"><span>aidenkt-wordmark-green.png</span><small>Wordmark, original</small></a></li>
         <li><button type="button" data-file="css"><span>aidenkt-colors.css</span><small>CSS variables</small></button></li>
         <li><button type="button" data-file="json"><span>aidenkt-colors.json</span><small>Names and values</small></button></li>
-        <li><a href="/brand/palette.png" download="aidenkt-palette.png"><span>aidenkt-palette.png</span><small>The palette sheet</small></a></li>
+        <li><a href="/brand/palette.png" download="aidenkt-palette.png"><span>aidenkt-palette.png</span><small>Palette sheet</small></a></li>
       </ul>
     </section>
   </main>
 
   <footer class="foot">
+    <svg class="kt"><use href="#kt"/></svg>
     <span>© Aiden Tabrizi</span>
     <a href="/">aidenkt.com</a>
   </footer>

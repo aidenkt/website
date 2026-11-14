@@ -1,21 +1,29 @@
-// The aidenkt palette. Order and names are Aiden's. The third value is the label color on the swatch (1 = dark text).
+// The aidenkt palette. Order and names are Aiden's. Third value: 1 = dark label on the swatch. Fourth: where it came from.
 const COLORS = [
-  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0], ['3DS Red', '#B5121B', 0], ['Dragon Red', '#7D3230', 0],
-  ['Strawberry Lemonade', '#F76D53', 0], ['Overwatch Orange', '#FF7D25', 1], ['Iced Latte', '#755640', 0], ['Mocha', '#563A26', 0],
-  ['Creamsicle', '#FCE3C8', 1], ['Starlight Gold', '#DCA021', 1], ['Berkeley Yellow', '#FBC81F', 1], ['Glasses Green', '#919762', 0],
-  ['Bot Green', '#5FE21D', 1], ['LAX Mint', '#B6EAB6', 1], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0],
-  ['Payback Pine', '#14452F', 0], ['KT Green', '#29EA97', 1], ['Scout Teal', '#08C6BE', 1], ['Park Sky', '#5FE4FF', 1],
-  ['Space', '#1C3249', 0], ['Airport Blue', '#69A6FD', 1], ['Snow', '#BAC1CB', 1], ['Persian Sapphire', '#0445DF', 0],
+  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0], ['3DS Red', '#B5121B', 0, 'The Flame Red Nintendo 3DS.'],
+  ['Dragon Red', '#7D3230', 0], ['Strawberry Lemonade', '#F76D53', 0], ['Overwatch Orange', '#FF7D25', 1],
+  ['Iced Latte', '#755640', 0, 'A playlist called Caramel.'], ['Mocha', '#563A26', 0],
+  ['Creamsicle', '#FCE3C8', 1], ['Starlight Gold', '#DCA021', 1, "The amber in the Aiden's Lounge logo."],
+  ['Berkeley Yellow', '#FBC81F', 1], ['Glasses Green', '#919762', 0, 'Warby Parker Carlton frames in Seaweed Crystal.'],
+  ['Bot Green', '#5FE21D', 1, "The green end of the Aiden's Lounge logo."],
+  ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at the Tom Bradley terminal, LAX.'], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0],
+  ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1], ['Scout Teal', '#08C6BE', 1],
+  ['Park Sky', '#5FE4FF', 1], ['Space', '#1C3249', 0],
+  ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at the Tom Bradley terminal, LAX.'], ['Snow', '#BAC1CB', 1],
+  ['Persian Sapphire', '#0445DF', 0, 'A playlist called Cobalt.'],
   ['Stardust Blue', '#225FFD', 0], ['After Hours Indigo', '#252452', 0], ['Early Purple', '#7367FF', 0], ['Coastal Lavender', '#D4CDFF', 1],
   ['Turn Back Purple', '#6728EF', 0], ['Booster Orchid', '#E46BF4', 0], ['Held Violet', '#DE5BB6', 0], ['Disney Pink', '#FC2F99', 0],
-  ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1], ['Titanium', '#8F8A82', 0], ['iPhone Gray', '#534D5B', 0],
-  ['Charcoal', '#4D4947', 0], ['Black', '#0D0D0D', 0],
+  ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1, 'The cream of CollegeOS.'], ['Titanium', '#8F8A82', 0],
+  ['iPhone Gray', '#534D5B', 0, 'iPhone 14 Pro in Deep Purple.'], ['Charcoal', '#4D4947', 0], ['Black', '#0D0D0D', 0],
 ];
-const EDGE = new Set(['Tech White', 'House White', 'Black']);   // swatches that need an outline against the page
+const LOGO_GREEN = ['Logo Green', '#15DD7D', 0, 'The green of the wordmark and the mark.'];
+const EDGE = new Set(['Tech White', 'House White']);
+const MARK = 'M0 0h152v473H0zM321 0h387v473H556V121H403l-63 74 172 278H333L232 296V107zM788 0h75v121h-75z';
 
 const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const lin = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
 function oklch(hex) {
-  const [r, g, b] = rgb(hex).map((v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+  const [r, g, b] = rgb(hex).map(lin);
   const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
   const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
   const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
@@ -23,46 +31,60 @@ function oklch(hex) {
   const A = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s;
   const B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
   const C = Math.hypot(A, B);
-  const H = C < 0.002 ? 0 : (Math.atan2(B, A) * 180 / Math.PI + 360) % 360;
-  return `oklch(${L.toFixed(2)} ${C.toFixed(2)} ${Math.round(H)})`;
+  return `oklch(${L.toFixed(2)} ${C.toFixed(2)} ${Math.round(C < 0.002 ? 0 : (Math.atan2(B, A) * 180 / Math.PI + 360) % 360)})`;
 }
-const FORMATS = { hex: (h) => h, rgb: (h) => `rgb(${rgb(h).join(' ')})`, oklch };
+const lum = (hex) => { const [r, g, b] = rgb(hex).map(lin); return 0.2126 * r + 0.7152 * g + 0.0722 * b; };
+const contrast = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return ((x + 0.05) / (y + 0.05)).toFixed(1) + ' : 1'; };
 const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const $ = (id) => document.getElementById(id);
 
-let fmt = 'hex';
-const grid = document.getElementById('grid');
-const live = document.getElementById('live');
+const grid = $('grid');
+let current = LOGO_GREEN;
 
-document.getElementById('strip').innerHTML = COLORS.map(([, hex]) => `<i style="background:${hex}"></i>`).join('');
-
-function draw() {
-  grid.innerHTML = '';
-  for (const [name, hex, dark] of COLORS) {
-    const value = FORMATS[fmt](hex);
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'sw' + (EDGE.has(name) ? ' edge' : '');
-    b.style.setProperty('--c', hex);
-    b.style.setProperty('--t', dark ? '#0D0D0D' : '#FDFFFF');
-    b.setAttribute('aria-label', `${name}, ${value}. Copy.`);
-    b.innerHTML = `<em>Copied</em><b>${name}</b><code>${value}</code>`;
-    b.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(value); } catch (e) { return; }
-      b.classList.add('done'); live.textContent = `Copied ${name}, ${value}`;
-      setTimeout(() => b.classList.remove('done'), 1200);
-    });
-    grid.appendChild(b);
-  }
+function pick(color, copy) {
+  current = color;
+  const [name, hex, dark, story] = color;
+  const root = document.documentElement.style;
+  root.setProperty('--accent', hex);
+  root.setProperty('--on-accent', dark ? '#0D0D0D' : '#FDFFFF');
+  document.querySelector('meta[name="theme-color"]').content = hex;
+  $('hero-name').textContent = name; $('hero-hex').textContent = hex;
+  $('d-name').textContent = name; $('d-story').textContent = story || '';
+  const rows = [['HEX', hex], ['RGB', `rgb(${rgb(hex).join(' ')})`], ['OKLCH', oklch(hex)],
+                ...(color === LOGO_GREEN ? [] : [['CSS', `var(--${slug(name)})`]])];
+  $('d-values').innerHTML = rows.map(([k, v]) => `<button type="button" data-copy="${v}"><span>${k}</span><span>${v}</span></button>`).join('')
+    + `<button type="button" class="static" tabindex="-1"><span>On white / on black</span><span>${contrast(hex, '#FFFFFF')} · ${contrast(hex, '#000000')}</span></button>`;
+  for (const b of grid.children) b.setAttribute('aria-pressed', String(b.dataset.hex === hex));
+  if (copy && navigator.clipboard) navigator.clipboard.writeText(hex).catch(() => {});
 }
-draw();
 
-for (const btn of document.querySelectorAll('.seg button')) {
-  btn.addEventListener('click', () => {
-    fmt = btn.dataset.fmt;
-    document.querySelectorAll('.seg button').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
-    draw();
-  });
+for (const color of COLORS) {
+  const [name, hex, dark] = color;
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'sw' + (EDGE.has(name) ? ' edge' : ''); b.dataset.hex = hex;
+  b.style.setProperty('--c', hex); b.style.setProperty('--t', dark ? '#0D0D0D' : '#FDFFFF');
+  b.setAttribute('aria-label', `${name}, ${hex}`); b.setAttribute('aria-pressed', 'false');
+  b.innerHTML = `<b>${name}</b><code>${hex}</code>`;
+  b.addEventListener('click', () => pick(color, true));
+  grid.appendChild(b);
 }
+
+$('d-values').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-copy]'); if (!b || !navigator.clipboard) return;
+  const label = b.firstElementChild, was = label.textContent;
+  navigator.clipboard.writeText(b.dataset.copy).then(() => { label.textContent = 'Copied'; setTimeout(() => { label.textContent = was; }, 1100); }).catch(() => {});
+});
+
+// the hero mark steps through the palette
+$('shuffle').addEventListener('click', () => {
+  const pool = COLORS.filter((c) => c[1] !== current[1] && !EDGE.has(c[0]));
+  pick(pool[Math.floor(Math.random() * pool.length)], false);
+});
+
+$('icons').innerHTML = COLORS.map(([, hex, dark]) =>
+  `<i style="--c:${hex};--t:${dark ? '#0D0D0D' : '#FDFFFF'}"><svg class="kt"><use href="#kt"/></svg></i>`).join('');
+
+pick(LOGO_GREEN, false);
 
 function save(name, text, type) {
   const a = document.createElement('a');
@@ -70,9 +92,12 @@ function save(name, text, type) {
   a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
+const svg = (fill) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 863 473"><path fill="${fill}" d="${MARK}"/></svg>\n`;
 const FILES = {
-  css: () => save('aidenkt-colors.css',
-    ':root {\n' + COLORS.map(([n, h]) => `  --${slug(n)}: ${h};`).join('\n') + '\n}\n', 'text/css'),
+  'svg-black': () => save('aidenkt-kt-black.svg', svg('#0D0D0D'), 'image/svg+xml'),
+  'svg-white': () => save('aidenkt-kt-white.svg', svg('#FDFFFF'), 'image/svg+xml'),
+  'svg-green': () => save('aidenkt-kt-green.svg', svg('#15DD7D'), 'image/svg+xml'),
+  css: () => save('aidenkt-colors.css', ':root {\n' + COLORS.map(([n, h]) => `  --${slug(n)}: ${h};`).join('\n') + '\n}\n', 'text/css'),
   json: () => save('aidenkt-colors.json',
     JSON.stringify(COLORS.map(([n, h]) => ({ name: n, hex: h, rgb: rgb(h), oklch: oklch(h) })), null, 2) + '\n', 'application/json'),
 };
