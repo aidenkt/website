@@ -134,12 +134,10 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 // Suggested mixes for interfaces. Every value is one of the palette's own colors, by name.
 const PALETTES = [
   ['KT', 'My default. Mostly white, with KT Green for anything important.', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
-  ['KT at night', 'The same thing in dark mode.', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
+  ['KT at Night', 'The same thing in dark mode.', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
   ['After Hours', 'A dark purple theme, named after my podcast.', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
   ['Sunset', 'Warm and soft, based on my sunset playlist.', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
-  ['Arrivals', 'Light blues and mint from the arrivals wall at LAX.', 'Tech White', 'LAX Mint', 'Space', 'iPhone Gray', 'Stardust Blue', 'Airport Blue'],
   ['Aiden Red', 'For when I want red to be the first thing you see.', 'House White', 'Tech White', 'Black', 'Charcoal', 'Aiden Red', '3DS Red'],
-  ['Pine', 'A dark green theme with yellow buttons.', 'Payback Pine', 'Matcha', 'House White', 'LAX Mint', 'Berkeley Yellow', 'Bot Green'],
   ['Parks', 'Dark blue with bright pink and cyan, like a theme park at night.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
 ];
 const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
