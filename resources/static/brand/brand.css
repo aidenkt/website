@@ -214,11 +214,6 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .wood .led { position: absolute; right: 9%; bottom: 12%; width: 9px; height: 9px; border-radius: 50%; background: #FFF3D6;
   box-shadow: 0 0 6px 2px #FFB257, 0 0 22px 8px rgba(255, 178, 87, .55); z-index: 1; }
 
-.felt { background: radial-gradient(120% 120% at 30% 20%, #2BE88C, #12C96F); }
-.felt::after { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); background-size: 90px; opacity: .55; mix-blend-mode: multiply; }
-.felt .kt { color: #FDFFFF; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .22)); overflow: visible; }
-.felt .stitch { fill: none; stroke: rgba(13, 13, 13, .32); stroke-width: 5; stroke-dasharray: 16 11; stroke-linecap: round; transform: scale(.955); transform-origin: 431.5px 236.5px; }
-
 .metal { background:
   repeating-linear-gradient(0deg, rgba(255, 255, 255, .07) 0 1px, rgba(0, 0, 0, .05) 1px 2px),
   linear-gradient(115deg, #8F8A82 0%, #C9CCD1 28%, #9A968F 50%, #D5D8DC 72%, #8F8A82 100%); }
