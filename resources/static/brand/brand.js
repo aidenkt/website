@@ -151,7 +151,7 @@ const PALETTES = [
   ['Berkeley', 'Space', 'Persian Sapphire', 'Tech White', 'Snow', 'Berkeley Yellow', 'Airport Blue'],
   ['Gold', 'Black', 'Charcoal', 'House White', 'Titanium', 'Starlight Gold', 'Creamsicle'],
   ['Wood', 'Mocha', 'Iced Latte', 'Creamsicle', 'Snow', 'Creamsicle', 'Strawberry Lemonade'],
-  ['Neon', 'Black', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Disney Pink', 'Bot Green'],
+  ['Neon', 'Black', 'Turn Back Purple', 'Tech White', 'Coastal Lavender', 'Disney Pink', 'Bot Green'],
   ['Mono', 'Black', 'Charcoal', 'Tech White', 'Titanium', 'Tech White', 'Snow'],
 ];
 const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
