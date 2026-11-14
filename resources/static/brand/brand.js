@@ -139,7 +139,7 @@ const PALETTES = [
   ['Parks', 'Dark blue with bright pink and cyan, like a theme park at night.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
   // the rest are the colors of interfaces I built, each rounded to the nearest color in the palette
   ['College', 'Cream, with a red that fades into coral.', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
-  ['Green and Teal', 'White with green for anything you can press, and teal for cards.', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
+  ['Campus', 'White with green for anything you can press, and teal for cards.', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
   ['Scout', 'Plain white with teal, and yellow as a second color.', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
   ['Taskmaster', 'White with one purple, and coral for anything urgent.', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
   ['Tester', 'White with a strong blue, and orange for the main button.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
