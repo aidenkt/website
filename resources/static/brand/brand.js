@@ -675,3 +675,170 @@ void main() {
   tile.addEventListener('pointerleave', () => { hovering = false; });
   new ResizeObserver(() => { size(); paint(); }).observe(cv); size(); paint();
 })();
+
+// HUD: a head-up display hanging in space. A menu panel is turned one way and a ring instrument the other, the logo
+// is held at the centre of the rings, and a wire runs from the selected row to the instrument. Lines are projected
+// in perspective point by point; type and the logo are set on the local slope of their sheet. Still at rest. While
+// the pointer is over the tile the rings turn and the selected row follows the pointer; when it leaves, everything
+// eases back to exactly where it started and the drawing stops.
+(function () {
+  const cv = $('hud'); if (!cv) return;
+  const ctx = cv.getContext('2d'), tile = cv.parentElement, shape = new Path2D(MARK), TAU = Math.PI * 2;
+  const FONT = getComputedStyle(document.documentElement).getPropertyValue('--mono').trim() || 'monospace';
+  const PINK = '252,47,153', SKY = '95,228,255', ORCHID = '228,107,244', PURPLE = '103,40,239', WHITE = '253,255,255';
+  const ROWS = [['01', 'LINK', 'ON'], ['02', 'SIGNAL', '072'], ['03', 'RANGE', 'AUTO'], ['04', 'STATUS', 'READY']];
+  const F = 560, YAW = 0.5, HOME = 1, REST = [-TAU / 6, TAU / 12, TAU * 3 / 8], RATE = [0.2, -0.32, 0.46];   // focal length, the menu's turn, the row selected at rest, each ring's resting angle and speed
+  const PANEL = [[-70, -90], [56, -90], [70, -76], [70, 90], [-56, 90], [-70, 76]], ROW_H = 25, LIFT = 9, SHIFT = LIFT * Math.tan(YAW);
+  const rowTop = (i) => -56 + i * 31;
+  let W = 0, H = 0, dpr = 1, s = 1, lw = 1, ang = REST.slice(), sel = HOME, want = HOME, spin = 0, hovering = false, raf = 0, last = 0;
+  // a flat sheet standing in space, turned about its upright axis: (u, v) on the sheet, lifted toward the viewer -> the screen
+  const plane = (ox, oy, oz, yaw) => { const c = Math.cos(yaw), n = Math.sin(yaw);
+    return (u, v, lift = 0) => { const k = F / (F + oz + u * n - lift * c); return [W / 2 + (ox + u * c + lift * n) * k * s, H / 2 + (oy + v) * k * s]; }; };
+  const MENU = plane(-98, -6, 0, YAW), BACK = plane(-84, -18, 80, YAW), RING = plane(82, -8, 0, -0.4);
+  const size = () => {
+    dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr));
+    s = Math.min(W / 400, H / 300); lw = Math.max(1, W / 420);                                    // drawn on a 400 by 300 board
+  };
+  const path = (P, pts, lift, close, dx = 0) => { pts.forEach((q, i) => { const p = P(q[0], q[1], lift); if (i) ctx.lineTo(p[0] + dx, p[1]); else ctx.moveTo(p[0] + dx, p[1]); }); if (close) ctx.closePath(); };
+  const arc = (P, r, from, to) => { const n = Math.max(2, Math.ceil(Math.abs(to - from) / 0.06)); for (let i = 0; i <= n; i++) { const a = from + (to - from) * i / n, p = P(r * Math.cos(a), r * Math.sin(a)); if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); } };
+  const tick = (P, r0, r1, a) => { const c = Math.cos(a), n = Math.sin(a), p = P(r0 * c, r0 * n), q = P(r1 * c, r1 * n); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); };
+  const line = (col, a, w) => { ctx.lineWidth = w; ctx.strokeStyle = `rgba(${col},${a})`; ctx.stroke(); };
+  const neon = (col, a, w, h = w) => { line(col, a * .09, w + h * 3.4); line(col, a * .2, w + h * 1.4); line(col, a, w); };   // a tight halo, then the line itself
+  const word = (P, str, u, v, d, align, col, lift = 0) => {
+    const o = P(u, v, lift), a = P(u + 1, v, lift), b = P(u, v + 1, lift);
+    ctx.setTransform(dpr * (a[0] - o[0]), dpr * (a[1] - o[1]), dpr * (b[0] - o[0]), dpr * (b[1] - o[1]), dpr * o[0], dpr * o[1]);
+    ctx.font = `500 ${d}px ${FONT}`; ctx.textAlign = align; ctx.fillStyle = col; ctx.fillText(str, 0, d * 0.36);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  const paint = () => {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.lineJoin = 'miter'; ctx.lineCap = 'butt';
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '0.5px';
+    const ty = (d) => Math.max(d, 6 / s);                                                          // type is sized on the board, but never under 6px on screen
+    const snap = (v) => (Math.round(v * dpr) + .5) / dpr, [a0, a1, a2] = ang, st = TAU / 72, D = TAU / 24;   // ring one is ticked every 5 degrees; the arcs are cut in 15s, so at rest their ends sit on its long ticks
+
+    // the back wall: a fine grid with a cross at every fifth line, fading toward the corners
+    ctx.beginPath();
+    for (let g = -200; g <= 200; g += 20) { const x = snap(W / 2 + g * s); ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+    for (let g = -160; g <= 160; g += 20) { const y = snap(H / 2 + g * s); ctx.moveTo(0, y); ctx.lineTo(W, y); }
+    line(WHITE, dpr > 1 ? .085 : .05, 1 / dpr);
+    ctx.beginPath();
+    for (let gx = -100; gx <= 100; gx += 100) for (let gy = -120; gy <= 120; gy += 240) {
+      const x = snap(W / 2 + gx * s), y = snap(H / 2 + gy * s), r = 3 * s;
+      ctx.moveTo(x - r, y); ctx.lineTo(x + r, y); ctx.moveTo(x, y - r); ctx.lineTo(x, y + r);
+    }
+    line(WHITE, .34, 1 / dpr);
+    const fade = ctx.createRadialGradient(W / 2, H / 2, W * .16, W / 2, H / 2, W * .68); fade.addColorStop(0, 'rgba(0,0,0,1)'); fade.addColorStop(1, 'rgba(0,0,0,.12)');
+    ctx.globalCompositeOperation = 'destination-in'; ctx.fillStyle = fade; ctx.fillRect(0, 0, W, H);
+
+    // a second sheet standing behind the menu
+    const ba = BACK(-70, 0), bb = BACK(70, 0), frost = ctx.createLinearGradient(ba[0], 0, bb[0], 0); frost.addColorStop(0, `rgba(${SKY},.05)`); frost.addColorStop(1, `rgba(${ORCHID},.16)`);
+    ctx.globalCompositeOperation = 'source-over'; ctx.beginPath(); path(BACK, PANEL, 0, true); ctx.fillStyle = frost; ctx.fill();
+    ctx.globalCompositeOperation = 'lighter'; line(WHITE, .34, lw * .8);
+
+    // the instrument: a fixed bezel, then three rings that turn, each at its own pace
+    ctx.beginPath(); arc(RING, 92, 0, TAU); for (let q = 0; q < 4; q++) tick(RING, 92, 98, q * TAU / 4); line(PURPLE, 1, lw);
+    ctx.beginPath(); arc(RING, 84, a0 + 6 * st, a0 + 72 * st); for (let i = 6; i <= 72; i++) if (i % 6) tick(RING, 84, 80.5, a0 + i * st); line(WHITE, .42, lw * .8);
+    ctx.beginPath(); for (let i = 6; i <= 72; i += 6) tick(RING, 84, 76.5, a0 + i * st); line(WHITE, .95, lw);
+    const am = a0 + 3 * st, mk = (r, a) => [r * Math.cos(a), r * Math.sin(a)];
+    ctx.beginPath(); path(RING, [mk(85, am - .05), mk(85, am + .05), mk(77.5, am)], 0, true); ctx.fillStyle = `rgb(${PINK})`; ctx.fill();
+    ctx.beginPath(); arc(RING, 70, a1, a1 + 8 * D); arc(RING, 70, a1 + 9 * D, a1 + 12 * D); neon(PINK, 1, lw * 1.1);
+    ctx.beginPath(); arc(RING, 70, a1 + 14 * D, a1 + 20 * D); neon(PINK, 1, lw * 3.2, lw * 1.2);
+    const b0 = -a0 * 1.5;
+    ctx.beginPath(); for (let i = 0; i < 60; i++) arc(RING, 62.5, b0 + i * TAU / 60, b0 + (i + .5) * TAU / 60); line(ORCHID, .7, lw * 1.2);
+    ctx.beginPath(); arc(RING, 55.5, a2, a2 + 14 * D); arc(RING, 55.5, a2 + 16 * D, a2 + 20 * D); neon(SKY, 1, lw);
+    const nd = RING(55.5 * Math.cos(a2), 55.5 * Math.sin(a2)); ctx.beginPath(); ctx.arc(nd[0], nd[1], 2.1 * lw, 0, TAU); ctx.fillStyle = `rgb(${SKY})`; ctx.fill();
+    // the logo at the centre, on a faintly tinted lens, its color split a little at the edges, inside four corner marks that keep one stroke of clear space around it
+    const la = RING(-50, 0), lb = RING(50, 0), lens = ctx.createLinearGradient(la[0], 0, lb[0], 0); lens.addColorStop(0, `rgba(${SKY},.1)`); lens.addColorStop(1, `rgba(${ORCHID},.1)`);
+    ctx.beginPath(); arc(RING, 50, 0, TAU); ctx.fillStyle = lens; ctx.fill(); line(WHITE, .2, lw * .8);
+    ctx.beginPath(); for (const [x, y] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) path(RING, [[x * 39.5, y * 19.5], [x * 39.5, y * 26.5], [x * 32.5, y * 26.5]], 0, false); line(WHITE, .6, lw * .8);
+    const o = RING(0, 0), ux = RING(1, 0), vy = RING(0, 1), mw = 58, mh = mw * 473 / 863, k = mw / 863;
+    const e = [ux[0] - o[0], ux[1] - o[1], vy[0] - o[0], vy[1] - o[1]];
+    const logo = (dx, fill) => {
+      ctx.setTransform(dpr * e[0] * k, dpr * e[1] * k, dpr * e[2] * k, dpr * e[3] * k, dpr * (o[0] - e[0] * mw / 2 - e[2] * mh / 2 + dx), dpr * (o[1] - e[1] * mw / 2 - e[3] * mh / 2));
+      ctx.fillStyle = fill; ctx.fill(shape); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    logo(-1.2 * lw, `rgba(${PINK},.9)`); logo(1.2 * lw, `rgba(${SKY},.9)`);
+    ctx.globalCompositeOperation = 'source-over'; logo(0, `rgb(${WHITE})`);
+    // its read-out, on a short lead from the bezel: the bearing of the pink pointer on ring one, counted clockwise from the top
+    const deg = ((am * 360 / TAU + 90) % 360 + 360) % 360;
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.beginPath(); path(RING, [mk(92, .9), [66, 81], [92, 81]], 0, false); line(WHITE, .5, lw * .8);
+    word(RING, 'AZ ' + deg.toFixed(1).padStart(5, '0'), 92, 89.5, ty(7), 'right', `rgba(${WHITE},.86)`);
+    word(RING, 'READY', 92, 89.5 + ty(7) * 1.55, ty(7), 'right', `rgb(${SKY})`);
+
+    // the wire from the selected row to the instrument
+    const top = rowTop(sel), S = MENU(72, top + (ROW_H - 8) / 2, LIFT), E = RING(-92, 0);
+    const xm = (S[0] + E[0]) / 2, dy = E[1] - S[1], sg = Math.sign(dy), c = Math.min(5 * s, Math.abs(dy) / 2);
+    ctx.beginPath(); ctx.moveTo(S[0], S[1]); ctx.lineTo(xm - c, S[1]); ctx.lineTo(xm, S[1] + sg * c); ctx.lineTo(xm, E[1] - sg * c); ctx.lineTo(xm + c, E[1]); ctx.lineTo(E[0], E[1]); neon(SKY, 1, lw);
+    const dm = 3 * lw; ctx.beginPath(); ctx.moveTo(E[0] - dm, E[1]); ctx.lineTo(E[0], E[1] - dm); ctx.lineTo(E[0] + dm, E[1]); ctx.lineTo(E[0], E[1] + dm); ctx.closePath(); ctx.fillStyle = `rgb(${SKY})`; ctx.fill();
+
+    // the menu: a dark sheet with two corners cut, a faint wash of color, a pink outline with a cyan ghost beside it
+    ctx.globalCompositeOperation = 'source-over';
+    const pa = MENU(-70, 0), pb = MENU(70, 0), wash = ctx.createLinearGradient(pa[0], 0, pb[0], 0);
+    wash.addColorStop(0, `rgba(${SKY},.09)`); wash.addColorStop(.55, `rgba(${ORCHID},.06)`); wash.addColorStop(1, `rgba(${PINK},.1)`);
+    ctx.beginPath(); path(MENU, PANEL, 0, true); ctx.fillStyle = 'rgba(7,9,13,.9)'; ctx.fill(); ctx.fillStyle = wash; ctx.fill();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.beginPath(); path(MENU, PANEL, 0, true, 1.5 * lw); line(SKY, .5, lw * .8);
+    ctx.beginPath(); path(MENU, PANEL, 0, true); neon(PINK, 1, lw);
+    ctx.beginPath(); path(MENU, [[-70, -90], [-30, -90]], 0, false); line(PINK, 1, lw * 3.2);
+    ctx.beginPath(); path(MENU, [[54, -87], [67, -74]], 0, false); path(MENU, [[51.5, -84.5], [64.5, -71.5]], 0, false); line(PINK, .8, lw * .8);
+    ctx.beginPath(); path(MENU, [[-70, -65], [70, -65]], 0, false); path(MENU, [[-70, 65], [70, 65]], 0, false); line(WHITE, .3, lw * .8);
+    ctx.beginPath(); for (let i = 0; i < 3; i++) path(MENU, [[-60, rowTop(i) + ROW_H + 3], [60, rowTop(i) + ROW_H + 3]], 0, false); line(WHITE, .13, lw * .8);
+    word(MENU, 'MENU', -60, -77.5, ty(7), 'left', `rgba(${WHITE},.86)`);
+    word(MENU, '0' + (Math.round(sel) + 1) + '/04', 50, -77.5, ty(7), 'right', `rgb(${PINK})`);
+    word(MENU, 'INDEX', -56, 77.5, ty(7), 'left', `rgba(${WHITE},.5)`);
+    ROWS.forEach(([num, name, val], i) => {
+      const v = rowTop(i) + ROW_H / 2, on = Math.max(0, 1 - Math.abs(sel - i)), px = 64 - 5 - (3 - i) * 9;
+      word(MENU, num, -60, v, ty(7), 'left', `rgb(${PINK})`); word(MENU, name, -41, v, ty(8.5), 'left', `rgba(${WHITE},.88)`); word(MENU, val, 60, v, ty(7), 'right', `rgb(${SKY})`);
+      ctx.beginPath(); path(MENU, [[px, 75], [px + 5, 75], [px + 5, 80], [px, 80]], 0, true); ctx.fillStyle = `rgba(${WHITE},${on})`; ctx.fill(); line(PINK, .75 * (1 - on), lw * .8);
+    });
+
+    // the selected row: a pale bar standing a little in front of the sheet, with the type under it turned dark
+    const bar = [[-78, top], [72, top], [72, top + ROW_H - 8], [64, top + ROW_H], [-78, top + ROW_H]], bl = MENU(-78, top, LIFT), br = MENU(72, top, LIFT);
+    ctx.beginPath(); path(MENU, bar, LIFT, true, -1.3 * lw); ctx.fillStyle = `rgba(${PINK},.85)`; ctx.fill();
+    ctx.beginPath(); path(MENU, bar, LIFT, true, 1.3 * lw); ctx.fillStyle = `rgba(${SKY},.85)`; ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    const pale = ctx.createLinearGradient(bl[0], 0, br[0], 0); pale.addColorStop(0, '#D6F8FF'); pale.addColorStop(.5, '#FDFFFF'); pale.addColorStop(1, '#F6D4FB');
+    ctx.save(); ctx.beginPath(); path(MENU, bar, LIFT, true); ctx.fillStyle = pale; ctx.fill(); ctx.clip();
+    ctx.beginPath(); path(MENU, [[-78, top], [-73, top], [-73, top + ROW_H], [-78, top + ROW_H]], LIFT, true); ctx.fillStyle = `rgb(${PINK})`; ctx.fill();
+    ROWS.forEach(([num, name, val], i) => {
+      const v = rowTop(i) + ROW_H / 2;
+      word(MENU, num, -60 - SHIFT, v, ty(7), 'left', '#6728EF', LIFT); word(MENU, name, -41 - SHIFT, v, ty(8.5), 'left', '#07090D', LIFT); word(MENU, val, 60 - SHIFT, v, ty(7), 'right', 'rgba(7,9,13,.74)', LIFT);
+    });
+    ctx.restore();
+  };
+  // while the pointer is over the tile the rings turn and the bar goes to the row nearest the pointer; after it
+  // leaves, the bar and each ring ease home, land exactly on their resting values, and the drawing stops
+  const frame = (now) => {
+    const dt = Math.min(48, now - (last || now)) / 1000; last = now;
+    let moving = hovering;
+    const ds = want - sel; if (Math.abs(ds) < 0.003) sel = want; else { sel += ds * Math.min(1, dt * 11); moving = true; }
+    if (hovering) { spin += (1 - spin) * Math.min(1, dt * 4); for (let i = 0; i < 3; i++) ang[i] += RATE[i] * spin * dt; }
+    else {
+      spin = 0;
+      for (let i = 0; i < 3; i++) {
+        let d = (REST[i] - ang[i]) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU;
+        if (Math.abs(d) < 0.003) ang[i] = REST[i]; else { ang[i] += d * Math.min(1, dt * 5); moving = true; }
+      }
+    }
+    paint();
+    if (moving) raf = requestAnimationFrame(frame); else last = 0;
+  };
+  const run = () => { cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame); };
+  const over = (ev) => {
+    const y = ev.clientY - cv.getBoundingClientRect().top; let near = 1e9;
+    ROWS.forEach((_, i) => { const d = Math.abs(MENU(0, rowTop(i) + ROW_H / 2)[1] - y); if (d < near) { near = d; want = i; } });
+    if (!hovering) { hovering = true; run(); }
+  };
+  const out = () => { if (!hovering) return; hovering = false; want = HOME; run(); };
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    tile.addEventListener('pointerenter', over); tile.addEventListener('pointermove', over, { passive: true });
+    tile.addEventListener('pointerleave', out); tile.addEventListener('pointercancel', out);
+    // so it can never be left turning: the pointer showing up over anything else, or the window losing focus, counts as leaving too
+    document.addEventListener('pointerover', (ev) => { if (hovering && !tile.contains(ev.target)) out(); }, { passive: true });
+    addEventListener('blur', out);
+  }
+  if (document.fonts && document.fonts.load) document.fonts.load('500 12px ' + FONT).then(() => { if (!hovering) paint(); }, () => {});   // the labels are set again once the mono face has arrived
+  new ResizeObserver(() => { size(); paint(); }).observe(cv); size(); paint();
+})();
