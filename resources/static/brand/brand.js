@@ -135,7 +135,6 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 const PALETTES = [
   // name, then background, surface, text, secondary text, accent, accent 2
   ['KT', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
-  ['KT at Night', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
   ['College', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
   ['Campus', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
   ['Scout', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
@@ -143,6 +142,7 @@ const PALETTES = [
   ['Tester', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
   ['BYK', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
   ['Sunset', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
+  ['KT at Night', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
   ['After Hours', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
   ['Parks', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
   ['Berkeley', 'Space', 'Persian Sapphire', 'Tech White', 'Snow', 'Berkeley Yellow', 'Airport Blue'],
