@@ -1,5 +1,5 @@
 :root {
-  --root-background-color: #c73524;
+  --root-background-color: #B5121B;
   --edge-runway-top: 0px;
   --edge-runway-bottom: 0px;
 }
@@ -29,12 +29,12 @@ body {
   overflow-x: clip;
   overscroll-behavior-x: none;
   background:
-    radial-gradient(circle at 82% 16%, rgba(242, 187, 76, 0.95), transparent 38%),
-    radial-gradient(circle at 18% 82%, rgba(208, 36, 125, 0.82), transparent 42%),
-    linear-gradient(215deg, #e28240 0%, #d0b64f 24%, #db4e46 62%, #d0247d 82%, #bb55c6 100%);
+    radial-gradient(circle at 82% 16%, rgba(220, 160, 33, 0.95), transparent 38%),
+    radial-gradient(circle at 18% 82%, rgba(252, 47, 153, 0.82), transparent 42%),
+    linear-gradient(215deg, #FF7D25 0%, #DCA021 24%, #F76D53 62%, #FC2F99 82%, #E46BF4 100%);
   touch-action: pan-y pinch-zoom;
   isolation: isolate;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(253, 255, 255, 0.5)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
 }
 
 canvas {
@@ -53,31 +53,31 @@ html.webgl-ready canvas {
 }
 
 h1 {
-  background: #FFFFFF;
+  background: #FDFFFF;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: white;
+  -webkit-text-fill-color: #FDFFFF;
 }
 
 a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
+  background: #FDFFFF;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Lato', sans-serif;
   font-weight: 400;
   text-decoration: none;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(255, 255, 255, 0.8)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(253, 255, 255, 0.8)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
   font-size: 18px;
   transition: cursor 2s ease;
 }
 
 a:focus-visible {
-  outline: 3px solid #FFFFFF;
+  outline: 3px solid #FDFFFF;
   outline-offset: 3px;
   border-radius: 10px;
-  box-shadow: 0 0 0 6px rgba(19, 24, 30, 0.72);
+  box-shadow: 0 0 0 6px rgba(13, 13, 13, 0.72);
 }
 
 
@@ -97,7 +97,7 @@ a:focus-visible {
   right: 0;
   padding: 0;
   width: 100%;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 10px rgba(13, 13, 13, 0.5);
   height: 100vh;
   height: 100dvh;
   justify-content: center;
@@ -123,19 +123,19 @@ html.edge-extend .overlay-container {
   border-radius: 20px;
   background: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.26) 0%,
-    rgba(255, 255, 255, 0.14) 45%,
-    rgba(255, 255, 255, 0.2) 100%
+    rgba(253, 255, 255, 0.26) 0%,
+    rgba(253, 255, 255, 0.14) 45%,
+    rgba(253, 255, 255, 0.2) 100%
   );
   backdrop-filter: blur(32px) saturate(155%);
   -webkit-backdrop-filter: blur(32px) saturate(155%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(253, 255, 255, 0.3);
   box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.14),
-    0 8px 16px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.38),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
-    inset 0 0 40px rgba(255, 255, 255, 0.04);
+    0 24px 48px rgba(13, 13, 13, 0.14),
+    0 8px 16px rgba(13, 13, 13, 0.08),
+    inset 0 1px 1px rgba(253, 255, 255, 0.38),
+    inset 0 -1px 1px rgba(253, 255, 255, 0.08),
+    inset 0 0 40px rgba(253, 255, 255, 0.04);
   flex-direction: column;
   align-items: center;
   align-content: center;
@@ -161,10 +161,10 @@ html.edge-extend .overlay-container {
   border-radius: inherit;
   background: linear-gradient(
     125deg,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.05) 28%,
+    rgba(253, 255, 255, 0.18) 0%,
+    rgba(253, 255, 255, 0.05) 28%,
     transparent 52%,
-    rgba(255, 255, 255, 0.02) 100%
+    rgba(253, 255, 255, 0.02) 100%
   );
   pointer-events: none;
   z-index: 0;
@@ -180,8 +180,8 @@ html.edge-extend .overlay-container {
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.03) 40%,
+    rgba(253, 255, 255, 0.12) 0%,
+    rgba(253, 255, 255, 0.03) 40%,
     transparent 72%
   );
   pointer-events: none;
@@ -196,7 +196,7 @@ html.edge-extend .overlay-container {
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .content-container {
-    background: rgba(255, 255, 255, 0.24);
+    background: rgba(253, 255, 255, 0.24);
   }
 }
 
@@ -225,7 +225,7 @@ html.edge-extend .overlay-container {
   height: var(--icon-size);
   display: block;
   flex-shrink: 0;
-  fill: #FFFFFF;
+  fill: #FDFFFF;
 }
 
 .privacy-link {
@@ -233,12 +233,12 @@ html.edge-extend .overlay-container {
   bottom: calc(20px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
-  color: #FFFFFF;
+  color: #FDFFFF;
   background: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.26) 0%,
-    rgba(255, 255, 255, 0.14) 45%,
-    rgba(255, 255, 255, 0.2) 100%
+    rgba(253, 255, 255, 0.26) 0%,
+    rgba(253, 255, 255, 0.14) 45%,
+    rgba(253, 255, 255, 0.2) 100%
   );
   -webkit-text-fill-color: currentColor;
   font-size: 16px;
@@ -247,13 +247,13 @@ html.edge-extend .overlay-container {
   min-height: 44px;
   padding: 8px 18px;
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(253, 255, 255, 0.3);
   border-radius: 999px;
   box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.14),
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+    0 10px 28px rgba(13, 13, 13, 0.14),
+    0 4px 12px rgba(13, 13, 13, 0.08),
+    inset 0 1px 1px rgba(253, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(253, 255, 255, 0.1);
   backdrop-filter: blur(32px) saturate(155%);
   -webkit-backdrop-filter: blur(32px) saturate(155%);
   text-decoration: none;
@@ -268,14 +268,14 @@ html.edge-extend .overlay-container {
   transform: translateX(-50%) translateY(-2px);
   filter: brightness(1.06);
   box-shadow:
-    0 14px 32px rgba(0, 0, 0, 0.18),
-    0 6px 14px rgba(0, 0, 0, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.24),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+    0 14px 32px rgba(13, 13, 13, 0.18),
+    0 6px 14px rgba(13, 13, 13, 0.1),
+    inset 0 1px 1px rgba(253, 255, 255, 0.24),
+    inset 0 -1px 1px rgba(253, 255, 255, 0.1);
 }
 
 .privacy-link:focus-visible {
-  color: #FFFFFF;
+  color: #FDFFFF;
 }
 
 .blue-overlay {
@@ -284,7 +284,7 @@ html.edge-extend .overlay-container {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(50deg, #88f44e, #3ca8ec);
+  background: linear-gradient(50deg, #5FE21D, #69A6FD);
   opacity: 0;
   transition: opacity 10s;
   mix-blend-mode: color;
@@ -302,7 +302,7 @@ html.edge-extend .overlay-container {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(50deg, #b636f2, #ff6666, #fb3737);
+  background: linear-gradient(50deg, #E46BF4, #FF566A, #E41D4C);
   opacity: 0;
   transition: opacity 10s;
   mix-blend-mode: color;

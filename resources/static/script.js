@@ -5,9 +5,9 @@ function isiOS() {
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const paletteColors = {
-  base: { theme: "#c73524", root: "#c73524" },
-  blue: { theme: "#69d1b0", root: "#62cbb4" },
-  magenta: { theme: "#d94b98", root: "#d653b7" },
+  base: { theme: "#B5121B", root: "#B5121B" },
+  blue: { theme: "#08C6BE", root: "#08C6BE" },
+  magenta: { theme: "#DE5BB6", root: "#DE5BB6" },
 };
 let themeColorTimer = null;
 
@@ -71,12 +71,12 @@ function Background() {
       ny: 100,
       cscale: chroma
         .scale([
-          "#0B383F",
-          "#094876",
-          "#0CC4A0",
-          "#0F9C95",
-          "#0B7487",
-          "#0B4B5B",
+          "#1C3249",
+          "#252452",
+          "#15DD7D",
+          "#08C6BE",
+          "#0A864C",
+          "#14452F",
         ])
         .mode("lch"),
       darken: -1.1,
@@ -89,12 +89,12 @@ function Background() {
       ny: 90,
       cscale: chroma
         .scale([
-          "#c73524",
-          "#e28240",
-          "#d0b64f",
-          "#db4e46",
-          "#bb55c6",
-          "#d0247d",
+          "#B5121B",
+          "#FF7D25",
+          "#DCA021",
+          "#F76D53",
+          "#E46BF4",
+          "#FC2F99",
         ])
         .mode("lch"),
       darken: -1.1,
@@ -508,7 +508,7 @@ let colorIntervalId = null;
 
 if (window.location.search == "?start") {
   runColors = false;
-  setBrowserColors({ theme: "#094876", root: "#0b4b5b" });
+  setBrowserColors({ theme: "#252452", root: "#14452F" });
   document.querySelector(".content-container").style.display = "none";
   document.querySelector(".privacy-link").style.display = "none";
 }
