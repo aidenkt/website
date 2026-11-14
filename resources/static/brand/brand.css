@@ -265,8 +265,9 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .pass-name small { display: block; font: 500 clamp(8px, .7vw, 11px)/1 var(--mono); letter-spacing: 0; opacity: .8; margin-top: .5em; }
 .pass-code { height: 14%; opacity: .85; background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 4px, currentColor 4px 5px, transparent 5px 9px, currentColor 9px 12px, transparent 12px 14px); }
 
-.partm { background: linear-gradient(30deg, #EADFC6, #D7C6A2); }
-.partm::after { background: radial-gradient(95% 95% at 47% 54%, transparent 38%, rgba(74, 52, 20, .2)); }
+.partm { background: linear-gradient(30deg, #0D0E11, #090A0C); }
+.partm::after { background: radial-gradient(95% 95% at 47% 54%, transparent 38%, rgba(0, 0, 0, .35)); }
+.partm .glowc { filter: blur(11px); opacity: .34; mix-blend-mode: screen; }
 .partm canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .wavesm { background: #62CBB4; isolation: isolate; }

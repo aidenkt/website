@@ -384,6 +384,7 @@ void main() {
 (function () {
   const cv = $('grains'); if (!cv) return;
   const ctx = cv.getContext('2d'), tile = cv.parentElement;
+  const gcv = $('grains-glow'), gctx = gcv.getContext('2d'), GR = 1 / 3;   // a low-resolution copy, blurred in CSS: the specks' light
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let n = 0, hx, hy, x, y, vx, vy, loose, heal, base, rad, cosPh, sinPh, cosPh13, sinPh13, ph;
   let W = 0, H = 0, dpr = 1, hovering = false, raf = 0, last = 0, t = 0;
@@ -391,6 +392,7 @@ void main() {
   const build = () => {
     dpr = Math.min(2, devicePixelRatio || 1);
     W = cv.clientWidth; H = cv.clientHeight; cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr));
+    gcv.width = Math.max(2, Math.round(W * GR)); gcv.height = Math.max(2, Math.round(H * GR));
     const mw = W * 0.6, sc = mw / 863, mh = 473 * sc, ox = (W - mw) / 2, oy = (H - mh) / 2;
     const shape = new Path2D(MARK), step = Math.max(1.6, W / 190);
     let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;     // the same specks every time
@@ -412,14 +414,16 @@ void main() {
     paint(false);
   };
   const paint = (live) => {
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#2A2017';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#E8E4DB';
+    gctx.setTransform(GR, 0, 0, GR, 0, 0); gctx.clearRect(0, 0, W, H); gctx.fillStyle = 'rgb(255,226,184)';
     const s13 = Math.sin(t * 1.3), c13 = Math.cos(t * 1.3);
     for (let i = 0; i < n; i++) {
       const tw = live ? s13 * cosPh[i] + c13 * sinPh[i] : 0.75;
       ctx.globalAlpha = base[i] * (0.55 + 0.45 * tw * tw);
       const r = rad[i]; ctx.fillRect(x[i] - r / 2, y[i] - r / 2, r, r);
+      gctx.globalAlpha = Math.min(1, ctx.globalAlpha * 0.55); gctx.fillRect(x[i] - 4, y[i] - 4, 8, 8);
     }
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = gctx.globalAlpha = 1;
   };
   const frame = (now) => {
     const dt = Math.min(48, now - (last || now)) / 16.67; last = now; t += dt / 60;
@@ -428,11 +432,11 @@ void main() {
     const pull = 0.012 * 1.4, heldDrag = Math.pow(0.86, dt), stirring = stir > 0.02, reach = W * 0.3, soft = reach * reach * 0.24;
     let free = 0;
     for (let i = 0; i < n; i++) {
-      const tx = hx[i] + (s9 * cosPh[i] + c9 * sinPh[i]) * 1.1, ty = hy[i] + (c7 * cosPh13[i] - s7 * sinPh13[i]) * 1.1;   // a slow breathing drift
+      const tx = hx[i] + (s9 * cosPh[i] + c9 * sinPh[i]) * 2.6, ty = hy[i] + (c7 * cosPh13[i] - s7 * sinPh13[i]) * 2.6;   // a slow breathing drift
       if (stirring) {
         const dx = x[i] - ptr.x, dy = y[i] - ptr.y, d2 = dx * dx + dy * dy;
-        if (d2 < reach * reach && Math.random() < Math.exp(-d2 / soft) * stir * 0.5 * dt) {
-          const a = Math.random() * 6.2832, kick = (0.6 + Math.random() * 3.4) * (0.4 + stir) * 0.6;
+        if (d2 < reach * reach && Math.random() < Math.exp(-d2 / soft) * stir * 0.85 * dt) {
+          const a = Math.random() * 6.2832, kick = (0.6 + Math.random() * 3.4) * (0.4 + stir) * 0.95;
           vx[i] += Math.cos(a) * kick + ptr.vx * 0.12 * Math.random(); vy[i] += Math.sin(a) * kick + ptr.vy * 0.12 * Math.random();
           loose[i] = 1;
         }
@@ -443,7 +447,7 @@ void main() {
         const grip = (1 - L) * (1 - L);                                   // home's pull returns gradually as it calms
         vx[i] += (tx - x[i]) * pull * grip; vy[i] += (ty - y[i]) * pull * grip;
         const w = ph[i] + Math.sin(t * 0.6 + ph[i] * 3.1) * 2.4 + y[i] * 0.01;   // while loose it wanders on its own
-        vx[i] += Math.cos(w) * 0.035 * L * dt; vy[i] += Math.sin(w) * 0.035 * L * dt;
+        vx[i] += Math.cos(w) * 0.06 * L * dt; vy[i] += Math.sin(w) * 0.06 * L * dt;
         loose[i] = Math.max(0, L - dt / heal[i]);
         const drag = Math.pow(0.86 + 0.115 * L, dt); vx[i] *= drag; vy[i] *= drag;   // loose specks glide
       } else { vx[i] = (vx[i] + (tx - x[i]) * pull) * heldDrag; vy[i] = (vy[i] + (ty - y[i]) * pull) * heldDrag; }
