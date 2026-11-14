@@ -12,7 +12,6 @@
   <meta name="theme-color" content="#15DD7D">
   <link rel="canonical" href="https://aidenkt.com/brand">
   <link rel="icon" href="/brand/logo/kt-white-on-green.png">
-  <link rel="preload" href="/brand/fonts/LeagueSpartan-2014-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -22,8 +21,6 @@
       var t; try { t = localStorage.getItem('brand-theme'); } catch (e) {}
       if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.dataset.theme = t;
-      var v; try { v = localStorage.getItem('brand-type'); } catch (e) {}
-      document.documentElement.dataset.type = v === '2021' ? '2021' : '2014';
     })();
   </script>
 </head>
@@ -47,7 +44,6 @@
         <a href="#type">Type</a>
         <a href="#files">Files</a>
         <button class="theme" id="theme" type="button" aria-label="Switch between light and dark"><i></i><span></span></button>
-        <button class="theme" id="type-toggle" type="button" aria-label="Switch between the 2014 and 2021 League Spartan"><span></span></button>
       </div>
     </nav>
     <button class="hero-mark" id="shuffle" type="button" aria-label="Change the page color">

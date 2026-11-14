@@ -128,9 +128,7 @@ function save(name, text, type) {
   a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
-// The wordmark as outlines, so a download needs no font. WORD is the 2021 League Spartan Bold (Google Fonts) with the page's old
-// letter spacing; WORD_2014 is the 2014 cut (v1.000) with the spacing measured from aidenkt-wordmark-green.png: -0.010 em per gap,
-// so the k and t touch as they do there.
+// The wordmark as outlines (League Spartan Bold, lowercase, the page's own letter spacing), so a download needs no font.
 const WORD = 'M681.5 1376V1242.7Q672.5 1263.5 636.4 1301.3Q600.3 1339.2 540.3 1369.6Q480.3 1400 399.5 1400Q280.3 1400 190.1 1341.6Q100 1283.3 50 1184.8Q0 1086.4 0 966Q0 845.6 50 747.2Q100 648.7 190.1 589.9Q280.3 531 399.5 531Q477.4 531 535 555.7Q592.5 580.4 629 613.7Q665.4 647.1 678.5 674.7V555H980.6V1376ZM298.2 966Q298.2 1022.4 324.2 1066.8Q350.2 1111.3 393.6 1136.4Q436.9 1161.4 489.5 1161.4Q544.5 1161.4 586.7 1136.1Q629 1110.7 653.2 1066.3Q677.5 1021.8 677.5 966Q677.5 910.2 653.2 865.7Q629 821.3 586.7 795.4Q544.5 769.6 489.5 769.6Q436.9 769.6 393.6 795.1Q350.2 820.7 324.2 865.2Q298.2 909.6 298.2 966ZM1160.4 1376V555H1463.6V1376ZM1315.5 386.3Q1244.2 386.3 1194.3 335.6Q1144.4 285 1144.4 215.1Q1144.4 144.9 1194.4 93.5Q1244.5 42.2 1315.5 42.2Q1362.6 42.2 1401.8 65.7Q1440.9 89.3 1465 128.1Q1489 167 1489 215.1Q1489 285 1438.1 335.6Q1387.2 386.3 1315.5 386.3ZM2001.7 1400Q1882.5 1400 1794.6 1341.6Q1706.6 1283.3 1658.1 1184.8Q1609.5 1086.4 1609.5 966Q1609.5 845.6 1658.1 747.2Q1706.6 648.7 1794.6 589.9Q1882.5 531 2001.7 531Q2080.6 531 2141.7 555.4Q2202.8 579.8 2240.6 613.2Q2278.5 646.5 2287.3 674.7V0H2590.6V1376H2290.3V1242.7Q2270.5 1280 2227.6 1316.3Q2184.7 1352.5 2126.6 1376.3Q2068.5 1400 2001.7 1400ZM2094.6 1161.4Q2149.6 1161.4 2193.1 1136.1Q2236.6 1110.7 2262 1066.3Q2287.3 1021.8 2287.3 966Q2287.3 910.2 2262 865.7Q2236.6 821.3 2193.1 795.4Q2149.6 769.6 2094.6 769.6Q2042.4 769.6 1999.9 795.1Q1957.4 820.7 1932.5 865.2Q1907.6 909.6 1907.6 966Q1907.6 1022.4 1932.5 1066.8Q1957.4 1111.3 1999.9 1136.4Q2042.4 1161.4 2094.6 1161.4ZM2984.4 1029.5Q2987.9 1074 3012.7 1108.2Q3037.4 1142.5 3081.9 1161.7Q3126.4 1181 3187.9 1181Q3245.4 1181 3292.2 1169.2Q3338.9 1157.5 3373.4 1139.2Q3407.9 1121 3426.4 1102L3544.4 1290Q3519.4 1317 3474.2 1342.3Q3428.9 1367.5 3354.9 1383.8Q3280.9 1400 3167.9 1400Q3031.4 1400 2925.4 1349Q2819.4 1298 2758.9 1198.8Q2698.4 1099.5 2698.4 956.5Q2698.4 836.5 2750.9 740Q2803.4 643.5 2903.2 587.3Q3002.9 531 3143.9 531Q3277.9 531 3376.2 580Q3474.4 629 3527.9 725.5Q3581.4 822 3581.4 965.5Q3581.4 973.5 3580.9 997.8Q3580.4 1022 3578.4 1029.5ZM3295.9 871Q3294.9 838.5 3278.9 807Q3262.9 775.5 3230.9 755Q3198.9 734.5 3148.4 734.5Q3098.4 734.5 3064.2 754Q3029.9 773.5 3011.9 804.5Q2993.9 835.5 2991.4 871ZM4279.6 531Q4366.2 531 4448 565.8Q4529.8 600.6 4582.9 676.5Q4635.9 752.4 4635.9 875.1V1376H4331.4V925.2Q4331.4 837.5 4289.4 792.6Q4247.4 747.7 4179.4 747.7Q4134.3 747.7 4094.5 771.5Q4054.8 795.4 4030.6 837.5Q4006.4 879.7 4006.4 935.3V1376H3702.4V555H4006.4V675.7Q4017.5 642.6 4056.3 609.3Q4095.1 575.9 4153.6 553.5Q4212 531 4279.6 531ZM5349.3 555H5693.3L5305.5 946.7L5732.6 1376H5381.4L5064.2 1045.8V1376H4760.2V0H5064.2V840.5ZM5720.4 555H5860.1V218H6160.5V555H6345V805.2H6160.5V1033.6Q6160.5 1084.6 6175.9 1116.1Q6191.4 1147.6 6230.8 1147.6Q6258.2 1147.6 6277.2 1136Q6296.2 1124.4 6300.2 1120.1L6403.9 1336Q6396.7 1342.5 6360.5 1358.1Q6324.2 1373.7 6268 1386.9Q6211.9 1400 6143 1400Q6019.8 1400 5940 1330.5Q5860.1 1261 5860.1 1115.8V805.2H5720.4Z';
 // Frames measured from Aiden's approved files in /brand/logo/. The mark is placed as in kt-white-on-green.png, the green file he
 // first uploaded: in its 500 px square it runs from x 88.12 to 424.51 and y 170.06 to 354.75 (67.3% of the width, centred on 51.26%,
@@ -138,21 +136,9 @@ const WORD = 'M681.5 1376V1242.7Q672.5 1263.5 636.4 1301.3Q600.3 1339.2 540.3 13
 // 1920 x 1080 (aidenkt-wordmark-green.png). The shadows are measured from kt-white-on-black.png and the wordmark file: black,
 // straight down, with a Gaussian blur of standard deviation sd; the mark's grows with the mark (25.1 and 22.7 at its own size).
 const MK = 1563 / 500 * 0.3901;   // the mark's scale: 0.3901 per unit at 500 px
-const WORD_2014 = 'M0 604C0 754 105 875 255 875C325 875 385 844 423 802H425V860H600V347H423V396C381 355 324 332 255 332C105 332 0 454 0 604ZM188 604C188 533 241 483 308 483C374 483 427 533 427 604C427 674 377 724 308 724C236 724 188 674 188 604ZM801 30C743 30 696 77 696 135C696 193 743 240 801 240C859 240 906 193 906 135C906 77 859 30 801 30ZM710 347H887V860H710ZM965 604C965 754 1070 875 1220 875C1290 875 1350 844 1388 802H1390V860H1565V0H1388V396C1346 355 1289 332 1220 332C1070 332 965 454 965 604ZM1153 604C1153 533 1206 483 1273 483C1339 483 1392 533 1392 604C1392 674 1342 724 1273 724C1201 724 1153 674 1153 604ZM2194 628C2195 622 2195 611 2195 604C2195 424 2076 332 1920 332C1765 332 1638 454 1638 604C1638 753 1765 875 1920 875C2034 875 2128 838 2186 741L2058 677C2015 723 1990 734 1933 734C1888 734 1822 707 1822 628ZM1827 530C1830 483 1864 447 1925 447C1977 447 2014 476 2022 530ZM2266 860H2443V570C2443 519 2495 470 2548 470C2605 470 2640 519 2640 570V860H2817V522C2817 379 2686 332 2592 332C2536 332 2485 361 2445 401H2443V347H2266ZM3503 347H3273L3094 526V0H2917V860H3094V655L3299 860H3527L3259 592ZM3583 347H3509V482H3583V679C3583 770 3617 875 3758 875C3831 875 3888 843 3888 843L3844 700C3844 700 3823 716 3800 716C3772 716 3760 693 3760 645V482H3868V347H3760V156H3583Z';
-// The 2014 outline is the same letters as his file, so it sits where they sit: the position and scale that best overlay its fill
-// (wordmark from x 342 to 1584 and y 353 to 632). The 2021 outline is a little different, so it is matched on width and centred.
-const WORDS = {
-  2014: { d: WORD_2014, w: 3888, h: 875, k: 0.32001, x: 341.63, y: 352.86 },
-  2021: { d: WORD, w: 6404, h: 1400, k: 1243 / 6404, x: 342, y: 492.75 - 700 * 1243 / 6404 },
-};
-const typeCut = () => (document.documentElement.dataset.type === '2021' ? '2021' : '2014');
-function wordShape() {
-  const v = WORDS[typeCut()];
-  return { d: v.d, w: v.w, h: v.h, file: 'wordmark', W: 1920, H: 1080, x: v.x, y: v.y, k: v.k, sh: { dy: 12, sd: 12.4, a: 0.14 } };
-}
 const SHAPES = {
   mark: { d: MARK, w: 863, h: 473, file: 'kt', W: 1563, H: 1563, x: 801.24 - 863 * MK / 2, y: 820.28 - 473 * MK / 2, k: MK, sh: { dy: 25.1 * MK, sd: 22.7 * MK, a: 0.12 } },
-  word: wordShape(),
+  word: { d: WORD, w: 6404, h: 1400, file: 'wordmark', W: 1920, H: 1080, x: 342, y: 492.75 - 700 * 1243 / 6404, k: 1243 / 6404, sh: { dy: 12, sd: 12.4, a: 0.14 } },
 };
 var mk = { shape: 'mark', bg: null, shadow: false };   // var, not const: pick() runs before this line and checks it
 
@@ -245,8 +231,8 @@ async function sheet() {
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d');
   x.fillStyle = '#FDFFFF'; x.fillRect(0, 0, W, H);
-  const wd = SHAPES.word, k = 84 / wd.h;                        // wordmark, 84 tall, top left
-  x.save(); x.translate(M, M); x.scale(k, k); x.fillStyle = '#0D0D0D'; x.fill(new Path2D(wd.d)); x.restore();
+  const k = 84 / 1400;                                          // wordmark, 84 tall, top left
+  x.save(); x.translate(M, M); x.scale(k, k); x.fillStyle = '#0D0D0D'; x.fill(new Path2D(WORD)); x.restore();
   const km = 84 / 473;                                          // mark, same height, top right
   x.save(); x.translate(W - M - 863 * km, M); x.scale(km, km); x.fillStyle = '#15DD7D'; x.fill(new Path2D(MARK)); x.restore();
   COLORS.forEach(([name, hex, dark], i) => {
@@ -335,21 +321,6 @@ function setTheme(t, keep) {
 }
 setTheme(document.documentElement.dataset.theme || 'light', false);
 themeBtn.addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
-
-// 2014 / 2021 League Spartan: the page type, the wordmark outline, the files and the sheet all follow it.
-const typeBtn = $('type-toggle');
-function setType(v, keep) {
-  document.documentElement.dataset.type = v;
-  typeBtn.lastElementChild.textContent = v;
-  SHAPES.word = wordShape(); makerDraw();
-  if (keep) { try { localStorage.setItem('brand-type', v); } catch (e) {} }
-  if (keep && document.fonts && document.fonts.load) {      // lines move when the face changes, so anything measured is measured again
-    document.fonts.load(`700 40px ${getComputedStyle(document.documentElement).getPropertyValue('--display')}`)
-      .then(() => dispatchEvent(new Event('resize')), () => {});
-  }
-}
-setType(typeCut(), false);
-typeBtn.addEventListener('click', () => setType(typeCut() === '2014' ? '2021' : '2014', true));
 
 // The signature is tied to scrolling: it is written as it rises through the screen and unwritten on the way back.
 // Stroke order and relative speeds are Aiden's (from his recording); pauses are shortened so no scrolling is dead.
