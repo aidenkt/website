@@ -229,11 +229,11 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .depth i { position: absolute; left: var(--x); top: 100%; width: var(--w); aspect-ratio: 4 / 5; border-radius: 9%; background: var(--c);
   display: grid; place-items: center; color: #FDFFFF; z-index: calc(var(--d) * 10);
   opacity: calc(.55 + var(--d) * .45);
-  /* near things are sharp; while the pointer is over the tile the focus pulls to the far ones */
-  filter: blur(calc((1 - var(--d)) * (1 - var(--on)) * 4.5px + var(--d) * var(--on) * 4.5px));
+  /* near things are sharp, far things soft */
+  filter: blur(calc((1 - var(--d)) * 4.5px));
   box-shadow: 0 calc(4px + var(--d) * 10px) calc(10px + var(--d) * 22px) rgba(13, 13, 13, calc(.10 + var(--d) * .12));
   animation: rise calc(26s + (1 - var(--d)) * 44s) linear infinite paused; animation-delay: calc(var(--k) * -1 * (26s + (1 - var(--d)) * 44s));
-  transition: filter .5s ease; }
+ }
 .depth i .kt { width: 58%; }
 @keyframes rise { from { transform: translateY(0) rotate(var(--r)); } to { transform: translateY(calc(-100cqh - 110%)) rotate(var(--r)); } }
 .depth:hover i { animation-play-state: running; }
