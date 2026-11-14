@@ -295,10 +295,8 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 
 .gradm { background: #FDFFFF; box-shadow: inset 0 0 0 1px var(--rule); grid-auto-flow: row; gap: 7%; align-content: center; }
 .gpill { font: 600 clamp(11px, 1.05vw, 16px)/1 var(--sans); color: #FDFFFF; padding: .85em 1.7em; border-radius: 999px; min-width: 52%; text-align: center; cursor: pointer;
-  /* the blend is twice as wide as the button; on hover it slides across, so the second color takes over */
-  background: linear-gradient(100deg, var(--a) 0%, var(--b) 50%, var(--a) 100%) 0% 50% / 220% 100%;
-  transition: transform .2s var(--ease), background-position .5s var(--ease); }
-.gpill:hover { transform: scale(1.06); background-position: 100% 50%; }
+  background: linear-gradient(100deg, var(--a), var(--b)); transition: transform .2s var(--ease); }
+.gpill:hover { transform: scale(1.06); }
 
 .sheetm { background: linear-gradient(28deg, #4AB85F 0%, #62D592 42%, #78E2CB 72%, #82E9EE 100%); }
 .sheet3 { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: #FDFFFF; color: #0D0D0D; border-radius: clamp(14px, 1.6vw, 22px) clamp(14px, 1.6vw, 22px) 0 0;

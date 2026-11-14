@@ -573,7 +573,7 @@ void main() {
 (function () {
   const cv = $('holo'); if (!cv) return;
   const ctx = cv.getContext('2d'), tile = cv.parentElement;
-  let P = [], W = 0, H = 0, dpr = 1, ang = -0.42, hovering = false, raf = 0, last = 0;
+  const REST = -0.42; let P = [], W = 0, H = 0, dpr = 1, ang = REST, hovering = false, raf = 0, last = 0;
   const build = () => {
     dpr = Math.min(2, devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight;
     cv.width = Math.max(2, Math.round(W * dpr)); cv.height = Math.max(2, Math.round(H * dpr));
@@ -587,8 +587,7 @@ void main() {
     paint();
   };
   const paint = () => {
-    const mx = parseFloat(tile.style.getPropertyValue('--mx')) || 0, my = parseFloat(tile.style.getPropertyValue('--my')) || 0;
-    const yaw = ang + mx * 0.35, pitch = -0.12 + my * 0.25, cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const yaw = ang, pitch = -0.12, cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
     const sc = W * 0.56 / 863, F = 2600, t = performance.now() / 1000;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.globalCompositeOperation = 'lighter';
     const proj = P.map(([x, y, z, r]) => {
@@ -605,9 +604,15 @@ void main() {
     }
     ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
   };
-  const frame = (now) => { ang += Math.min(48, now - (last || now)) / 1000 * 0.55; last = now; paint(); if (hovering) raf = requestAnimationFrame(frame); else last = 0; };
+  // turns while the pointer is over the tile; when it leaves, eases back to its resting angle and stops there
+  const frame = (now) => {
+    const dt = Math.min(48, now - (last || now)) / 1000; last = now;
+    if (hovering) ang += dt * 0.55;
+    else { let d = (REST - ang) % 6.2832; if (d > 3.1416) d -= 6.2832; if (d < -3.1416) d += 6.2832; ang += d * Math.min(1, dt * 5); if (Math.abs(d) < 0.004) { ang = REST; paint(); last = 0; return; } }
+    paint(); raf = requestAnimationFrame(frame);
+  };
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; last = 0; raf = requestAnimationFrame(frame); });
-  tile.addEventListener('pointerleave', () => { hovering = false; cancelAnimationFrame(raf); last = 0; paint(); });
+  tile.addEventListener('pointerenter', () => { if (still || hovering) return; hovering = true; cancelAnimationFrame(raf); last = 0; raf = requestAnimationFrame(frame); });
+  tile.addEventListener('pointerleave', () => { hovering = false; });
   new ResizeObserver(build).observe(cv); build();
 })();
