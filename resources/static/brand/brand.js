@@ -133,19 +133,26 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 
 // Suggested mixes for interfaces. Every value is one of the palette's own colors, by name.
 const PALETTES = [
+  // name, then background, surface, text, secondary text, accent, accent 2. A light one sits beside its dark version.
   ['KT', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
   ['KT at Night', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
-  ['After Hours', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
-  ['Parks', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
-  // the rest are the colors of interfaces I built, each rounded to the nearest color in the palette
   ['College', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
-  ['Campus', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
+  ['College at Night', 'Black', 'Charcoal', 'Tech White', 'Snow', 'ID Coral', 'Scout Teal'],
   ['Scout', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
+  ['Scout at Night', 'Black', 'Space', 'Tech White', 'Snow', 'Scout Teal', 'Berkeley Yellow'],
+  ['BYK', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
+  ['BYK at Night', 'Black', 'Space', 'Tech White', 'Snow', 'Airport Blue', 'Berkeley Yellow'],
+  ['Campus', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
   ['Taskmaster', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
   ['Tester', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
   ['Takeoff', 'Tech White', 'House White', 'Black', 'Titanium', 'Airport Blue', 'Aiden Red'],
-  ['BYK', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
-  ['BYK at Night', 'Black', 'Space', 'Tech White', 'Snow', 'Airport Blue', 'Berkeley Yellow'],
+  ['After Hours', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
+  ['Parks', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
+  ['Berkeley', 'Space', 'Persian Sapphire', 'Tech White', 'Snow', 'Berkeley Yellow', 'Airport Blue'],
+  ['Gold', 'Black', 'Charcoal', 'House White', 'Titanium', 'Starlight Gold', 'Creamsicle'],
+  ['Wood', 'Mocha', 'Iced Latte', 'Creamsicle', 'Snow', 'Starlight Gold', 'Overwatch Orange'],
+  ['Neon', 'Black', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Disney Pink', 'Bot Green'],
+  ['Mono', 'Black', 'Charcoal', 'Tech White', 'Titanium', 'Tech White', 'Snow'],
 ];
 const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
 const ROLE_LABELS = ['Background', 'Surface', 'Text', 'Secondary text', 'Accent', 'Accent 2'];
