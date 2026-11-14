@@ -6,21 +6,24 @@
   <title>aidenkt · Brand</title>
   <meta name="description" content="The aidenkt brand book: the name, the wordmark, 38 named colors and the type.">
   <meta property="og:title" content="aidenkt · Brand">
-  <meta property="og:description" content="The name, the wordmark, 38 named colors and the type.">
+  <meta property="og:description" content="The name, the logo, the wordmark, 38 named colors and the type.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aidenkt.com/brand">
-  <meta name="theme-color" content="#E41D4C">
+  <meta name="theme-color" content="#15DD7D">
   <link rel="canonical" href="https://aidenkt.com/brand">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/brand/brand.css">
 </head>
 <body>
   <header class="bar">
-    <a class="bar-mark" href="/" aria-label="aidenkt home">aidenkt</a>
+    <a class="bar-mark" href="/" aria-label="aidenkt home">
+      <picture><source srcset="/brand/logo/kt-white.png" media="(prefers-color-scheme: dark)"><img src="/brand/logo/kt-black.png" alt="KT" width="44" height="44"></picture>
+    </a>
     <nav aria-label="Sections">
       <a href="#name">Name</a>
+      <a href="#logo">Logo</a>
       <a href="#wordmark">Wordmark</a>
       <a href="#color">Color</a>
       <a href="#type">Type</a>
@@ -31,7 +34,7 @@
   <main>
     <section class="cover" aria-labelledby="cover-title">
       <p class="eyebrow">Brand book · November 2026</p>
-      <h1 id="cover-title" class="cover-mark">aidenkt</h1>
+      <h1 id="cover-title" class="cover-mark"><span class="wm" role="img" aria-label="aidenkt"></span></h1>
       <div class="cover-strip" id="strip" aria-hidden="true"></div>
     </section>
 
@@ -53,23 +56,37 @@
       </div>
     </section>
 
-    <section id="wordmark" class="sec">
+    <section id="logo" class="sec">
       <div class="sec-head">
         <span class="num">02</span>
+        <h2>Logo</h2>
+      </div>
+      <p class="lede narrow">The logo is the KT mark: a K and a T cut from one block, with a single square set apart at the top right.</p>
+      <div class="logos">
+        <figure><img src="/brand/logo/kt-white-on-black.png" alt="KT mark, white on black" loading="lazy"><figcaption>White on Black</figcaption></figure>
+        <figure><img src="/brand/logo/kt-white-on-green.png" alt="KT mark, white on green" loading="lazy"><figcaption>White on green</figcaption></figure>
+        <figure><img src="/brand/logo/kt-white-on-color.png" alt="KT mark, white on a warm gradient" loading="lazy"><figcaption>White on color</figcaption></figure>
+        <figure class="edge"><img src="/brand/logo/kt-black-on-white.png" alt="KT mark, black on white" loading="lazy"><figcaption>Black on white</figcaption></figure>
+        <figure class="edge"><img src="/brand/logo/kt-green-on-white.png" alt="KT mark, green on white" loading="lazy"><figcaption>Green on white</figcaption></figure>
+        <figure class="edge"><img src="/brand/logo/kt-white-on-white.png" alt="KT mark, white on white" loading="lazy"><figcaption>White on white</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="wordmark" class="sec">
+      <div class="sec-head">
+        <span class="num">03</span>
         <h2>Wordmark</h2>
       </div>
-      <p class="lede narrow">The wordmark is the name, handwritten. It is set in Caveat, lowercase, in white or Black.</p>
+      <p class="lede narrow">The wordmark is the name in lowercase, in green.</p>
       <div class="marks">
-        <figure class="mark-tile" style="--bg:#E41D4C;--fg:#FDFFFF"><span>aidenkt</span><figcaption>On Aiden Red</figcaption></figure>
-        <figure class="mark-tile" style="--bg:#0D0D0D;--fg:#FDFFFF"><span>aidenkt</span><figcaption>On Black</figcaption></figure>
-        <figure class="mark-tile" style="--bg:#FBF7F0;--fg:#0D0D0D"><span>aidenkt</span><figcaption>On House White</figcaption></figure>
-        <figure class="mark-tile" style="--bg:#29EA97;--fg:#0D0D0D"><span>aidenkt</span><figcaption>On KT Green</figcaption></figure>
+        <figure class="mark-tile" style="--bg:#FDFFFF"><span class="wm" role="img" aria-label="aidenkt wordmark"></span><figcaption>On white</figcaption></figure>
+        <figure class="mark-tile" style="--bg:#0D0D0D;--fg:#FDFFFF"><span class="wm" role="img" aria-label="aidenkt wordmark"></span><figcaption>On Black</figcaption></figure>
       </div>
     </section>
 
     <section id="color" class="sec">
       <div class="sec-head">
-        <span class="num">03</span>
+        <span class="num">04</span>
         <h2>Color</h2>
         <div class="seg" role="group" aria-label="Color format">
           <button type="button" data-fmt="hex" aria-pressed="true">HEX</button>
@@ -84,14 +101,10 @@
 
     <section id="type" class="sec">
       <div class="sec-head">
-        <span class="num">04</span>
+        <span class="num">05</span>
         <h2>Type</h2>
       </div>
       <div class="types">
-        <article class="type-row">
-          <div class="type-meta"><h3>Caveat</h3><p>The wordmark. Nothing else.</p></div>
-          <p class="specimen caveat">aidenkt</p>
-        </article>
         <article class="type-row">
           <div class="type-meta"><h3>Inter</h3><p>Everything you read: names, headings, body.</p></div>
           <p class="specimen inter">Strawberry Lemonade<br><span>Aa Bb Cc 0123456789</span></p>
@@ -105,10 +118,14 @@
 
     <section id="files" class="sec">
       <div class="sec-head">
-        <span class="num">05</span>
+        <span class="num">06</span>
         <h2>Files</h2>
       </div>
       <ul class="files">
+        <li><a href="/brand/logo/kt-black.png" download="aidenkt-kt-black.png"><span>aidenkt-kt-black.png</span><small>Logo, black</small></a></li>
+        <li><a href="/brand/logo/kt-white.png" download="aidenkt-kt-white.png"><span>aidenkt-kt-white.png</span><small>Logo, white</small></a></li>
+        <li><a href="/brand/logo/kt-green.png" download="aidenkt-kt-green.png"><span>aidenkt-kt-green.png</span><small>Logo, green</small></a></li>
+        <li><a href="/brand/logo/aidenkt-wordmark-green.png" download="aidenkt-wordmark-green.png"><span>aidenkt-wordmark-green.png</span><small>Wordmark</small></a></li>
         <li><button type="button" data-file="css"><span>aidenkt-colors.css</span><small>CSS variables</small></button></li>
         <li><button type="button" data-file="json"><span>aidenkt-colors.json</span><small>Names and values</small></button></li>
         <li><a href="/brand/palette.png" download="aidenkt-palette.png"><span>aidenkt-palette.png</span><small>The palette sheet</small></a></li>
