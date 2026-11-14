@@ -189,11 +189,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .mat figcaption b { display: block; color: var(--ink); font: 700 clamp(20px, 1.9vw, 28px)/1.1 var(--display); letter-spacing: -0.02em; margin-bottom: 4px; padding-top: .1em; }
 .mat-surface::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
 
-.glass { background: var(--accent); transition: background-color .45s var(--ease); }
-.glass::before { content: ''; position: absolute; inset: -14%; background:
-  radial-gradient(60% 70% at 22% 26%, #FBC81F 0, transparent 60%),
-  radial-gradient(55% 65% at 82% 24%, #FC2F99 0, transparent 62%),
-  radial-gradient(60% 70% at 72% 86%, #69A6FD 0, transparent 60%); }
+.glass { background: linear-gradient(140deg, #FBC66B 0%, #FAD56E 14%, #FB8E6C 38%, #F8707F 58%, #F17AE2 84%, #FF6BCF 100%); }
 .glass .pane { position: relative; z-index: 1; overflow: hidden; width: 62%; aspect-ratio: 16 / 10; display: grid; place-items: center;
   transform: rotateY(calc(var(--mx) * 12deg)) rotateX(calc(var(--my) * -12deg)); transition: transform .2s ease-out; border-radius: clamp(14px, 1.6vw, 22px);
   background: rgba(255, 255, 255, .26); border: 1px solid rgba(255, 255, 255, .5);
