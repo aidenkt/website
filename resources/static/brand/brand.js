@@ -473,7 +473,7 @@ void main() {
 // the green and blue wash on top is the home page's too. Still until the pointer is over the tile.
 (function () {
   const cv = $('ribbons'); if (!cv) return;
-  const ctx = cv.getContext('2d'), tile = cv.parentElement;
+  const tile = cv.parentElement;
   const NX = 60, NY = 90, ANG = Math.PI * 1.4, COS = Math.cos(ANG), SIN = Math.sin(ANG), SIZE = 1.5 / NX;
   const dp = (x, y) => [1.5 * (x * COS - y * SIN), 1.5 * (x * SIN + y * COS)];
   // color: interpolate the six anchors in LCH, as the home page does, and brighten for the far edge of each ribbon
@@ -499,32 +499,61 @@ void main() {
   let seed = 11; const rnd = (lo, hi) => lo + ((seed = (seed * 16807) % 2147483647) / 2147483647) * (hi - lo);   // the same ribbons every time
   const R = [];
   for (let i = 0; i < NX; i++) {
-    const v3 = (lo, hi) => [rnd(lo, hi), rnd(lo, hi), rnd(lo, hi)], lab = scale(i / NX);
-    R.push({ r1: v3(-1, 1), r2: v3(-1, 1), r3: v3(-1, 1), r4: v3(-1, 1), r5: [rnd(0.2, 0.5), rnd(0.3, 0.6), rnd(0.4, 0.7)],
-             c1: fromLab(lab), c2: fromLab([lab[0] > 58 ? lab[0] - 7 : lab[0] + 19.8, lab[1], lab[2]]) });   // already-light ribbons shade darker, so none washes out to white
+    const v3 = (lo, hi) => [rnd(lo, hi), rnd(lo, hi), rnd(lo, hi)];
+    R.push({ r1: v3(-1, 1), r2: v3(-1, 1), r3: v3(-1, 1), r4: v3(-1, 1), r5: [rnd(0.2, 0.5), rnd(0.3, 0.6), rnd(0.4, 0.7)] });
   }
-  const [nbx, nby] = dp(1, 0);
-  let W = 0, H = 0, time = 600, hovering = false, raf = 0, last = 0;
-  const size = () => { const d = Math.min(2, devicePixelRatio || 1); W = cv.width = Math.max(2, Math.round(cv.clientWidth * d)); H = cv.height = Math.max(2, Math.round(cv.clientHeight * d)); };
+  // Drawn with the home page's own two shaders. Each ribbon is a strip whose two edges are pushed apart in the vertex
+  // shader; the fragment shader blends from the ribbon's color at one edge to its brighter version at the other.
+  // Later ribbons overlap earlier ones, so what shows of each is its bright edge fading into shade under the next:
+  // that is what makes the surface look folded.
+  const gl = cv.getContext('webgl', { antialias: true, alpha: false }); if (!gl) return;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+  const prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, `
+    uniform float uTime, uSize, uZoom; uniform mat2 uMat2; uniform vec3 uRnd1, uRnd2, uRnd3, uRnd4, uRnd5;
+    attribute vec2 position; attribute float side; varying float vU;
+    vec2 dp(vec2 sv) { return (1.5 * sv * uMat2); }
+    void main() {
+      vU = side * .5 + .5;
+      vec2 pos = dp(position);
+      vec2 normal = dp(vec2(1, 0)) * uSize;
+      vec3 rnd1 = vec3(cos(uTime * uRnd1.x + uRnd3.x), cos(uTime * uRnd1.y + uRnd3.y), cos(uTime * uRnd1.z + uRnd3.z));
+      vec3 rnd2 = vec3(cos(uTime * uRnd2.x + uRnd4.x), cos(uTime * uRnd2.y + uRnd4.y), cos(uTime * uRnd2.z + uRnd4.z));
+      normal *= 1.0
+        + uRnd5.x * (cos((position.y + rnd1.x) * 20.0 * rnd1.y) + 1.0)
+        + uRnd5.y * (sin((position.y + rnd2.x) * 20.0 * rnd2.y) + 1.0)
+        + uRnd5.z * (cos((position.y + rnd1.z) * 20.0 * rnd2.z) + 1.0);
+      pos -= normal * side;
+      gl_Position = vec4(pos * uZoom, 0.0, 1.0);
+    }`));
+  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, `
+    precision mediump float; uniform vec3 uColor1, uColor2; varying float vU;
+    void main() { gl_FragColor = vec4(mix(uColor1, uColor2, vU), 1.0); }`));
+  gl.linkProgram(prog); if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+  const U = (n) => gl.getUniformLocation(prog, n);
+  gl.uniformMatrix2fv(U('uMat2'), false, new Float32Array([COS, -SIN, SIN, COS]));
+  gl.uniform1f(U('uSize'), SIZE); gl.uniform1f(U('uZoom'), 1.9);        // zoomed in: fewer, larger folds than on the full page
+  const aPos = gl.getAttribLocation(prog, 'position'), aSide = gl.getAttribLocation(prog, 'side');
+  const num = (css) => css.match(/\d+/g).map((v) => v / 255);
+  for (let i = 0; i < NX; i++) {
+    const r = R[i], x0 = -1 + 1 / NX + i * (2 / NX), data = new Float32Array(NY * 2 * 3);
+    for (let k = 0; k < NY; k++) { const y = 1 - k * (2 / (NY - 1)); data.set([x0, y, -1, x0, y, 1], k * 6); }
+    r.buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, r.buf); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    const lab = scale(i / NX); r.k1 = num(fromLab(lab)); r.k2 = num(fromLab([lab[0] + 19.8, lab[1], lab[2]]));
+  }
+  gl.enableVertexAttribArray(aPos); gl.enableVertexAttribArray(aSide);
+  const uT = U('uTime'), uR = [1, 2, 3, 4, 5].map((n) => U('uRnd' + n)), uC1 = U('uColor1'), uC2 = U('uColor2');
+  let time = 600, hovering = false, raf = 0, last = 0;
+  const size = () => { const d = Math.min(2, devicePixelRatio || 1); cv.width = Math.max(2, Math.round(cv.clientWidth * d)); cv.height = Math.max(2, Math.round(cv.clientHeight * d)); gl.viewport(0, 0, cv.width, cv.height); };
   const paint = () => {
-    const t = time * 0.035, Z = 2.3, X = (x) => (x * Z + 1) / 2 * W, Y = (y) => (1 - y * Z) / 2 * H;   // zoomed in: about a dozen ribbons cross the tile
-    for (let i = 0; i < NX; i++) {
-      const r = R[i], x0 = -1 + 1 / NX + i * (2 / NX);
-      const a = [Math.cos(t * r.r1[0] + r.r3[0]), Math.cos(t * r.r1[1] + r.r3[1]), Math.cos(t * r.r1[2] + r.r3[2])];
-      const b = [Math.cos(t * r.r2[0] + r.r4[0]), Math.cos(t * r.r2[1] + r.r4[1]), Math.cos(t * r.r2[2] + r.r4[2])];
-      const left = [], right = [];
-      for (let k = 0; k < NY; k++) {
-        const y = 1 - k * (2 / (NY - 1)), [px, py] = dp(x0, y);
-        const w = SIZE * (1 + r.r5[0] * (Math.cos((y + a[0]) * 20 * a[1]) + 1) + r.r5[1] * (Math.sin((y + b[0]) * 20 * b[1]) + 1) + r.r5[2] * (Math.cos((y + a[2]) * 20 * b[2]) + 1));
-        left.push([X(px + nbx * w), Y(py + nby * w)]); right.push([X(px - nbx * w), Y(py - nby * w)]);
-      }
-      const [mx, my] = dp(x0, 0), span = SIZE * 2.4;
-      const g = ctx.createLinearGradient(X(mx + nbx * span), Y(my + nby * span), X(mx - nbx * span), Y(my - nby * span));
-      g.addColorStop(0, r.c1); g.addColorStop(1, r.c2); ctx.fillStyle = g;
-      ctx.beginPath(); ctx.moveTo(left[0][0], left[0][1]);
-      for (let k = 1; k < NY; k++) ctx.lineTo(left[k][0], left[k][1]);
-      for (let k = NY - 1; k >= 0; k--) ctx.lineTo(right[k][0], right[k][1]);
-      ctx.closePath(); ctx.fill();
+    gl.uniform1f(uT, time * 0.035);
+    for (const r of R) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, r.buf);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 12, 0); gl.vertexAttribPointer(aSide, 1, gl.FLOAT, false, 12, 8);
+      [r.r1, r.r2, r.r3, r.r4, r.r5].forEach((v, n) => gl.uniform3f(uR[n], v[0], v[1], v[2]));
+      gl.uniform3f(uC1, r.k1[0], r.k1[1], r.k1[2]); gl.uniform3f(uC2, r.k2[0], r.k2[1], r.k2[2]);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, NY * 2);
     }
   };
   const frame = (now) => {
