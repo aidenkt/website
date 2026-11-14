@@ -133,26 +133,26 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 
 // Suggested mixes for interfaces. Every value is one of the palette's own colors, by name.
 const PALETTES = [
-  ['KT', 'My default. Mostly white, with KT Green for anything important.', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
-  ['KT at Night', 'The same thing in dark mode.', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
-  ['After Hours', 'A dark purple theme, named after my podcast.', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
-  ['Parks', 'Dark blue with bright pink and cyan, like a theme park at night.', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
+  ['KT', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
+  ['KT at Night', 'Black', 'Charcoal', 'Tech White', 'Snow', 'KT Green', 'Reveria Green'],
+  ['After Hours', 'After Hours Indigo', 'Elementary Purple', 'Tech White', 'Coastal Lavender', 'Early Purple', 'Booster Orchid'],
+  ['Parks', 'Space', 'After Hours Indigo', 'Tech White', 'Snow', 'Disney Pink', 'Park Sky'],
   // the rest are the colors of interfaces I built, each rounded to the nearest color in the palette
-  ['College', 'Cream, with a red that fades into coral.', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
-  ['Campus', 'White with green for anything you can press, and teal for cards.', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
-  ['Scout', 'Plain white with teal, and yellow as a second color.', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
-  ['Taskmaster', 'White with one purple, and coral for anything urgent.', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
-  ['Tester', 'White with a strong blue, and orange for the main button.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
-  ['Takeoff', 'White with a soft blue, and red for the one thing that matters.', 'Tech White', 'House White', 'Black', 'Titanium', 'Airport Blue', 'Aiden Red'],
-  ['BYK', 'Greys, with blue for actions and yellow for highlights.', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
-  ['BYK at Night', 'The same thing in dark mode.', 'Black', 'Space', 'Tech White', 'Snow', 'Airport Blue', 'Berkeley Yellow'],
+  ['College', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
+  ['Campus', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
+  ['Scout', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
+  ['Taskmaster', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
+  ['Tester', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
+  ['Takeoff', 'Tech White', 'House White', 'Black', 'Titanium', 'Airport Blue', 'Aiden Red'],
+  ['BYK', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
+  ['BYK at Night', 'Black', 'Space', 'Tech White', 'Snow', 'Airport Blue', 'Berkeley Yellow'],
 ];
 const ROLES = ['bg', 'surface', 'text', 'muted', 'accent', 'accent-2'];
 const ROLE_LABELS = ['Background', 'Surface', 'Text', 'Secondary text', 'Accent', 'Accent 2'];
 const byName = Object.fromEntries(COLORS.map((c) => [c[0], c]));
 const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 const pals = $('pals');
-if (pals) for (const [title, note, ...names] of PALETTES) {
+if (pals) for (const [title, ...names] of PALETTES) {
   const cs = names.map((n) => byName[n]);
   const [bg, surface, text, muted, accent, accent2] = cs.map((c) => c[1]);
   const on = (c) => (ratio('#0D0D0D', c[1]) >= ratio('#FDFFFF', c[1]) ? '#0D0D0D' : '#FDFFFF');   // whichever reads better
@@ -162,7 +162,6 @@ if (pals) for (const [title, note, ...names] of PALETTES) {
   card.innerHTML = `
     <div class="pal-ui">
       <p class="pal-title">${title}</p>
-      <p class="pal-note">${note}</p>
       <div class="pal-panel"><span class="pal-bar"><i></i></span><span class="pal-chip">New</span></div>
       <div class="pal-actions"><span class="pal-btn">Continue</span><span class="pal-link">Not now</span></div>
     </div>
