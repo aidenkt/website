@@ -212,18 +212,30 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   transition: transform .2s ease-out, box-shadow .2s ease-out; }
 .paper .sheet .kt { width: 52%; opacity: .92; }
 
-.float { background: var(--accent); transition: background-color .45s var(--ease); }
-.float .kt { color: #FDFFFF; transform: translate(calc(var(--mx) * 10px), calc(var(--my) * 8px - var(--on) * 10px)) scale(calc(1 + var(--on) * .05)); transition: transform .25s ease-out, filter .25s ease-out;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, .55)) drop-shadow(0 0 calc(38px + var(--on) * 18px) rgba(255, 255, 255, .7)) drop-shadow(0 calc(22px + var(--on) * 16px) calc(46px + var(--on) * 20px) rgba(255, 255, 255, calc(.45 + var(--on) * .25))); }
+.float { background: #FDFFFF; box-shadow: inset 0 0 0 1px var(--rule); }
+.float .under { position: absolute; inset: -6% -4%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3%; padding: 3%;
+  transform: translate(calc(var(--mx) * -12px), calc(var(--my) * -10px)); transition: transform .3s ease-out; }
+.float .under i { border-radius: 14px; }
+.float .under i:nth-child(1) { background: #E41D4C; } .float .under i:nth-child(2) { background: #FBC81F; } .float .under i:nth-child(3) { background: #69A6FD; } .float .under i:nth-child(4) { background: #7367FF; }
+.float .under i:nth-child(5) { background: #08C6BE; } .float .under i:nth-child(6) { background: #FC2F99; } .float .under i:nth-child(7) { background: #15DD7D; } .float .under i:nth-child(8) { background: #FF7D25; }
+.float .under i:nth-child(9) { background: #6728EF; } .float .under i:nth-child(10) { background: #36FD98; } .float .under i:nth-child(11) { background: #F76D53; } .float .under i:nth-child(12) { background: #5FE4FF; }
+.float .chip { position: relative; z-index: 1; display: flex; align-items: center; gap: .6em; background: #FDFFFF; color: #0D0D0D;
+  font: 600 clamp(14px, 1.3vw, 19px)/1 var(--sans); padding: .85em 1.25em; border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(13, 13, 13, .05), 0 0 calc(34px + var(--on) * 14px) calc(26px + var(--on) * 12px) rgba(253, 255, 255, .92);
+  transform: translate(calc(var(--mx) * 8px), calc(var(--my) * 6px - var(--on) * 4px)) scale(calc(1 + var(--on) * .04)); transition: transform .25s ease-out, box-shadow .25s ease-out; }
+.float .chip .kt { width: 2.1em; color: var(--accent); transition: color .45s var(--ease); }
 
 .stickers { background: #4D4947; }
 .stickers .st { position: absolute; cursor: grab; transition: translate .25s ease-out, rotate .25s var(--ease), scale .25s var(--ease), filter .25s; filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .25)) drop-shadow(0 10px 14px rgba(0, 0, 0, .28)); }
 .st-mark { width: 50%; left: 8%; top: 14%; rotate: -8deg; translate: calc(var(--mx) * 10px) calc(var(--my) * 8px); overflow: visible; }
-.st-mark .edge { fill: #FDFFFF; stroke: #FDFFFF; stroke-width: 130; stroke-linejoin: round; }
+.st-mark .edge { fill: #FDFFFF; stroke: #FDFFFF; stroke-width: 64; stroke-linejoin: round; }
 .st-mark .ink { fill: var(--accent); transition: fill .45s var(--ease); }
-.st-round { width: 30%; aspect-ratio: 1; right: 9%; top: 12%; border-radius: 50%; background: #E41D4C; border: clamp(5px, .5vw, 9px) solid #FDFFFF; display: grid; place-items: center; rotate: 11deg; translate: calc(var(--mx) * -16px) calc(var(--my) * -11px); color: #FDFFFF; }
+.st-round { width: 30%; aspect-ratio: 1; right: 9%; top: 12%; border-radius: 50%; background: #E41D4C; border: clamp(3px, .28vw, 5px) solid #FDFFFF; display: grid; place-items: center; rotate: 11deg; translate: calc(var(--mx) * -16px) calc(var(--my) * -11px); color: #FDFFFF; }
 .st-round .kt { width: 62%; }
-.st-word { right: 12%; bottom: 13%; background: #FDFFFF; color: #15DD7D; font: 700 clamp(20px, 2.3vw, 38px)/1 var(--display); letter-spacing: -0.012em; padding: .42em .5em .28em; border-radius: .42em; rotate: 4deg; translate: calc(var(--mx) * 20px) calc(var(--my) * 13px); }
+.st-word { width: 52%; right: 6%; bottom: 10%; rotate: 4deg; translate: calc(var(--mx) * 20px) calc(var(--my) * 13px); overflow: visible; }
+.st-word text { font: 700 150px var(--display); letter-spacing: -1.5px; }
+.st-word .edge { fill: #FDFFFF; stroke: #FDFFFF; stroke-width: 22; stroke-linejoin: round; }
+.st-word .ink { fill: #15DD7D; }
 .stickers .st:hover { rotate: 0deg; scale: 1.1; z-index: 2; filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .25)) drop-shadow(0 22px 26px rgba(0, 0, 0, .38)); }
 
 /* in use */
