@@ -1,20 +1,20 @@
 // The aidenkt palette. Order and names are Aiden's. Third value: 1 = dark label on the swatch. Fourth: where it came from.
 const COLORS = [
-  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0], ['3DS Red', '#B5121B', 0, 'My Flame Red 3DS.'],
-  ['Dragon Red', '#7D3230', 0, "The red paint on my elementary school."], ['Strawberry Lemonade', '#F76D53', 0], ['Overwatch Orange', '#FF7D25', 1],
-  ['Iced Latte', '#755640', 0, 'My playlist called Caramel.'], ['Mocha', '#563A26', 0, "The dark part of my Caramel playlist cover."],
-  ['Creamsicle', '#FCE3C8', 1, "A friend's playlist cover."], ['Starlight Gold', '#DCA021', 1, "The amber in the Aiden's Lounge logo."],
+  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0, "The color I used to promote digital student IDs.", ["https://aidenkt.medium.com/launching-digital-student-ids-to-over-13-000-students-without-storing-anything-82f891c27f06", "Read the article"]], ['3DS Red', '#B5121B', 0, 'My Flame Red 3DS.'],
+  ['Dragon Red', '#7D3230', 0, "The red paint on my elementary school."], ['Strawberry Lemonade', '#F76D53', 0, "The color of my playlist about the sunset, my favorite playlist."], ['Overwatch Orange', '#FF7D25', 1, "From my time as an administrator of r/Overwatch2."],
+  ['Iced Latte', '#755640', 0, "My default coffee order."], ['Mocha', '#563A26', 0, "The dark part of my Caramel playlist cover."],
+  ['Creamsicle', '#FCE3C8', 1, "A friend's playlist cover."], ['Starlight Gold', '#DCA021', 1, "The color the lights in my room at home in San Diego turn in the evening."],
   ['Berkeley Yellow', '#FBC81F', 1], ['Glasses Green', '#919762', 0, 'My Warby Parker Carltons, in Seaweed Crystal.'],
   ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."],
-  ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0, "One of my playlist covers."],
+  ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1, "The brand color of my first Minecraft server."], ['Matcha', '#0A864C', 0, "One of my playlist covers."],
   ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1, "A mint green from the Dorms app."], ['Scout Teal', '#08C6BE', 1, "The accent color of Scout."],
-  ['Park Sky', '#5FE4FF', 1], ['Space', '#1C3249', 0, "My Space playlist cover."],
-  ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1, "My Snow playlist cover."],
+  ['Park Sky', '#5FE4FF', 1, "The color of my first public Discord bot."], ['Space', '#1C3249', 0, "My Space playlist cover."],
+  ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1, "The color of snow at Mammoth Mountain."],
   ['Persian Sapphire', '#0445DF', 0, 'My playlist called Cobalt.'],
-  ['Stardust Blue', '#225FFD', 0], ['After Hours Indigo', '#252452', 0], ['Early Purple', '#7367FF', 0], ['Coastal Lavender', '#D4CDFF', 1, "A soft tint from the first version of Dorms."],
-  ['Turn Back Purple', '#6728EF', 0], ['Booster Orchid', '#E46BF4', 0, "From a brighter version of this site's background that I never switched on."], ['Held Violet', '#DE5BB6', 0, "The neon glow on my Held playlist cover."], ['Disney Pink', '#FC2F99', 0, "From the same unused set as Booster Orchid."],
+  ['Stardust Blue', '#225FFD', 0, "The UI color of a testing portal for my first startup."], ['After Hours Indigo', '#252452', 0, "The theme color of my Discord podcast, Discord After Hours w/ Aiden. It peaked at 120 listeners."], ['Early Purple', '#7367FF', 0, "The brand color of Early, my first startup, now defunct.", ["https://aidenkt.medium.com", "Read about it"]], ['Coastal Lavender', '#D4CDFF', 1, "From CoastalCare, an advanced business project."],
+  ['Turn Back Purple', '#6728EF', 0, "The color the lights in my room at home in San Diego turn in the evening."], ['Booster Orchid', '#E46BF4', 0, "Discord's booster color."], ['Held Violet', '#DE5BB6', 0, "The color of Newbies, the playlist where new songs I discover are held."], ['Disney Pink', '#FC2F99', 0, "From a brighter version of this site's background that I never switched on."],
   ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1, 'The cream from CollegeOS.'], ['Titanium', '#8F8A82', 0, "My Apple Watch Series 10, in natural titanium."],
-  ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0, "My Charcoal playlist cover."], ['Black', '#0D0D0D', 0],
+  ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0, "The color of New York City."], ['Black', '#0D0D0D', 0],
 ];
 const LOGO_GREEN = ['Logo Green', '#15DD7D', 0, 'The green of the wordmark and the mark.'];
 const EDGE = new Set(['Tech White', 'House White']);
@@ -43,13 +43,18 @@ let current = LOGO_GREEN;
 
 function pick(color, copy) {
   current = color;
-  const [name, hex, dark, story] = color;
+  const [name, hex, dark, story, link] = color;
   const root = document.documentElement.style;
   root.setProperty('--accent', hex);
   root.setProperty('--on-accent', dark ? '#0D0D0D' : '#FDFFFF');
   document.querySelector('meta[name="theme-color"]').content = hex;
   $('hero-name').textContent = name; $('hero-hex').textContent = hex;
-  $('d-name').textContent = name; $('d-story').textContent = story || '';
+  $('d-name').textContent = name;
+  const st = $('d-story'); st.textContent = story || '';
+  if (link) {
+    const a = document.createElement('a'); a.href = link[0]; a.textContent = link[1]; a.target = '_blank'; a.rel = 'noopener';
+    st.append(' ', a);
+  }
   const rows = [['HEX', hex], ['RGB', `rgb(${rgb(hex).join(' ')})`], ['OKLCH', oklch(hex)],
                 ...(color === LOGO_GREEN ? [] : [['CSS', `var(--${slug(name)})`]])];
   $('d-values').innerHTML = rows.map(([k, v]) => `<button type="button" data-copy="${v}"><span>${k}</span><span>${v}</span></button>`).join('')
