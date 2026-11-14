@@ -135,7 +135,7 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 const PALETTES = [
   // name, then background, surface, text, secondary text, accent, accent 2
   ['KT', 'Tech White', 'House White', 'Black', 'iPhone Gray', 'KT Green', 'Payback Pine'],
-  ['College', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
+  ['Aiden at School', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
   ['Campus', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
   ['Scout', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
   ['Taskmaster', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'Coastal Lavender'],
