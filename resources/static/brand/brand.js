@@ -1,22 +1,22 @@
 // The aidenkt palette. Order and names are Aiden's. Third value: 1 = dark label on the swatch. Fourth: where it came from.
 const COLORS = [
-  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0], ['3DS Red', '#B5121B', 0, 'my flame red 3ds.'],
+  ['Aiden Red', '#E41D4C', 0], ['ID Coral', '#FF566A', 0], ['3DS Red', '#B5121B', 0, 'My Flame Red 3DS.'],
   ['Dragon Red', '#7D3230', 0], ['Strawberry Lemonade', '#F76D53', 0], ['Overwatch Orange', '#FF7D25', 1],
-  ['Iced Latte', '#755640', 0, 'my playlist called caramel.'], ['Mocha', '#563A26', 0],
-  ['Creamsicle', '#FCE3C8', 1], ['Starlight Gold', '#DCA021', 1, "the amber in the aiden's lounge logo."],
-  ['Berkeley Yellow', '#FBC81F', 1], ['Glasses Green', '#919762', 0, 'my warby parker carltons, in seaweed crystal.'],
-  ['Bot Green', '#5FE21D', 1, "the green end of the lounge logo."],
-  ['LAX Mint', '#B6EAB6', 1, 'the arrivals wall at tom bradley, lax.'], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0],
-  ['Payback Pine', '#14452F', 0, 'the ink on the pay aiden specimen.'], ['KT Green', '#29EA97', 1], ['Scout Teal', '#08C6BE', 1],
+  ['Iced Latte', '#755640', 0, 'My playlist called Caramel.'], ['Mocha', '#563A26', 0],
+  ['Creamsicle', '#FCE3C8', 1], ['Starlight Gold', '#DCA021', 1, "The amber in the Aiden's Lounge logo."],
+  ['Berkeley Yellow', '#FBC81F', 1], ['Glasses Green', '#919762', 0, 'My Warby Parker Carltons, in Seaweed Crystal.'],
+  ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."],
+  ['LAX Mint', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Reveria Green', '#36FD98', 1], ['Matcha', '#0A864C', 0],
+  ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#29EA97', 1], ['Scout Teal', '#08C6BE', 1],
   ['Park Sky', '#5FE4FF', 1], ['Space', '#1C3249', 0],
-  ['Airport Blue', '#69A6FD', 1, 'the arrivals wall at tom bradley, lax.'], ['Snow', '#BAC1CB', 1],
-  ['Persian Sapphire', '#0445DF', 0, 'my playlist called cobalt.'],
+  ['Airport Blue', '#69A6FD', 1, 'The arrivals wall at Tom Bradley, LAX.'], ['Snow', '#BAC1CB', 1],
+  ['Persian Sapphire', '#0445DF', 0, 'My playlist called Cobalt.'],
   ['Stardust Blue', '#225FFD', 0], ['After Hours Indigo', '#252452', 0], ['Early Purple', '#7367FF', 0], ['Coastal Lavender', '#D4CDFF', 1],
   ['Turn Back Purple', '#6728EF', 0], ['Booster Orchid', '#E46BF4', 0], ['Held Violet', '#DE5BB6', 0], ['Disney Pink', '#FC2F99', 0],
-  ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1, 'the cream from collegeos.'], ['Titanium', '#8F8A82', 0],
-  ['iPhone Gray', '#534D5B', 0, 'my iphone 14 pro, deep purple.'], ['Charcoal', '#4D4947', 0], ['Black', '#0D0D0D', 0],
+  ['Tech White', '#FDFFFF', 1], ['House White', '#FBF7F0', 1, 'The cream from CollegeOS.'], ['Titanium', '#8F8A82', 0],
+  ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0], ['Black', '#0D0D0D', 0],
 ];
-const LOGO_GREEN = ['Logo Green', '#15DD7D', 0, 'the green of the wordmark and the mark.'];
+const LOGO_GREEN = ['Logo Green', '#15DD7D', 0, 'The green of the wordmark and the mark.'];
 const EDGE = new Set(['Tech White', 'House White']);
 const MARK = 'M0 0h152v473H0zM321 0h387v473H556V121H403l-63 74 172 278H333L232 296V107zM788 0h75v121h-75z';
 
@@ -50,10 +50,10 @@ function pick(color, copy) {
   document.querySelector('meta[name="theme-color"]').content = hex;
   $('hero-name').textContent = name; $('hero-hex').textContent = hex;
   $('d-name').textContent = name; $('d-story').textContent = story || '';
-  const rows = [['hex', hex], ['rgb', `rgb(${rgb(hex).join(' ')})`], ['oklch', oklch(hex)],
-                ...(color === LOGO_GREEN ? [] : [['css', `var(--${slug(name)})`]])];
+  const rows = [['HEX', hex], ['RGB', `rgb(${rgb(hex).join(' ')})`], ['OKLCH', oklch(hex)],
+                ...(color === LOGO_GREEN ? [] : [['CSS', `var(--${slug(name)})`]])];
   $('d-values').innerHTML = rows.map(([k, v]) => `<button type="button" data-copy="${v}"><span>${k}</span><span>${v}</span></button>`).join('')
-    + `<button type="button" class="static" tabindex="-1"><span>on white / on black</span><span>${contrast(hex, '#FFFFFF')} · ${contrast(hex, '#000000')}</span></button>`;
+    + `<button type="button" class="static" tabindex="-1"><span>On white / on black</span><span>${contrast(hex, '#FFFFFF')} · ${contrast(hex, '#000000')}</span></button>`;
   for (const b of grid.children) b.setAttribute('aria-pressed', String(b.dataset.hex === hex));
   if (copy && navigator.clipboard) navigator.clipboard.writeText(hex).catch(() => {});
 }
@@ -72,7 +72,7 @@ for (const color of COLORS) {
 $('d-values').addEventListener('click', (e) => {
   const b = e.target.closest('[data-copy]'); if (!b || !navigator.clipboard) return;
   const label = b.firstElementChild, was = label.textContent;
-  navigator.clipboard.writeText(b.dataset.copy).then(() => { label.textContent = 'copied'; setTimeout(() => { label.textContent = was; }, 1100); }).catch(() => {});
+  navigator.clipboard.writeText(b.dataset.copy).then(() => { label.textContent = 'Copied'; setTimeout(() => { label.textContent = was; }, 1100); }).catch(() => {});
 });
 
 // the hero mark steps through the palette
@@ -107,7 +107,7 @@ for (const btn of document.querySelectorAll('[data-file]')) btn.addEventListener
 const themeBtn = $('theme');
 function setTheme(t, keep) {
   document.documentElement.dataset.theme = t;
-  themeBtn.lastElementChild.textContent = t === 'dark' ? 'dark' : 'light';
+  themeBtn.lastElementChild.textContent = t === 'dark' ? 'Dark' : 'Light';
   themeBtn.setAttribute('aria-pressed', String(t === 'dark'));
   if (keep) { try { localStorage.setItem('brand-theme', t); } catch (e) {} }
 }
