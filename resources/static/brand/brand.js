@@ -501,13 +501,13 @@ void main() {
   for (let i = 0; i < NX; i++) {
     const v3 = (lo, hi) => [rnd(lo, hi), rnd(lo, hi), rnd(lo, hi)], lab = scale(i / NX);
     R.push({ r1: v3(-1, 1), r2: v3(-1, 1), r3: v3(-1, 1), r4: v3(-1, 1), r5: [rnd(0.2, 0.5), rnd(0.3, 0.6), rnd(0.4, 0.7)],
-             c1: fromLab(lab), c2: fromLab([lab[0] + 19.8, lab[1], lab[2]]) });
+             c1: fromLab(lab), c2: fromLab([lab[0] > 58 ? lab[0] - 7 : lab[0] + 19.8, lab[1], lab[2]]) });   // already-light ribbons shade darker, so none washes out to white
   }
   const [nbx, nby] = dp(1, 0);
   let W = 0, H = 0, time = 600, hovering = false, raf = 0, last = 0;
   const size = () => { const d = Math.min(2, devicePixelRatio || 1); W = cv.width = Math.max(2, Math.round(cv.clientWidth * d)); H = cv.height = Math.max(2, Math.round(cv.clientHeight * d)); };
   const paint = () => {
-    const t = time * 0.035, X = (x) => (x * 1.08 + 1) / 2 * W, Y = (y) => (1 - y * 1.08) / 2 * H;
+    const t = time * 0.035, Z = 2.3, X = (x) => (x * Z + 1) / 2 * W, Y = (y) => (1 - y * Z) / 2 * H;   // zoomed in: about a dozen ribbons cross the tile
     for (let i = 0; i < NX; i++) {
       const r = R[i], x0 = -1 + 1 / NX + i * (2 / NX);
       const a = [Math.cos(t * r.r1[0] + r.r3[0]), Math.cos(t * r.r1[1] + r.r3[1]), Math.cos(t * r.r1[2] + r.r3[2])];
