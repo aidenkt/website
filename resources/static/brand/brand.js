@@ -60,6 +60,7 @@ function pick(color, copy) {
   root.setProperty('--on-accent', dark ? '#0D0D0D' : '#FDFFFF');
   document.querySelector('meta[name="theme-color"]').content = hex;
   $('hero-name').textContent = name; $('hero-hex').textContent = hex;
+  for (const cap of document.querySelectorAll('.picked-cap')) cap.textContent = `${dark ? 'Black' : 'White'} on What You Picked`;
   $('d-name').textContent = name;
   const st = $('d-story'); st.textContent = '';
   const at = link ? story.indexOf(link[1]) : -1;          // link = [address, the words in the story to link]
