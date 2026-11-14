@@ -138,7 +138,7 @@ const PALETTES = [
   ['College', 'House White', 'Tech White', 'Black', 'Titanium', 'Aiden Red', 'ID Coral'],
   ['Campus', 'Tech White', 'House White', 'Black', 'Titanium', 'KT Green', 'Scout Teal'],
   ['Scout', 'Tech White', 'House White', 'Black', 'Titanium', 'Scout Teal', 'Berkeley Yellow'],
-  ['Taskmaster', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'ID Coral'],
+  ['Taskmaster', 'Tech White', 'House White', 'Black', 'Titanium', 'Early Purple', 'Coastal Lavender'],
   ['Tester', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Overwatch Orange'],
   ['BYK', 'Tech White', 'House White', 'Black', 'Titanium', 'Stardust Blue', 'Berkeley Yellow'],
   ['Sunset', 'House White', 'Creamsicle', 'Mocha', 'Iced Latte', 'Strawberry Lemonade', 'Starlight Gold'],
