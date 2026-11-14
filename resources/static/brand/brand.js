@@ -113,3 +113,14 @@ function setTheme(t, keep) {
 }
 setTheme(document.documentElement.dataset.theme || 'light', false);
 themeBtn.addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true));
+
+// the signature writes itself the first time it scrolls into view
+const sign = $('sign');
+if (sign && 'IntersectionObserver' in window) {
+  sign.classList.add('wait');
+  const seen = new IntersectionObserver((entries) => {
+    if (!entries.some((e) => e.isIntersecting)) return;
+    sign.classList.replace('wait', 'write'); seen.disconnect();
+  }, { threshold: 0.6 });
+  seen.observe(sign);
+}

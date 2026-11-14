@@ -74,8 +74,13 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .statement { font: 700 clamp(30px, 4.6vw, 76px)/1 var(--display); letter-spacing: -0.03em; max-width: 26ch; text-wrap: balance; color: var(--faint); }
 .statement + .statement { margin-top: .5em; }
 .statement.last { color: var(--ink); }
-.sign { display: block; width: clamp(190px, 23vw, 350px); height: auto; margin: clamp(16px, 2.4vw, 36px) 0 0 -1.2%; mix-blend-mode: multiply; }
-:root[data-theme="dark"] .sign { filter: invert(1); mix-blend-mode: screen; }
+.sign { display: block; width: clamp(190px, 23vw, 350px); height: auto; margin: clamp(16px, 2.4vw, 36px) 0 0 -1%; overflow: visible; }
+.sign path { fill: none; stroke: var(--ink); stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+/* written stroke by stroke the first time it scrolls into view (brand.js adds the classes) */
+.sign.wait path { stroke-dashoffset: 1; }
+.sign.write path { animation: write var(--len) cubic-bezier(.45, .05, .35, 1) var(--at) both; }
+@keyframes write { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .sign.wait path { stroke-dashoffset: 0; } .sign.write path { animation: none; } }
 .spec { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 clamp(16px, 3vw, 48px); margin-top: clamp(40px, 7vw, 104px); }
 .spec div { border-top: 2px solid var(--ink); padding-top: 14px; }
 .spec dt { font-size: 14px; color: var(--soft); }
