@@ -71,9 +71,10 @@ button { font: inherit; color: inherit; }
 h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.035em; max-width: 15ch; margin-bottom: clamp(32px, 6vw, 88px); text-wrap: balance; }
 
 /* name */
-.statement { font: 700 clamp(30px, 4.6vw, 76px)/1 var(--display); letter-spacing: -0.03em; max-width: 26ch; text-wrap: balance; color: var(--faint); }
+.statement { font: 700 clamp(26px, 3.7vw, 62px)/1.02 var(--display); letter-spacing: -0.03em; max-width: 30ch; text-wrap: balance; color: var(--faint); }
 .statement + .statement { margin-top: .5em; }
 .statement.last { color: var(--ink); }
+.signed { font: 700 clamp(20px, 2.2vw, 34px)/1 var(--display); letter-spacing: -0.02em; margin-top: clamp(10px, 1.4vw, 20px); }
 .sign { display: block; width: clamp(190px, 23vw, 350px); height: auto; margin: clamp(16px, 2.4vw, 36px) 0 0 -1%; overflow: visible; }
 .sign .ink { fill: var(--ink); }
 .sign .pen { fill: none; stroke: #fff; stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
