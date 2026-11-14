@@ -295,19 +295,21 @@
     <section id="files" class="sec">
       <p class="tag">09 · Files</p>
       <div class="maker">
-        <div class="maker-view" id="mk-view" data-bg="none"><svg id="mk-svg" viewBox="0 0 863 473" aria-hidden="true"><path id="mk-path"/></svg></div>
+        <div class="maker-view" id="mk-view" aria-hidden="true"></div>
         <div class="maker-side">
           <div class="maker-row" role="group" aria-label="Which one">
             <button type="button" data-mk-shape="mark" aria-pressed="true">Mark</button>
             <button type="button" data-mk-shape="word" aria-pressed="false">Wordmark</button>
           </div>
-          <div class="maker-row" role="group" aria-label="Background">
-            <button type="button" data-mk-bg="none" aria-pressed="true">No background</button>
-            <button type="button" data-mk-bg="white" aria-pressed="false">White</button>
-            <button type="button" data-mk-bg="black" aria-pressed="false">Black</button>
+          <div class="maker-pick">
+            <p class="maker-name"><span>Color</span><b id="mk-name">KT Green</b> <code id="mk-hex">#15DD7D</code></p>
+            <div class="maker-dots" id="mk-dots" role="group" aria-label="Color"></div>
           </div>
-          <div class="maker-dots" id="mk-dots" role="group" aria-label="Color"></div>
-          <p class="maker-name"><b id="mk-name">KT Green</b> <code id="mk-hex">#15DD7D</code></p>
+          <div class="maker-pick">
+            <p class="maker-name"><span>Background</span><button type="button" class="maker-none" id="mk-bg-none" aria-pressed="true">None</button><b id="mk-bg-name"></b> <code id="mk-bg-hex"></code></p>
+            <div class="maker-dots" id="mk-bg-dots" role="group" aria-label="Background"></div>
+          </div>
+          <label class="maker-check"><input type="checkbox" id="mk-shadow"> Shadow</label>
           <div class="maker-row get">
             <button type="button" id="mk-svg-dl">Download SVG</button>
             <button type="button" id="mk-png-dl">Download PNG</button>

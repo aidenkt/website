@@ -75,7 +75,7 @@ function pick(color, copy) {
   $('d-values').innerHTML = rows.map(([k, v]) => `<button type="button" data-copy="${v}"><span>${k}</span><span>${v}</span></button>`).join('')
     + `<button type="button" class="static" tabindex="-1"><span>On white / on black</span><span>${contrast(hex, '#FFFFFF')} · ${contrast(hex, '#000000')}</span></button>`;
   for (const b of grid.children) b.setAttribute('aria-pressed', String(b.dataset.hex === hex));
-  const dots = $('mk-dots'); if (dots) { for (const b of dots.children) b.setAttribute('aria-pressed', String(b.dataset.hex === hex)); $('mk-name').textContent = name; $('mk-hex').textContent = hex; }
+  const dots = $('mk-dots'); if (dots) { for (const b of dots.children) b.setAttribute('aria-pressed', String(b.dataset.hex === hex)); $('mk-name').textContent = name; $('mk-hex').textContent = hex; if (mk) makerDraw(); }
   if (copy && navigator.clipboard) navigator.clipboard.writeText(hex).catch(() => {});
 }
 
@@ -130,18 +130,58 @@ function save(name, text, type) {
 }
 // The wordmark as outlines (League Spartan Bold, lowercase, the page's own letter spacing), so a download needs no font.
 const WORD = 'M681.5 1376V1242.7Q672.5 1263.5 636.4 1301.3Q600.3 1339.2 540.3 1369.6Q480.3 1400 399.5 1400Q280.3 1400 190.1 1341.6Q100 1283.3 50 1184.8Q0 1086.4 0 966Q0 845.6 50 747.2Q100 648.7 190.1 589.9Q280.3 531 399.5 531Q477.4 531 535 555.7Q592.5 580.4 629 613.7Q665.4 647.1 678.5 674.7V555H980.6V1376ZM298.2 966Q298.2 1022.4 324.2 1066.8Q350.2 1111.3 393.6 1136.4Q436.9 1161.4 489.5 1161.4Q544.5 1161.4 586.7 1136.1Q629 1110.7 653.2 1066.3Q677.5 1021.8 677.5 966Q677.5 910.2 653.2 865.7Q629 821.3 586.7 795.4Q544.5 769.6 489.5 769.6Q436.9 769.6 393.6 795.1Q350.2 820.7 324.2 865.2Q298.2 909.6 298.2 966ZM1160.4 1376V555H1463.6V1376ZM1315.5 386.3Q1244.2 386.3 1194.3 335.6Q1144.4 285 1144.4 215.1Q1144.4 144.9 1194.4 93.5Q1244.5 42.2 1315.5 42.2Q1362.6 42.2 1401.8 65.7Q1440.9 89.3 1465 128.1Q1489 167 1489 215.1Q1489 285 1438.1 335.6Q1387.2 386.3 1315.5 386.3ZM2001.7 1400Q1882.5 1400 1794.6 1341.6Q1706.6 1283.3 1658.1 1184.8Q1609.5 1086.4 1609.5 966Q1609.5 845.6 1658.1 747.2Q1706.6 648.7 1794.6 589.9Q1882.5 531 2001.7 531Q2080.6 531 2141.7 555.4Q2202.8 579.8 2240.6 613.2Q2278.5 646.5 2287.3 674.7V0H2590.6V1376H2290.3V1242.7Q2270.5 1280 2227.6 1316.3Q2184.7 1352.5 2126.6 1376.3Q2068.5 1400 2001.7 1400ZM2094.6 1161.4Q2149.6 1161.4 2193.1 1136.1Q2236.6 1110.7 2262 1066.3Q2287.3 1021.8 2287.3 966Q2287.3 910.2 2262 865.7Q2236.6 821.3 2193.1 795.4Q2149.6 769.6 2094.6 769.6Q2042.4 769.6 1999.9 795.1Q1957.4 820.7 1932.5 865.2Q1907.6 909.6 1907.6 966Q1907.6 1022.4 1932.5 1066.8Q1957.4 1111.3 1999.9 1136.4Q2042.4 1161.4 2094.6 1161.4ZM2984.4 1029.5Q2987.9 1074 3012.7 1108.2Q3037.4 1142.5 3081.9 1161.7Q3126.4 1181 3187.9 1181Q3245.4 1181 3292.2 1169.2Q3338.9 1157.5 3373.4 1139.2Q3407.9 1121 3426.4 1102L3544.4 1290Q3519.4 1317 3474.2 1342.3Q3428.9 1367.5 3354.9 1383.8Q3280.9 1400 3167.9 1400Q3031.4 1400 2925.4 1349Q2819.4 1298 2758.9 1198.8Q2698.4 1099.5 2698.4 956.5Q2698.4 836.5 2750.9 740Q2803.4 643.5 2903.2 587.3Q3002.9 531 3143.9 531Q3277.9 531 3376.2 580Q3474.4 629 3527.9 725.5Q3581.4 822 3581.4 965.5Q3581.4 973.5 3580.9 997.8Q3580.4 1022 3578.4 1029.5ZM3295.9 871Q3294.9 838.5 3278.9 807Q3262.9 775.5 3230.9 755Q3198.9 734.5 3148.4 734.5Q3098.4 734.5 3064.2 754Q3029.9 773.5 3011.9 804.5Q2993.9 835.5 2991.4 871ZM4279.6 531Q4366.2 531 4448 565.8Q4529.8 600.6 4582.9 676.5Q4635.9 752.4 4635.9 875.1V1376H4331.4V925.2Q4331.4 837.5 4289.4 792.6Q4247.4 747.7 4179.4 747.7Q4134.3 747.7 4094.5 771.5Q4054.8 795.4 4030.6 837.5Q4006.4 879.7 4006.4 935.3V1376H3702.4V555H4006.4V675.7Q4017.5 642.6 4056.3 609.3Q4095.1 575.9 4153.6 553.5Q4212 531 4279.6 531ZM5349.3 555H5693.3L5305.5 946.7L5732.6 1376H5381.4L5064.2 1045.8V1376H4760.2V0H5064.2V840.5ZM5720.4 555H5860.1V218H6160.5V555H6345V805.2H6160.5V1033.6Q6160.5 1084.6 6175.9 1116.1Q6191.4 1147.6 6230.8 1147.6Q6258.2 1147.6 6277.2 1136Q6296.2 1124.4 6300.2 1120.1L6403.9 1336Q6396.7 1342.5 6360.5 1358.1Q6324.2 1373.7 6268 1386.9Q6211.9 1400 6143 1400Q6019.8 1400 5940 1330.5Q5860.1 1261 5860.1 1115.8V805.2H5720.4Z';
-const SHAPES = { mark: { d: MARK, w: 863, h: 473, file: 'kt' }, word: { d: WORD, w: 6404, h: 1400, file: 'wordmark' } };
-const BGS = { none: null, white: '#FDFFFF', black: '#0D0D0D' };
-const mk = { shape: 'mark', bg: 'none' };
+// Frames measured from Aiden's approved files in /brand/logo/. The mark sits at its own size at 367, 577 in a 1563 square
+// (kt-white-on-black.png, kt-white-on-color.png; the 500 px kt-*.png files have the same proportions). The wordmark is 1243 wide,
+// centred on 963.5, 492.75 in 1920 x 1080 (aidenkt-wordmark-green.png). The shadows are measured from the same files: black,
+// straight down, with a Gaussian blur of standard deviation sd.
+const SHAPES = {
+  mark: { d: MARK, w: 863, h: 473, file: 'kt', W: 1563, H: 1563, x: 367, y: 577, k: 1, sh: { dy: 25.1, sd: 22.7, a: 0.12 } },
+  word: { d: WORD, w: 6404, h: 1400, file: 'wordmark', W: 1920, H: 1080, x: 342, y: 492.75 - 700 * 1243 / 6404, k: 1243 / 6404, sh: { dy: 12, sd: 12.4, a: 0.14 } },
+};
+var mk = { shape: 'mark', bg: null, shadow: false };   // var, not const: pick() runs before this line and checks it
 
-// One drawing for a shape, a color and a background. With a background the shape gets room around it; without, it is cropped tight.
+// One drawing for a shape, a color, a background (or none) and the shadow (or not). The PNG is drawn from the same numbers.
 function artwork() {
-  const s = SHAPES[mk.shape], bg = BGS[mk.bg], pad = bg ? Math.round(s.h * 0.55) : 0;
-  const w = s.w + pad * 2, h = s.h + pad * 2;
-  const text = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">`
-    + (bg ? `<rect width="${w}" height="${h}" fill="${bg}"/>` : '')
-    + `<path fill="${current[1]}" transform="translate(${pad} ${pad})" d="${s.d}"/></svg>\n`;
-  return { text, w, h, name: `aidenkt-${s.file}-${slug(current[0])}${bg ? '-on-' + mk.bg : ''}` };
+  const s = SHAPES[mk.shape], f = s.sh, bg = mk.bg;
+  const shadow = mk.shadow ? `<defs><filter id="mk-shadow" filterUnits="userSpaceOnUse" x="0" y="0" width="${s.W}" height="${s.H}">`
+    + `<feGaussianBlur in="SourceAlpha" stdDeviation="${f.sd}"/><feOffset dy="${f.dy}" result="b"/>`
+    + `<feFlood flood-color="#000000" flood-opacity="${f.a}"/><feComposite in2="b" operator="in"/>`
+    + `<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>` : '';
+  const text = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${s.W} ${s.H}" width="${s.W}" height="${s.H}">${shadow}`
+    + (bg ? `<rect width="${s.W}" height="${s.H}" fill="${bg[1]}"/>` : '')
+    + `<g${mk.shadow ? ' filter="url(#mk-shadow)"' : ''}><path fill="${current[1]}" transform="translate(${+s.x.toFixed(3)} ${+s.y.toFixed(3)}) scale(${+s.k.toFixed(6)})" d="${s.d}"/></g></svg>\n`;
+  return { text, name: `aidenkt-${s.file}-${slug(current[0])}${bg ? '-on-' + slug(bg[0]) : ''}${mk.shadow ? '-shadow' : ''}` };
+}
+function artworkCanvas() {
+  const s = SHAPES[mk.shape], c = document.createElement('canvas'); c.width = s.W; c.height = s.H;
+  const x = c.getContext('2d');
+  if (mk.bg) { x.fillStyle = mk.bg[1]; x.fillRect(0, 0, s.W, s.H); }
+  if (mk.shadow) x.drawImage(shadowLayer(s), 0, 0);
+  x.translate(s.x, s.y); x.scale(s.k, s.k); x.fillStyle = current[1]; x.fill(new Path2D(s.d));
+  return c;
+}
+// The shadow is blurred here rather than with the canvas's own shadowBlur, which comes out narrower than asked for and differs between
+// browsers. A true Gaussian, run over just the box the shadow can reach, so the PNG matches the SVG filter and Aiden's files.
+function shadowLayer(s) {
+  const f = s.sh, r = Math.ceil(f.sd * 3.5), m = document.createElement('canvas'); m.width = s.W; m.height = s.H;
+  const x = m.getContext('2d', { willReadFrequently: true });
+  x.translate(s.x, s.y + f.dy); x.scale(s.k, s.k); x.fill(new Path2D(s.d)); x.setTransform(1, 0, 0, 1, 0, 0);
+  const x0 = Math.max(0, Math.floor(s.x - r)), y0 = Math.max(0, Math.floor(s.y + f.dy - r));
+  const w = Math.min(s.W, Math.ceil(s.x + s.w * s.k + r)) - x0, h = Math.min(s.H, Math.ceil(s.y + f.dy + s.h * s.k + r)) - y0;
+  const img = x.getImageData(x0, y0, w, h), px = img.data, n = w * h, a = new Float32Array(n), b = new Float32Array(n);
+  const k = new Float32Array(2 * r + 1); let sum = 0;
+  for (let i = -r; i <= r; i++) sum += k[i + r] = Math.exp(-i * i / (2 * f.sd * f.sd));
+  for (let i = 0; i < k.length; i++) k[i] /= sum;
+  for (let i = 0; i < n; i++) a[i] = px[i * 4 + 3] / 255;
+  for (let yy = 0; yy < h; yy++) for (let xx = 0, o = yy * w; xx < w; xx++) {
+    let v = 0; for (let t = Math.max(-r, -xx), e = Math.min(r, w - 1 - xx); t <= e; t++) v += a[o + xx + t] * k[t + r]; b[o + xx] = v;
+  }
+  for (let xx = 0; xx < w; xx++) for (let yy = 0; yy < h; yy++) {
+    let v = 0; for (let t = Math.max(-r, -yy), e = Math.min(r, h - 1 - yy); t <= e; t++) v += b[(yy + t) * w + xx] * k[t + r]; a[yy * w + xx] = v;
+  }
+  for (let i = 0; i < n; i++) { px[i * 4] = px[i * 4 + 1] = px[i * 4 + 2] = 0; px[i * 4 + 3] = Math.round(a[i] * f.a * 255); }
+  x.clearRect(0, 0, s.W, s.H); x.putImageData(img, x0, y0);
+  return m;
 }
 function saveBlob(name, blob) {
   const a = document.createElement('a');
@@ -150,34 +190,32 @@ function saveBlob(name, blob) {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
 function makerDraw() {
-  const s = SHAPES[mk.shape];
-  $('mk-svg').setAttribute('viewBox', `0 0 ${s.w} ${s.h}`); $('mk-path').setAttribute('d', s.d);
-  $('mk-view').dataset.bg = mk.bg; $('mk-view').dataset.shape = mk.shape;
+  $('mk-view').innerHTML = artwork().text;
   for (const b of document.querySelectorAll('[data-mk-shape]')) b.setAttribute('aria-pressed', String(b.dataset.mkShape === mk.shape));
-  for (const b of document.querySelectorAll('[data-mk-bg]')) b.setAttribute('aria-pressed', String(b.dataset.mkBg === mk.bg));
+  const bg = mk.bg ? mk.bg[1] : '';
+  for (const b of $('mk-bg-dots').children) b.setAttribute('aria-pressed', String(b.dataset.hex === bg));
+  $('mk-bg-none').setAttribute('aria-pressed', String(!mk.bg));
+  $('mk-bg-name').textContent = mk.bg ? mk.bg[0] : ''; $('mk-bg-hex').textContent = bg;
 }
 for (const b of document.querySelectorAll('[data-mk-shape]')) b.addEventListener('click', () => { mk.shape = b.dataset.mkShape; makerDraw(); });
-for (const b of document.querySelectorAll('[data-mk-bg]')) b.addEventListener('click', () => { mk.bg = b.dataset.mkBg; makerDraw(); });
-for (const color of COLORS) {
-  const [name, hex] = color;
-  const b = document.createElement('button');
-  b.type = 'button'; b.dataset.hex = hex; b.title = name; b.setAttribute('aria-label', `${name}, ${hex}`);
-  b.className = EDGE.has(name) ? 'edge' : ''; b.style.setProperty('--c', hex);
-  b.addEventListener('click', () => pick(color, false));
-  $('mk-dots').appendChild(b);
+$('mk-bg-none').addEventListener('click', () => { mk.bg = null; makerDraw(); });
+$('mk-shadow').addEventListener('change', (e) => { mk.shadow = e.target.checked; makerDraw(); });
+for (const [row, choose] of [['mk-dots', (color) => pick(color, false)], ['mk-bg-dots', (color) => { mk.bg = color; makerDraw(); }]]) {
+  for (const color of COLORS) {
+    const [name, hex] = color;
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.hex = hex; b.title = name; b.setAttribute('aria-label', `${name}, ${hex}`);
+    b.className = EDGE.has(name) ? 'edge' : ''; b.style.setProperty('--c', hex);
+    b.addEventListener('click', () => choose(color));
+    $(row).appendChild(b);
+  }
 }
 for (const b of $('mk-dots').children) b.setAttribute('aria-pressed', String(b.dataset.hex === current[1]));
+mk.shadow = $('mk-shadow').checked;
 $('mk-svg-dl').addEventListener('click', () => { const a = artwork(); save(a.name + '.svg', a.text, 'image/svg+xml'); });
 $('mk-png-dl').addEventListener('click', () => {
-  const a = artwork(), W = mk.shape === 'word' ? 3200 : 2400, H = Math.round(W * a.h / a.w);
-  const img = new Image();
-  const url = URL.createObjectURL(new Blob([a.text], { type: 'image/svg+xml' }));
-  img.onload = () => {
-    const c = document.createElement('canvas'); c.width = W; c.height = H;
-    c.getContext('2d').drawImage(img, 0, 0, W, H); URL.revokeObjectURL(url);
-    c.toBlob((blob) => blob && saveBlob(a.name + '.png', blob), 'image/png');
-  };
-  img.src = url;
+  const name = artwork().name;
+  artworkCanvas().toBlob((blob) => blob && saveBlob(name + '.png', blob), 'image/png');
 });
 makerDraw();
 
