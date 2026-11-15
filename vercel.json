@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/(|privacy/?|wood/?|.*\\.(html|css|js))",
+      "src": "/(|privacy/?|wood/?|brand/?|.*\\.(html|css|js))",
       "headers": {
         "cache-control": "no-store"
       },
