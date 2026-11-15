@@ -84,12 +84,9 @@ a:focus-visible {
 #name-handwritten {
   margin-top: 45px; 
   margin-bottom: -10px;
-  font-family: 'Fraunces', Georgia, serif;
-  font-style: italic;
-  font-weight: 600;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
-  letter-spacing: -0.02em;
-  font-size: 52px;
+  font-family: 'Caveat', sans-serif;
+  font-weight: 400;
+  font-size: 65px;
 }
 
 .overlay-container {
@@ -364,7 +361,7 @@ html.edge-extend .overlay-container {
 
   #name-handwritten {
     margin-top: 40px; 
-    font-size: 72px;
+    font-size: 90px;
   }
 
   .icon-container {
@@ -396,7 +393,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 60px;
+    font-size: 76px;
     margin-top: 0;
     margin-bottom: 16px;
     text-align: center;
@@ -425,7 +422,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 56px;
+    font-size: 70px;
     margin-bottom: 14px;
   }
 
@@ -452,7 +449,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 34px;
+    font-size: 42px;
     margin-top: 0;
     margin-bottom: 10px;
     line-height: 1.1;
@@ -475,7 +472,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 30px;
+    font-size: 38px;
     margin-top: 0;
     margin-bottom: 8px;
   }
