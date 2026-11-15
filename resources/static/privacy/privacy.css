@@ -23,7 +23,7 @@ body {
     radial-gradient(circle at 5% 95%, rgba(136, 244, 78, 0.08), transparent 25rem),
     #ffffff;
   color: var(--ink);
-  font-family: "Lato", sans-serif;
+  font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 17px;
   line-height: 1.72;
 }
@@ -107,9 +107,11 @@ header {
 
 h1 {
   margin: 0;
-  font-family: "Caveat", cursive;
-  font-size: clamp(58px, 10vw, 82px);
-  font-weight: 400;
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  font-size: clamp(54px, 9vw, 76px);
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 0.95;
 }
@@ -179,8 +181,10 @@ footer a {
 
 footer span {
   color: var(--muted);
-  font-family: "Caveat", cursive;
-  font-size: 30px;
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  font-size: 26px;
 }
 
 @media (max-width: 600px) {

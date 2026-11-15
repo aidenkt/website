@@ -11,7 +11,7 @@
   --deep-panel: #1a1918;
   --g: clamp(16px, 4.4vw, 64px);
   --display: 'League Spartan', 'Futura', 'Century Gothic', sans-serif;
-  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
@@ -354,7 +354,10 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .types h3 { font-size: 17px; font-weight: 600; }
 .types header p { color: var(--soft); font-size: 15px; margin-top: 4px; }
 .specimen.ls { font: 700 clamp(48px, 10vw, 168px)/.86 var(--display); letter-spacing: -0.035em; padding-top: .1em; }
-.specimen.inter { font-size: clamp(20px, 2.6vw, 38px); line-height: 1.25; letter-spacing: -0.015em; max-width: 30ch; }
+.specimen.geist { font-size: clamp(20px, 2.6vw, 38px); line-height: 1.25; letter-spacing: -0.015em; max-width: 30ch; }
+.specimen.is { font: 400 clamp(30px, 4.4vw, 72px)/1.05 'Instrument Serif', Georgia, serif; letter-spacing: -0.01em; max-width: 22ch; text-wrap: balance; }
+.specimen.dms { font: 400 clamp(30px, 4.4vw, 72px)/1.05 'DM Serif Display', Georgia, serif; letter-spacing: -0.01em; max-width: 22ch; text-wrap: balance; }
+.specimen.fr { font: italic 600 clamp(56px, 10vw, 168px)/.95 'Fraunces', Georgia, serif; font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144; letter-spacing: -0.02em; padding-bottom: .06em; }
 .specimen.jb { font: 500 clamp(20px, 3.4vw, 52px)/1.1 var(--mono); letter-spacing: -0.03em; overflow-wrap: anywhere; }
 
 /* files */
