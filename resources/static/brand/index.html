@@ -16,6 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/brand/brand.css">
+  <script src="https://accounts.aidenkt.com/kit/kit.js" defer></script>
   <script>
     (function () {
       var t; try { t = localStorage.getItem('brand-theme'); } catch (e) {}
@@ -45,6 +46,7 @@
         <a href="#files">Files</a>
         <button class="theme" id="theme" type="button" aria-label="Switch between light and dark"><i></i><span></span></button>
       </div>
+      <div class="nav-account" data-kt-account data-variant="line" data-kt-label="Log In"></div>
     </nav>
     <button class="hero-mark" id="shuffle" type="button" aria-label="Change the page color">
       <svg class="kt" role="img" aria-label="KT mark"><use href="#kt"/></svg>
@@ -294,7 +296,7 @@
 
     <section id="files" class="sec">
       <p class="tag">09 · Files</p>
-      <div class="maker">
+      <div class="maker" data-kt-if="perm:brand.materials" hidden>
         <div class="maker-view" id="mk-view" aria-hidden="true"></div>
         <div class="maker-side">
           <div class="maker-row" role="group" aria-label="Which one">
@@ -317,10 +319,10 @@
         </div>
       </div>
       <ul class="files">
-        <li><a href="/brand/logo/kt-black.png" download="aidenkt-kt-black.png"><span>aidenkt-kt-black.png</span><small>Mark, original</small></a></li>
-        <li><a href="/brand/logo/kt-white.png" download="aidenkt-kt-white.png"><span>aidenkt-kt-white.png</span><small>Mark, original</small></a></li>
-        <li><a href="/brand/logo/kt-green.png" download="aidenkt-kt-green.png"><span>aidenkt-kt-green.png</span><small>Mark, original</small></a></li>
-        <li><a href="/brand/logo/aidenkt-wordmark-green.png" download="aidenkt-wordmark-green.png"><span>aidenkt-wordmark-green.png</span><small>Wordmark, original</small></a></li>
+        <li data-kt-if="perm:brand.materials" hidden><a href="/brand/logo/kt-black.png" download="aidenkt-kt-black.png"><span>aidenkt-kt-black.png</span><small>Mark, original</small></a></li>
+        <li data-kt-if="perm:brand.materials" hidden><a href="/brand/logo/kt-white.png" download="aidenkt-kt-white.png"><span>aidenkt-kt-white.png</span><small>Mark, original</small></a></li>
+        <li data-kt-if="perm:brand.materials" hidden><a href="/brand/logo/kt-green.png" download="aidenkt-kt-green.png"><span>aidenkt-kt-green.png</span><small>Mark, original</small></a></li>
+        <li data-kt-if="perm:brand.materials" hidden><a href="/brand/logo/aidenkt-wordmark-green.png" download="aidenkt-wordmark-green.png"><span>aidenkt-wordmark-green.png</span><small>Wordmark, original</small></a></li>
         <li><button type="button" data-file="css"><span>aidenkt-colors.css</span><small>CSS variables</small></button></li>
         <li><button type="button" data-file="json"><span>aidenkt-colors.json</span><small>Names and values</small></button></li>
         <li><button type="button" data-file="sheet"><span>aidenkt-palette.png</span><small>The palette sheet</small></button></li>

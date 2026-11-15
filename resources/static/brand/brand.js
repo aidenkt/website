@@ -973,3 +973,9 @@ void main() {
   if (document.fonts && document.fonts.load) document.fonts.load('500 12px ' + FONT).then(() => { if (!hovering) paint(); }, () => {});   // the labels are set again once the mono face has arrived
   new ResizeObserver(() => { size(); paint(); }).observe(cv); size(); paint();
 })();
+
+// KT Accounts only answers aidenkt.com. On a preview or local copy it cannot say who is
+// here, so the permission-gated parts are shown there.
+if (!/^(www\.)?aidenkt\.com$/.test(location.hostname)) {
+  for (const el of document.querySelectorAll('[data-kt-if]')) { el.removeAttribute('data-kt-if'); el.hidden = false; }
+}

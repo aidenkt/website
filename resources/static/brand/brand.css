@@ -437,3 +437,8 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 
 /* the Black swatch needs an outline on the dark page */
 :root[data-theme="dark"] .sw[data-hex="#0D0D0D"] { box-shadow: inset 0 0 0 1px rgba(253, 255, 255, .22); }
+
+/* The logo maker and the logo files are for people with the brand.materials permission (KT Accounts shows them). */
+[hidden] { display: none !important; }
+.nav-account { display: flex; align-items: center; }
+.nav-links { margin-left: auto; }
