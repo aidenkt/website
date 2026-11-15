@@ -123,13 +123,13 @@ html.edge-extend .overlay-container {
   border-radius: 20px;
   background: linear-gradient(
     145deg,
-    rgba(253, 255, 255, 0.26) 0%,
-    rgba(253, 255, 255, 0.14) 45%,
-    rgba(253, 255, 255, 0.2) 100%
+    rgba(253, 255, 255, 0.36) 0%,
+    rgba(253, 255, 255, 0.24) 45%,
+    rgba(253, 255, 255, 0.3) 100%
   );
-  backdrop-filter: blur(32px) saturate(155%);
-  -webkit-backdrop-filter: blur(32px) saturate(155%);
-  border: 1px solid rgba(253, 255, 255, 0.3);
+  backdrop-filter: blur(48px) saturate(160%);
+  -webkit-backdrop-filter: blur(48px) saturate(160%);
+  border: 1px solid rgba(253, 255, 255, 0.4);
   box-shadow:
     0 24px 48px rgba(13, 13, 13, 0.14),
     0 8px 16px rgba(13, 13, 13, 0.08),

@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/(|privacy/?|wood/?|brand/?|.*\\.(html|css|js))",
+      "src": "/(|privacy/?|brand/?|.*\\.(html|css|js))",
       "headers": {
         "cache-control": "no-store"
       },
@@ -17,10 +17,6 @@
     {
       "src": "/privacy/?",
       "dest": "/resources/static/privacy/index.html"
-    },
-    {
-      "src": "/wood/?",
-      "dest": "/resources/static/wood/index.html"
     },
     {
       "src": "/brand/?",
