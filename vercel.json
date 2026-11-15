@@ -23,6 +23,10 @@
       "dest": "/resources/static/wood/index.html"
     },
     {
+      "src": "/brand/?",
+      "dest": "/resources/static/brand/index.html"
+    },
+    {
       "src": "/resume/?",
       "dest": "/resources/static/resume.pdf"
     },
