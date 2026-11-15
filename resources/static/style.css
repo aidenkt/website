@@ -278,6 +278,20 @@ html.edge-extend .overlay-container {
   color: #FDFFFF;
 }
 
+/* KT Accounts control (Log In, or the profile picture), drawn by the kit in a shadow root.
+   Inset from the top right by the Privacy link's distance from the bottom edge. The box is
+   reserved before the kit loads; if the kit never loads it stays empty and invisible. */
+.account {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top, 0px));
+  right: calc(20px + env(safe-area-inset-right, 0px));
+  display: flex;
+  justify-content: flex-end;
+  min-width: 44px;
+  min-height: 44px;
+  z-index: 3;
+}
+
 .blue-overlay {
   position: absolute;
   top: 0;

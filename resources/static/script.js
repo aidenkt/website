@@ -527,6 +527,10 @@ if (window.location.search == "?start") {
   setBrowserColors({ theme: "#252452", root: "#14452F" });
   document.querySelector(".content-container").style.display = "none";
   document.querySelector(".privacy-link").style.display = "none";
+  const account = document.querySelector("[data-kt-account]");
+  if (account) {
+    account.style.display = "none";
+  }
 }
 
 function syncColorCycle() {
