@@ -124,6 +124,10 @@ function Background() {
 
   const uTime = { value: 0 },
     uTimeCoef = { value: conf.timeCoef };
+  // The ribbons are laid out in clip space, so a tall, narrow screen used to squeeze
+  // them sideways and tilt them steeply. uFit keeps the angle they have on a wide screen.
+  const referenceAspect = 1.6;
+  const uFit = { value: new THREE.Vector2(1, 1) };
   const polylines = [];
 
   init();
@@ -154,6 +158,7 @@ function Background() {
       uniform float uSize;
       uniform float uParallaxDepth;
       uniform mat2 uMat2;
+      uniform vec2 uFit;
       uniform vec2 uParallax;
       uniform vec3 uRnd1;
       uniform vec3 uRnd2;
@@ -197,6 +202,7 @@ function Background() {
         // Slightly overscan the scene so the independently moving ribbons
         // continue to cover the viewport at the edges.
         pos *= 1.08;
+        pos *= uFit;
         pos += uParallax * uParallaxDepth;
 
         gl_Position = vec4(pos, 0.0, 1.0);
@@ -237,6 +243,7 @@ function Background() {
           uTime,
           uTimeCoef,
           uMat2: { value: mat2 },
+          uFit,
           uParallax: { value: pointerPosition },
           uParallaxDepth: {
             value: 0.75 + (i / Math.max(conf.nx - 1, 1)) * 0.3,
@@ -362,6 +369,15 @@ function Background() {
       ? Math.max(window.innerHeight, document.body.scrollHeight)
       : window.innerHeight;
     renderer.setSize(width, height);
+
+    const aspect = width / Math.max(height, 1);
+    if (aspect < referenceAspect) {
+      const narrow = Math.min((referenceAspect - aspect) / (referenceAspect - 0.5), 1);
+      const scale = 1 - 0.28 * narrow;
+      uFit.value.set((referenceAspect / aspect) * scale, scale);
+    } else {
+      uFit.value.set(1, 1);
+    }
 
     if (scene && (motionPreference.matches || document.hidden)) {
       renderScene();
