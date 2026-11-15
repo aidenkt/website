@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="title" content="AidenKT">
+  <meta name="description" content="Aiden Tabrizi is a software developer, product engineer, and UC Berkeley EECS student building products across design and engineering.">
+  <meta name="keywords" content="aiden tabrizi, developer, software developer, software, coding, programming, app development, aidenkt, aiden, tabrizi">
+  <meta property="og:title" content="Aiden Tabrizi">
+  <meta property="og:description" content="Software developer, product engineer, and UC Berkeley EECS student building products across design and engineering.">
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://aidenkt.com/">
+  <meta property="og:image" content="https://aidenkt.com/wallpaper.png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#B5121B" />
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="language" content="English">
+  <meta name="author" content="Aiden Tabrizi">
+  <title>diag</title><meta name="robots" content="noindex">
+  <link rel="canonical" href="https://aidenkt.com/">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://aidenkt.com/#aiden",
+      "name": "Aiden Tabrizi",
+      "alternateName": "aidenkt",
+      "url": "https://aidenkt.com/",
+      "email": "mailto:hi@aidenkt.com",
+      "description": "Software developer, product engineer, and UC Berkeley Electrical Engineering & Computer Science student building products across design and engineering.",
+      "jobTitle": [
+        "Software Developer",
+        "Product Engineer",
+        "Student"
+      ],
+      "affiliation": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of California, Berkeley",
+        "sameAs": "https://www.berkeley.edu/"
+      },
+      "worksFor": [
+        {
+          "@type": "Organization",
+          "name": "UniShack"
+        },
+        {
+          "@type": "Organization",
+          "name": "ChipMango"
+        }
+      ],
+      "knowsAbout": [
+        "Product engineering",
+        "Full-stack web development",
+        "iOS development",
+        "React Native",
+        "Developer tools",
+        "Machine learning",
+        "Computer networking",
+        "Digital hardware",
+        "Autonomous vehicles"
+      ],
+      "sameAs": [
+        "https://github.com/aidenkt",
+        "https://www.linkedin.com/in/aidenkt/"
+      ],
+      "subjectOf": [
+        {
+          "@type": "CreativeWork",
+          "name": "About Aiden Tabrizi",
+          "url": "https://aidenkt.com/about.md"
+        },
+        {
+          "@type": "CreativeWork",
+          "name": "Aiden Tabrizi Resume",
+          "url": "https://aidenkt.com/resume.md",
+          "encodingFormat": "text/markdown"
+        },
+        {
+          "@type": "DigitalDocument",
+          "name": "Aiden Tabrizi Résumé",
+          "url": "https://aidenkt.com/resume.pdf",
+          "encodingFormat": "application/pdf"
+        }
+      ]
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://accounts.aidenkt.com/kit/kit.js" defer></script>
+</head>
+<body>
+  <div class="overlay-container">
+    <main class="content-container">
+      <h1 id="name-handwritten">aidenkt</h1>
+      <div class="icon-container">
+        <a href="mailto:contact@aidenkt.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/aidenkt/" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14Zm-.5 15v-5.3c0-2.6-1.4-3.8-3.3-3.8-1.5 0-2.2.8-2.6 1.4V9.1H9.8V18h2.8v-4.4c0-1.2.2-2.3 1.7-2.3 1.5 0 1.5 1.4 1.5 2.4V18h2.7ZM6.6 7.9a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2ZM8 18V9.1H5.2V18H8Z" />
+          </svg>
+        </a>
+      </div>
+    </main>
+    <a class="privacy-link" href="/privacy">Privacy</a>
+    <div class="account" data-kt-account data-variant="glass" data-kt-label="Log In"></div>
+  </div>
+  <canvas id="canvas" aria-hidden="true"></canvas>
+  <div class="blue-overlay" aria-hidden="true"></div>
+  <div class="green-overlay" aria-hidden="true"></div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js'></script>
+  <script src="./script.js"></script>
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+" (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_p3USec3cwzJM4QVZsydPSjB4p6ekjWmS4boJNC45xAJy', {
+      api_host: 'https://wsp.aidenkt.com',
+      ui_host: 'https://us.posthog.com',
+      defaults: '2026-01-30',
+      person_profiles: 'always'
+    });
+
+    document.querySelector('a[aria-label="Email"]').addEventListener('click', function() {
+      posthog.capture('email clicked');
+    });
+    document.querySelector('a[aria-label="LinkedIn"]').addEventListener('click', function() {
+      posthog.capture('linkedin clicked');
+    });
+  </script>
+
+
+<pre id="diag" style="position:fixed;inset:0;z-index:99999;margin:0;padding:60px 12px 12px;overflow:auto;background:#fff;color:#000;font:12px/1.35 monospace;white-space:pre-wrap;word-break:break-all">collecting, wait 5 seconds...</pre>
+<script>
+(function(){
+  var errs=[]; window.addEventListener('error',function(e){errs.push((e.message||(e.target&&(e.target.src||e.target.href))||'err').toString().slice(0,80));},true);
+  function mm(q){try{return matchMedia(q).matches?1:0}catch(e){return 'x'}}
+  setTimeout(async function(){
+    var o={ua:navigator.userAgent.replace(/Mozilla\/5.0 /,'').slice(0,110)};
+    o.sheets=[].map.call(document.querySelectorAll('link[rel=stylesheet]'),function(l){var n=(l.href||'').split('/').pop().slice(0,22),r;try{r=l.sheet?l.sheet.cssRules.length:'NOSHEET'}catch(e){r='x:'+e.name}return n+'='+r+(l.disabled?':dis':'')+(l.media?':m='+l.media:'')});
+    o.nSheets=document.styleSheets.length;
+    var pl=document.querySelector('.privacy-link'); o.priv=pl?getComputedStyle(pl).position:'none'; o.bodyFont=getComputedStyle(document.body).fontFamily.slice(0,30); o.bg=getComputedStyle(document.body).backgroundColor;
+    o.three=typeof THREE; o.chroma=typeof chroma; o.kt=typeof ktAccounts; o.errs=errs.slice(0,6);
+    async function f(u,c){try{var r=await fetch(u,{cache:c});var x=await r.text();return r.status+'|'+(r.headers.get('content-type')||'-')+'|'+(r.headers.get('content-encoding')||'-')+'|'+x.length+'|'+x.slice(0,24).replace(/\s+/g,' ')}catch(e){return 'ERR '+e.name+' '+String(e.message).slice(0,60)}}
+    o.cssDefault=await f('./style.css','default'); o.cssReload=await f('./style.css','reload'); o.jsDefault=await f('./script.js','default');
+    o.res=performance.getEntriesByType('resource').filter(function(e){return /style\.css|script\.js|three|kit/.test(e.name)}).map(function(e){return e.name.split('/').pop().slice(0,18)+':'+(e.responseStatus||'?')+':'+e.nextHopProtocol+':'+e.transferSize+'/'+e.decodedBodySize});
+    o.mq={dark:mm('(prefers-color-scheme: dark)'),rm:mm('(prefers-reduced-motion: reduce)'),rt:mm('(prefers-reduced-transparency: reduce)'),fc:mm('(forced-colors: active)'),pc:mm('(prefers-contrast: more)'),inv:mm('(inverted-colors: inverted)')};
+    o.wasm=typeof WebAssembly; o.sw=('serviceWorker' in navigator)?1:0; o.fonts=document.fonts?document.fonts.size:'x'; o.ck=navigator.cookieEnabled?1:0; o.q=location.search;
+    o.htmlLen=document.documentElement.outerHTML.length; o.base=document.baseURI; o.cs=document.characterSet; o.mode=document.compatMode;
+    var s=JSON.stringify(o); document.getElementById('diag').textContent=JSON.stringify(o,null,1);
+    for(var i=0;i<s.length;i+=1500){new Image().src='https://accounts.aidenkt.com/favicon.svg?diag='+(i/1500)+'_'+encodeURIComponent(s.slice(i,i+1500));}
+  },5000);
+})();
+</script>
+</body>
+</html>
