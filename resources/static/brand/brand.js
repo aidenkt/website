@@ -979,3 +979,22 @@ void main() {
 if (!/^(www\.)?aidenkt\.com$/.test(location.hostname)) {
   for (const el of document.querySelectorAll('[data-kt-if]')) { el.removeAttribute('data-kt-if'); el.hidden = false; }
 }
+
+// The nav marks the section on screen.
+(() => {
+  const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
+  const secs = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+  if (!secs.length || !('IntersectionObserver' in window)) return;
+  const seen = new Set();
+  const mark = () => {
+    const on = secs.find((s) => seen.has(s.id));
+    links.forEach((a) => a.toggleAttribute('aria-current', false));
+    if (on) byId.get(on.id).setAttribute('aria-current', 'true');
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? seen.add(e.target.id) : seen.delete(e.target.id)));
+    mark();
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  secs.forEach((s) => io.observe(s));
+})();
