@@ -65,7 +65,7 @@ a {
   background: #FDFFFF;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-weight: 400;
   text-decoration: none;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(253, 255, 255, 0.8)" width="20px" height="20px" viewBox="0 0 10.04 10.04"><circle cx="5.02" cy="5.02" r="4.52"/></svg>') 10 10, auto;
@@ -84,9 +84,12 @@ a:focus-visible {
 #name-handwritten {
   margin-top: 45px; 
   margin-bottom: -10px;
-  font-family: 'Caveat', sans-serif;
-  font-weight: 400;
-  font-size: 65px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  letter-spacing: -0.02em;
+  font-size: 52px;
 }
 
 .overlay-container {
@@ -361,7 +364,7 @@ html.edge-extend .overlay-container {
 
   #name-handwritten {
     margin-top: 40px; 
-    font-size: 90px;
+    font-size: 72px;
   }
 
   .icon-container {
@@ -393,7 +396,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 76px;
+    font-size: 60px;
     margin-top: 0;
     margin-bottom: 16px;
     text-align: center;
@@ -422,7 +425,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 70px;
+    font-size: 56px;
     margin-bottom: 14px;
   }
 
@@ -449,7 +452,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 42px;
+    font-size: 34px;
     margin-top: 0;
     margin-bottom: 10px;
     line-height: 1.1;
@@ -472,7 +475,7 @@ html.edge-extend .overlay-container {
   }
 
   #name-handwritten {
-    font-size: 38px;
+    font-size: 30px;
     margin-top: 0;
     margin-bottom: 8px;
   }
