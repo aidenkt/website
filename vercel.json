@@ -8,6 +8,13 @@
   ],
   "routes": [
     {
+      "src": "/(|privacy/?|wood/?|.*\\.(html|css|js))",
+      "headers": {
+        "cache-control": "no-store"
+      },
+      "continue": true
+    },
+    {
       "src": "/privacy/?",
       "dest": "/resources/static/privacy/index.html"
     },
