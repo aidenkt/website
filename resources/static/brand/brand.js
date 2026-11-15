@@ -226,7 +226,7 @@ async function sheet() {
   const COLS = 8, M = 96, GAP = 20, W = 2400, SW = (W - M * 2 - GAP * (COLS - 1)) / COLS, SH = 300, HEAD = 150;
   const rows = Math.ceil(COLORS.length / COLS), H = M + HEAD + rows * SH + (rows - 1) * GAP + M;
   if (document.fonts && document.fonts.load) {
-    await Promise.all([document.fonts.load('600 23px Geist'), document.fonts.load('500 17px "JetBrains Mono"')]).catch(() => {});
+    await Promise.all([document.fonts.load('600 23px Geist'), document.fonts.load('500 17px "Geist Mono"')]).catch(() => {});
   }
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d');
@@ -240,7 +240,7 @@ async function sheet() {
     x.beginPath(); x.roundRect(px, py, SW, SH, 28); x.fillStyle = hex; x.fill();
     if (EDGE.has(name)) { x.strokeStyle = 'rgba(13,13,13,.14)'; x.lineWidth = 2; x.stroke(); }
     x.fillStyle = dark ? '#0D0D0D' : '#FDFFFF';
-    x.font = '500 17px "JetBrains Mono", ui-monospace, Menlo, monospace'; x.textBaseline = 'alphabetic';
+    x.font = '500 17px "Geist Mono", ui-monospace, Menlo, monospace'; x.textBaseline = 'alphabetic';
     x.globalAlpha = 0.72; x.fillText(hex, px + 22, py + SH - 24); x.globalAlpha = 1;
     x.font = '600 23px Geist, system-ui, sans-serif';
     const lines = []; let line = '';                            // wrap the name to the swatch

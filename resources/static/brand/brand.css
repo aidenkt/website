@@ -12,7 +12,7 @@
   --g: clamp(16px, 4.4vw, 64px);
   --display: 'League Spartan', 'Futura', 'Century Gothic', sans-serif;
   --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 
