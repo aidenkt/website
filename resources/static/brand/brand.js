@@ -6,7 +6,7 @@ const COLORS = [
   ['Iced Latte', '#755640', 0, "My default coffee order."], ['Mocha', '#563A26', 0, "The dark part of my Caramel playlist cover."],
   ['Creamsicle', '#FCE3C8', 1, "A friend's playlist cover."], ['Starlight Gold', '#DCA021', 1, "The color the lights in my room at home in San Diego turn in the evening."],
   ['Berkeley Yellow', '#FBC81F', 1, "The yellow of the University of California, Berkeley.", ["https://www.berkeley.edu/", "University of California, Berkeley"]], ['Website Lemon', '#F4DD75', 1, "The yellow in the waves on my home page.", ["https://aidenkt.com/", "home page"]], ['Glasses Green', '#919762', 0, 'My Warby Parker Carltons, in Seaweed Crystal.'],
-  ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."],
+  ['Bot Green', '#5FE21D', 1, "The green end of the Lounge logo."], ['Arrivals Green', '#B6EAB6', 1, 'The arrivals wall at Tom Bradley, LAX.'],
   ['PFP Mint', '#9CFFE7', 1, 'The background of my drawn profile picture, since 2021.'], ['Reveria Green', '#36FD98', 1, "The brand color of my first Minecraft server."], ['Matcha', '#0A864C', 0, "One of my playlist covers."],
   ['Payback Pine', '#14452F', 0, 'The ink on the Pay Aiden specimen.'], ['KT Green', '#15DD7D', 0, "Derived from Reveria Green, and now my primary brand color on the internet."], ['Scout Teal', '#08C6BE', 1, "The accent color of Scout, an app to map college campuses."],
   ['Park Sky', '#5FE4FF', 1, "The color of my first public Discord bot, ParksBot, which let users track theme park wait times.", ["https://aidenkt.medium.com/alium-progress-report-bye-bye-parksbot-4e4f304c35bc", "ParksBot"]], ['Space', '#1C3249', 0, "My Space playlist cover."],
@@ -14,21 +14,21 @@ const COLORS = [
   ['Persian Sapphire', '#0445DF', 0, 'My playlist called Cobalt.'],
   ['Stardust Blue', '#225FFD', 0, "The UI color of a testing portal for my first startup.", ["https://aidenkt.medium.com/alium-progress-report-project-stardust-the-maintenance-roadmap-and-the-future-of-parksbot-f0601546f704", "testing portal"]], ['After Hours Indigo', '#252452', 0, "The theme color of my Discord podcast, Discord After Hours w/ Aiden. It peaked at 120 listeners."], ['Early Purple', '#7367FF', 0, "The brand color of Early, my first startup, now defunct.", ["https://aidenkt.medium.com/the-state-of-alium-potatoes-development-where-weve-been-6d3f9f393399", "Early"]], ['Coastal Lavender', '#D4CDFF', 1, "From CoastalCare, an advanced business project."],
   ['Turn Back Purple', '#6728EF', 0, "The color the lights in my room at home in San Diego turn in the evening."], ['Elementary Purple', '#3F0585', 0, "The purple in my elementary school's logo."], ['Booster Orchid', '#E46BF4', 0, "Discord's booster color."], ['Held Violet', '#DE5BB6', 0, "The color of Newbies, the playlist where new songs I discover are held."], ['Disney Pink', '#FC2F99', 0, "The color I associate with Disneyland Park in California.", ["https://disneyland.disney.go.com/destinations/disneyland/", "Disneyland Park"]],
-  ['Tech White', '#FDFFFF', 1, "The slightly too blue white that most tech people use, including me."], ['House White', '#FBF7F0', 1, "The eggshell white of houses built in the 90s, including my childhood home."], ['Titanium', '#8F8A82', 0, "My Apple Watch Series 10, in natural titanium."],
+  ['Tech White', '#FDFFFF', 1, "The slightly too blue white that most tech people use, including me."], ['House White', '#FBF7F0', 1, "The eggshell white of houses built in the 90s, including my childhood home."], ['London Fog', '#EEF0F2', 1, 'My first ever Starbucks order.'], ['Titanium', '#8F8A82', 0, "My Apple Watch Series 10, in natural titanium."],
   ['iPhone Gray', '#534D5B', 0, 'My iPhone 14 Pro, Deep Purple.'], ['Charcoal', '#4D4947', 0, "The color of New York City."], ['Black', '#0D0D0D', 0, "I don't know what to say about black, lol."],
 ];
 // Display order: around the color wheel, each family running into the next, with the darkest blues and purples meeting
-// in the middle, then the warm neutrals, then white to black. Eight to a row, so the last row is the neutrals.
+// in the middle, then the warm neutrals, then white to black. Seven to a row on wide screens, six rows.
 const ORDER = [
   'Aiden Red', 'ID Coral', '3DS Red', 'Dragon Red', 'Strawberry Lemonade', 'Overwatch Orange', 'Starlight Gold', 'Berkeley Yellow', 'Website Lemon',
-  'Glasses Green', 'Bot Green', 'PFP Mint', 'Reveria Green', 'KT Green', 'Matcha', 'Payback Pine', 'Scout Teal',
+  'Glasses Green', 'Bot Green', 'Arrivals Green', 'PFP Mint', 'Reveria Green', 'KT Green', 'Matcha', 'Payback Pine', 'Scout Teal',
   'Park Sky', 'Airport Blue', 'Stardust Blue', 'Persian Sapphire', 'Space', 'After Hours Indigo', 'Elementary Purple', 'Turn Back Purple',
   'Early Purple', 'Coastal Lavender', 'Booster Orchid', 'Held Violet', 'Disney Pink', 'Creamsicle', 'Iced Latte', 'Mocha',
-  'Tech White', 'House White', 'Snow', 'Titanium', 'iPhone Gray', 'Charcoal', 'Black',
+  'Tech White', 'House White', 'London Fog', 'Snow', 'Titanium', 'iPhone Gray', 'Charcoal', 'Black',
 ];
 COLORS.sort((a, b) => ORDER.indexOf(a[0]) - ORDER.indexOf(b[0]));
 const KT_GREEN = COLORS.find((c) => c[0] === 'KT Green');   // the brand color; the page opens in it
-const EDGE = new Set(['Tech White', 'House White']);
+const EDGE = new Set(['Tech White', 'House White', 'London Fog']);
 const MARK = 'M0 0h152v473H0zM321 0h387v473H556V121H403l-63 74 172 278H333L232 296V107zM788 0h75v121h-75z';
 
 const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
@@ -223,7 +223,7 @@ makerDraw();
 
 // The palette sheet is drawn from COLORS when asked for, so it can never fall behind the palette.
 async function sheet() {
-  const COLS = 8, M = 96, GAP = 20, W = 2400, SW = (W - M * 2 - GAP * (COLS - 1)) / COLS, SH = 300, HEAD = 150;
+  const COLS = 7, M = 96, GAP = 20, W = 2400, SW = (W - M * 2 - GAP * (COLS - 1)) / COLS, SH = 300, HEAD = 150;
   const rows = Math.ceil(COLORS.length / COLS), H = M + HEAD + rows * SH + (rows - 1) * GAP + M;
   if (document.fonts && document.fonts.load) {
     await Promise.all([document.fonts.load('600 23px Geist'), document.fonts.load('500 17px "Geist Mono"')]).catch(() => {});
