@@ -27,6 +27,10 @@
       "dest": "/resources/static/resume.pdf"
     },
     {
+      "src": "/avatars(/.*)?",
+      "dest": "https://avatars.aidenkt.com/avatars$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/resources/static/$1"
     }
