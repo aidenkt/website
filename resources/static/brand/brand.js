@@ -118,7 +118,7 @@ pick(KT_GREEN, false);
 // the nav follows the page: clear over the colored first screen, a frosted bar after it
 {
   const nav = document.querySelector('.nav'), hero = $('top');
-  const stick = () => nav.classList.toggle('stuck', scrollY > hero.offsetHeight - 56);
+  const stick = () => nav.classList.toggle('stuck', scrollY > hero.offsetHeight - nav.offsetHeight);
   addEventListener('scroll', stick, { passive: true }); addEventListener('resize', stick); stick();
 }
 

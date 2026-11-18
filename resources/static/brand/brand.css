@@ -420,7 +420,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   .sw b { font-size: 13px; } .sw code { font-size: 10px; }
 }
 @media (max-width: 760px) {
-  .hero-mark { width: 58vw; }
+  .hero-mark { width: min(58vw, 75svh); }   /* a phone on its side: the mark fits under the two-row nav */
   .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
   .build, .detail, .types article { grid-template-columns: minmax(0, 1fr); }
   .types article { align-items: start; }
@@ -452,6 +452,7 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 /* On a phone the sections don't fit beside the wordmark, so they get their own swipeable row under it. */
 @media (max-width: 760px) {
   html { scroll-padding-top: 99px; }   /* the two-row nav */
+  .hero { padding-top: 107px; }
   .nav { flex-wrap: wrap; row-gap: 6px; padding-bottom: 8px; }
   .nav-links { order: 3; flex: 1 0 100%; margin: 0 calc(-1 * var(--g)); padding: 0 var(--g); scroll-padding: 0 var(--g); overscroll-behavior-x: contain;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--g), #000 calc(100% - var(--g)), transparent 100%);
