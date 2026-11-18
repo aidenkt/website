@@ -32,7 +32,13 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/resources/static/$1"
+      "dest": "/resources/static/$1",
+      "check": true
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/resources/static/404.html"
     }
   ]
 }
