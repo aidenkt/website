@@ -460,3 +460,8 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   .nav-links::-webkit-scrollbar { display: none; }
   .nav-links a { padding: 8px 13px; }
 }
+/* A phone on its side: the first screen still holds the whole hero, under the two-row nav. */
+@media (max-width: 760px) and (max-height: 420px) {
+  .hero { padding-top: 99px; padding-bottom: 12px; }
+  .hero-mark { padding-block: 6px; width: min(58vw, 60svh); }
+}
