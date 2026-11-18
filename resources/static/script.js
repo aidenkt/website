@@ -573,6 +573,9 @@ function enableCardTilt() {
   let animationFrame = null;
   let linkPress = null;
 
+  // a link the browser can drag cancels the press as soon as it moves a few px, so these links aren't draggable
+  card.querySelectorAll(".icon-container a").forEach((a) => { a.draggable = false; });
+
   function renderTilt() {
     const clamp = (value) => Math.max(-maxTilt, Math.min(maxTilt, value));
     const rotateX = clamp((-(current.y - start.y) / dragDistance) * maxTilt);
@@ -603,12 +606,14 @@ function enableCardTilt() {
     const link = event.target.closest(".icon-container a");
     linkPress = null;
     if (link) {
-      linkPress = { link, id: event.pointerId, x: event.clientX, y: event.clientY, canceled: false };
+      // a finger rolls a little more than a mouse does, so touch gets more room before the press stops counting
+      linkPress = { link, id: event.pointerId, x: event.clientX, y: event.clientY, slop: event.pointerType === "mouse" ? 6 : 10, canceled: false };
       link.setPointerCapture(event.pointerId);
       return;
     }
 
-    if (motionPreference.matches || event.button !== 0) return;
+    // Ctrl-click on a Mac opens the context menu, which swallows the release, so it never starts a tilt
+    if (motionPreference.matches || event.button !== 0 || event.ctrlKey) return;
 
     activePointer = event.pointerId;
     start = { x: event.clientX, y: event.clientY };
@@ -623,6 +628,12 @@ function enableCardTilt() {
       return;
     }
 
+    // the button was let go somewhere this card never heard about (another window, a menu)
+    if (event.pointerType === "mouse" && (event.buttons & 1) === 0) {
+      finishDrag(event);
+      return;
+    }
+
     current = { x: event.clientX, y: event.clientY };
 
     if (animationFrame === null) {
@@ -632,7 +643,7 @@ function enableCardTilt() {
 
   function trackLinkMovement(event) {
     if (linkPress?.id === event.pointerId) {
-      linkPress.canceled ||= Math.hypot(event.clientX - linkPress.x, event.clientY - linkPress.y) > 6;
+      linkPress.canceled ||= Math.hypot(event.clientX - linkPress.x, event.clientY - linkPress.y) > linkPress.slop;
     }
   }
 
@@ -641,9 +652,17 @@ function enableCardTilt() {
     if (linkPress?.id === event.pointerId) {
       const releasedOver = document.elementFromPoint(event.clientX, event.clientY);
       linkPress.canceled ||= !linkPress.link.contains(releasedOver);
+      // the browser sends no click at all after some releases (a touch drag, a context menu); don't keep the press around
+      const press = linkPress;
+      setTimeout(() => { if (linkPress === press) linkPress = null; }, 0);
     }
     finishDrag(event);
   });
+
+  card.addEventListener("lostpointercapture", (event) => {
+    if (event.pointerId === activePointer) finishDrag(event);
+  });
+  card.addEventListener("contextmenu", () => { linkPress = null; });
 
   card.addEventListener("pointercancel", (event) => {
     if (linkPress?.id === event.pointerId) linkPress = null;
@@ -652,7 +671,7 @@ function enableCardTilt() {
   card.addEventListener("dragstart", (event) => event.preventDefault());
 
   function guardLinkActivation(event) {
-    if (event.detail === 0 || !linkPress || !linkPress.link.contains(event.target)) return;
+    if (event.detail === 0 || event.button === 2 || !linkPress || !linkPress.link.contains(event.target)) return;
     if (linkPress.canceled) {
       event.preventDefault();
       event.stopPropagation();
