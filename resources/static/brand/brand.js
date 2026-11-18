@@ -990,7 +990,15 @@ if (!/^(www\.)?aidenkt\.com$/.test(location.hostname)) {
   const mark = () => {
     const on = secs.find((s) => seen.has(s.id));
     links.forEach((a) => a.toggleAttribute('aria-current', false));
-    if (on) byId.get(on.id).setAttribute('aria-current', 'true');
+    if (!on) return;
+    const a = byId.get(on.id); a.setAttribute('aria-current', 'true');
+    // when the row scrolls sideways (phones), keep the marked section in view without moving the page
+    const row = a.parentElement;
+    if (row.scrollWidth > row.clientWidth) {
+      const r = row.getBoundingClientRect(), b = a.getBoundingClientRect();
+      const left = row.scrollLeft + (b.left - r.left) - (r.width - b.width) / 2;
+      row.scrollTo({ left: Math.max(0, left), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
   };
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => (e.isIntersecting ? seen.add(e.target.id) : seen.delete(e.target.id)));

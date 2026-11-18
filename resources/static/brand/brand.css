@@ -420,7 +420,6 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   .sw b { font-size: 13px; } .sw code { font-size: 10px; }
 }
 @media (max-width: 760px) {
-  .nav-links a:nth-child(n+4) { display: none; }
   .hero-mark { width: 58vw; }
   .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
   .build, .detail, .types article { grid-template-columns: minmax(0, 1fr); }
@@ -438,8 +437,6 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
   .files small { display: none; }
   .hero-meta span:last-child { display: none; }
 }
-@media (max-width: 440px) { .nav-links a:nth-child(n+2) { display: none; } }
-@media (max-width: 350px) { .nav-links a { display: none; } }
 @media (max-width: 420px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .sw b { font-size: 12.5px; } .sw code { font-size: 9.5px; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 
@@ -451,3 +448,14 @@ h2 { font: 700 clamp(40px, 7.4vw, 124px)/.9 var(--display); letter-spacing: -0.0
 .nav-account { display: flex; align-items: center; }
 .nav-links { margin-left: auto; }
 .nav-account { min-width: 36px; }
+
+/* On a phone the sections don't fit beside the wordmark, so they get their own swipeable row under it. */
+@media (max-width: 760px) {
+  html { scroll-padding-top: 99px; }   /* the two-row nav */
+  .nav { flex-wrap: wrap; row-gap: 6px; padding-bottom: 8px; }
+  .nav-links { order: 3; flex: 1 0 100%; margin: 0 calc(-1 * var(--g)); padding: 0 var(--g); scroll-padding: 0 var(--g); overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--g), #000 calc(100% - var(--g)), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 var(--g), #000 calc(100% - var(--g)), transparent 100%); }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { padding: 8px 13px; }
+}
