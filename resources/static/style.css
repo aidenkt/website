@@ -1,5 +1,6 @@
 :root {
   --root-background-color: #B5121B;
+  --pill-glass: linear-gradient(145deg, rgb(20 16 28 / 65%), rgb(20 16 28 / 62%) 45%, rgb(20 16 28 / 68%));
   --edge-runway-top: 0px;
   --edge-runway-bottom: 0px;
 }
@@ -174,17 +175,9 @@ html.edge-extend .overlay-container {
 .content-container::after {
   content: "";
   position: absolute;
-  top: -40%;
-  left: 10%;
-  width: 80%;
-  height: 55%;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(253, 255, 255, 0.12) 0%,
-    rgba(253, 255, 255, 0.03) 40%,
-    transparent 72%
-  );
+  inset: 0;
+  /* Above the glass highlights, below the white lettering and icons. */
+  background: rgb(0 0 0 / 55%);
   pointer-events: none;
   z-index: 0;
 }
@@ -235,12 +228,7 @@ html.edge-extend .overlay-container {
   left: 50%;
   transform: translateX(-50%);
   color: #FDFFFF;
-  background: linear-gradient(
-    145deg,
-    rgba(253, 255, 255, 0.26) 0%,
-    rgba(253, 255, 255, 0.14) 45%,
-    rgba(253, 255, 255, 0.2) 100%
-  );
+  background: var(--pill-glass);
   -webkit-text-fill-color: currentColor;
   font-size: 16px;
   font-weight: 500;
@@ -291,6 +279,11 @@ html.edge-extend .overlay-container {
   min-width: 44px;
   min-height: 44px;
   z-index: 3;
+}
+
+.account::part(control) {
+  background-color: rgb(0 0 0 / 76%);
+  border-radius: 999px;
 }
 
 .blue-overlay {
@@ -437,7 +430,19 @@ html.edge-extend .overlay-container {
 /* Mobile Landscape Styles */
 @media screen and (max-height: 500px) and (orientation: landscape) {
   .overlay-container {
-    padding: 12px;
+    box-sizing: border-box;
+    padding: calc(58px + env(safe-area-inset-top, 0px))
+      calc(12px + env(safe-area-inset-right, 0px))
+      calc(58px + env(safe-area-inset-bottom, 0px))
+      calc(12px + env(safe-area-inset-left, 0px));
+  }
+
+  .privacy-link {
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .account {
+    top: calc(8px + env(safe-area-inset-top, 0px));
   }
 
   .content-container {

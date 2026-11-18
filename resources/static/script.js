@@ -561,7 +561,7 @@ syncColorCycle();
 function enableCardTilt() {
   const card = document.querySelector(".content-container");
 
-  if (!card || motionPreference.matches) {
+  if (!card) {
     return;
   }
 
@@ -571,10 +571,7 @@ function enableCardTilt() {
   let start = { x: 0, y: 0 };
   let current = start;
   let animationFrame = null;
-  let moved = false;
-  let suppressClicksUntil = 0;
-  let iconPointer = null;
-  let iconLink = null;
+  let linkPress = null;
 
   function renderTilt() {
     const clamp = (value) => Math.max(-maxTilt, Math.min(maxTilt, value));
@@ -595,88 +592,76 @@ function enableCardTilt() {
       animationFrame = null;
     }
 
-    if (moved) {
-      suppressClicksUntil = performance.now() + 400;
-    }
-
     activePointer = null;
     card.classList.remove("is-dragging");
     card.style.transform = "";
   }
 
   card.addEventListener("pointerdown", (event) => {
-    if (motionPreference.matches) {
+    if (!event.isPrimary || event.button > 1) return;
+
+    const link = event.target.closest(".icon-container a");
+    linkPress = null;
+    if (link) {
+      linkPress = { link, id: event.pointerId, x: event.clientX, y: event.clientY, canceled: false };
+      link.setPointerCapture(event.pointerId);
       return;
     }
 
-    if (event.pointerType === "mouse" && event.button !== 0) {
-      return;
-    }
-
-    const pressedIconLink = event.target.closest(".icon-container a");
-
-    if (pressedIconLink) {
-      event.preventDefault();
-      suppressClicksUntil = 0;
-      iconPointer = event.pointerId;
-      iconLink = pressedIconLink;
-      card.setPointerCapture(event.pointerId);
-      return;
-    }
+    if (motionPreference.matches || event.button !== 0) return;
 
     activePointer = event.pointerId;
     start = { x: event.clientX, y: event.clientY };
     current = start;
-    moved = false;
     card.classList.add("is-dragging");
     card.setPointerCapture(event.pointerId);
   });
 
   card.addEventListener("pointermove", (event) => {
+    trackLinkMovement(event);
     if (event.pointerId !== activePointer) {
       return;
     }
 
     current = { x: event.clientX, y: event.clientY };
-    moved ||= Math.hypot(current.x - start.x, current.y - start.y) > 4;
 
     if (animationFrame === null) {
       animationFrame = requestAnimationFrame(renderTilt);
     }
   });
 
-  card.addEventListener("pointerup", (event) => {
-    if (event.pointerId === iconPointer) {
-      const linkToActivate = iconLink;
-      iconPointer = null;
-      iconLink = null;
-      linkToActivate.click();
-      return;
+  function trackLinkMovement(event) {
+    if (linkPress?.id === event.pointerId) {
+      linkPress.canceled ||= Math.hypot(event.clientX - linkPress.x, event.clientY - linkPress.y) > 6;
     }
+  }
 
+  card.addEventListener("pointerup", (event) => {
+    trackLinkMovement(event);
+    if (linkPress?.id === event.pointerId) {
+      const releasedOver = document.elementFromPoint(event.clientX, event.clientY);
+      linkPress.canceled ||= !linkPress.link.contains(releasedOver);
+    }
     finishDrag(event);
   });
 
   card.addEventListener("pointercancel", (event) => {
-    if (event.pointerId === iconPointer) {
-      iconPointer = null;
-      iconLink = null;
-      return;
-    }
-
+    if (linkPress?.id === event.pointerId) linkPress = null;
     finishDrag(event);
   });
   card.addEventListener("dragstart", (event) => event.preventDefault());
-  card.addEventListener(
-    "click",
-    (event) => {
-      if (performance.now() < suppressClicksUntil) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    },
-    true,
-  );
+
+  function guardLinkActivation(event) {
+    if (event.detail === 0 || !linkPress || !linkPress.link.contains(event.target)) return;
+    if (linkPress.canceled) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    linkPress = null;
+  }
+
+  card.addEventListener("click", guardLinkActivation, true);
+  card.addEventListener("auxclick", guardLinkActivation, true);
 }
 
 enableCardTilt();
