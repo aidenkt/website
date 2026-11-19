@@ -13,84 +13,85 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Geist:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css?v=8">
   <style>
-    /* The home page's card, holding a message and a way home instead of the links. */
-    .content-container.not-found {
-      height: auto;
-      padding: 34px 32px 30px;
-      box-sizing: border-box;
-      min-width: 300px;
+    /* No card: a big handwritten 404 straight on the waves, a line of text, and a way home. */
+    .not-found {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 16px;
     }
-    .not-found #name-handwritten {
-      margin-bottom: 2px;
-      line-height: 1;
+    .not-found-title {
+      margin: 0;
+      color: #FDFFFF;
+      font-family: 'Caveat', sans-serif;
+      font-weight: 400;
+      /* shrinks on short landscape screens so the button stays clear of Privacy */
+      font-size: clamp(120px, min(26vw, 34vh), 300px);
+      line-height: 0.8;
     }
     .not-found-message {
-      margin: 0 0 22px;
+      margin: 14px 0 26px;
       color: #FDFFFF;
       font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
-      font-size: 17px;
-      line-height: 1.45;
-      text-align: center;
-      text-shadow: 0 1px 2px rgba(13, 13, 13, 0.55), 0 0 16px rgba(13, 13, 13, 0.42);
-      text-wrap: balance;
-      max-width: 34ch;
-    }
-    /* Same glass pill as the Privacy link. */
-    .icon-container a.home-link {
-      width: auto;
-      height: auto;
-      color: #FDFFFF;
-      -webkit-text-fill-color: currentColor;
-      background: linear-gradient(145deg, rgba(253, 255, 255, 0.3) 0%, rgba(253, 255, 255, 0.16) 45%, rgba(253, 255, 255, 0.24) 100%);
-      text-shadow: 0 1px 2px rgba(13, 13, 13, 0.55), 0 0 12px rgba(13, 13, 13, 0.42);
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 500;
       line-height: 1.4;
+    }
+    /* Same glass pill as the Privacy link. */
+    a.home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       min-height: 44px;
       padding: 8px 22px;
       box-sizing: border-box;
+      color: #FDFFFF;
+      -webkit-text-fill-color: currentColor;
+      font-family: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      text-decoration: none;
+      background: linear-gradient(145deg, rgba(253, 255, 255, 0.3) 0%, rgba(253, 255, 255, 0.16) 45%, rgba(253, 255, 255, 0.24) 100%);
       border: 1px solid rgba(253, 255, 255, 0.34);
       border-radius: 999px;
       box-shadow:
         0 10px 28px rgba(13, 13, 13, 0.12),
         0 4px 12px rgba(13, 13, 13, 0.06),
-        inset 0 1px 1px rgba(253, 255, 255, 0.22),
-        inset 0 -1px 1px rgba(253, 255, 255, 0.1);
+        inset 0 1px 1px rgba(253, 255, 255, 0.22);
       transition: transform 180ms ease, filter 180ms ease;
     }
-    .icon-container a.home-link:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.06);
-    }
-    @media screen and (max-width: 768px) {
-      .content-container.not-found { padding: 32px 26px 28px; min-width: 260px; }
-      .not-found #name-handwritten { margin-bottom: 4px; }
-    }
-    @media screen and (max-height: 500px) and (orientation: landscape) {
-      .content-container.not-found { padding: 18px 26px 18px; }
-      .not-found-message { margin-bottom: 12px; }
-    }
-    .icon-container a.home-link:focus-visible {
+    a.home-link:focus-visible {
       box-shadow:
         0 0 0 6px rgba(13, 13, 13, 0.72),
         0 10px 28px rgba(13, 13, 13, 0.12),
         inset 0 1px 1px rgba(253, 255, 255, 0.22);
     }
-    /* The home page's tablet rule spaces its icons from the name; here the message already does. */
-    .not-found .icon-container { margin-top: 0; }
+    a.home-link:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+    @media screen and (max-height: 500px) and (orientation: landscape) {
+      /* short landscape: smaller 404, and the group sits higher so the button clears the Privacy pill */
+      .not-found { padding-bottom: 56px; }
+      .not-found-title { font-size: clamp(64px, 30vh, 120px); }
+      .not-found-message { margin: 8px 0 14px; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      .icon-container a.home-link { transition: none; }
-      .icon-container a.home-link:hover { transform: none; filter: none; }
+      a.home-link { transition: none; }
+      a.home-link:hover { transform: none; }
     }
   </style>
   <script src="https://accounts.aidenkt.com/kit/kit.js" defer></script>
 </head>
 <body>
   <div class="overlay-container">
-    <main class="content-container not-found">
-      <h1 id="name-handwritten">404</h1>
-      <p class="not-found-message">This page doesn't exist, check the link or go back home.</p>
-      <div class="icon-container"><a class="home-link" href="/">aidenkt.com</a></div>
+    <main class="not-found">
+      <h1 class="not-found-title">404</h1>
+      <p class="not-found-message">This page doesn't exist.</p>
+      <a class="home-link" href="/">Go to aidenkt.com</a>
     </main>
     <a class="privacy-link" href="/privacy">Privacy</a>
     <div class="account" data-kt-account data-variant="glass" data-kt-label="Log In"></div>
@@ -101,6 +102,6 @@
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js'></script>
-  <script src="/script.js?v=3"></script>
+  <script src="/script.js?v=4"></script>
 </body>
 </html>

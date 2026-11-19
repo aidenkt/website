@@ -525,7 +525,8 @@ let colorIntervalId = null;
 if (window.location.search == "?start") {
   runColors = false;
   setBrowserColors({ theme: "#252452", root: "#14452F" });
-  document.querySelector(".content-container").style.display = "none";
+  const card = document.querySelector(".content-container, .not-found");
+  if (card) card.style.display = "none";
   document.querySelector(".privacy-link").style.display = "none";
   const account = document.querySelector("[data-kt-account]");
   if (account) {
