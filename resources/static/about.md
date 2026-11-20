@@ -1,6 +1,6 @@
 # Aiden Tabrizi
 
-I’m a software developer, product engineer, and college student at UC Berkeley studying Electrical Engineering & Computer Science. I like building features end-to-end, shaping design, features, and code to make software people love. I've worked in iOS, mobile, developer tools, education, research in AI/ML, and hardware in autonomous vehicles.
+I’m a software developer, product engineer, and college student at UC Berkeley studying Electrical Engineering & Computer Science. I like building products end-to-end: design, engineering, and all the small details that make software feel worth using. I've worked in iOS, mobile, developer tools, education, research in AI/ML, and hardware in autonomous vehicles.
 
 ## What I’m doing now
 
@@ -20,9 +20,9 @@ I expect to graduate from UC Berkeley in 2028 with a B.S. in Electrical Engineer
 
 ## Community
 
-I built a Berkeley transfer community that grew to about 5,000 Discord members. It also included a website and social accounts, a moderator team, events, and collaboration with Berkeley’s transfer center. I started it because finding clear information and other transfer students was harder than it should have been.
+I started a UC Berkeley transfer community that grew to about 5,000 members on Discord, with a website, social accounts, events, a moderator team, and a partnership with Berkeley’s Transfer Center. I started it because finding clear information and other transfer students was harder than it should have been.
 
-I built a Discord community of 23,000 members centered around the game Overwatch 2.
+I also built a 23,000-member Overwatch 2 Discord community.
 
 ## Technical interests
 
